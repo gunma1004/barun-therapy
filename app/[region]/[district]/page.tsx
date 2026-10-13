@@ -27,7 +27,6 @@ function safeDecode(str: string): string {
   return decoded.trim();
 }
 
-// 🌐 영문 시/도 슬러그 변환
 function getRegionFullName(region: string): string {
   switch (region?.toLowerCase()) {
     case "seoul": return "서울";
@@ -37,139 +36,143 @@ function getRegionFullName(region: string): string {
   }
 }
 
-// 🗺️ 영문 구/시 슬러그 -> 한글 표준 행정구역명 맵핑 사전
-const DISTRICT_SLUG_MAP: Record<string, string> = {
-  // 서울 (25개 자치구 영문 및 -gu 대응)
-  "jongno": "종로구",
+// 🗺️ 영문 슬러그 -> 한글 표준 행정구역명 맵핑 사전
+const SLUG_TO_KOREAN: Record<string, string> = {
+  // 광역 시·도 파라미터 자체 방어
+  seoul: "서울",
+  gyeonggi: "경기",
+  incheon: "인천",
+
+  // 서울 25개 자치구 영문 및 -gu 대응
+  jongno: "종로구",
   "jongno-gu": "종로구",
-  "jung": "중구",
+  jung: "중구",
   "jung-gu": "중구",
-  "yongsan": "용산구",
+  yongsan: "용산구",
   "yongsan-gu": "용산구",
-  "seongdong": "성동구",
+  seongdong: "성동구",
   "seongdong-gu": "성동구",
-  "gwangjin": "광진구",
+  gwangjin: "광진구",
   "gwangjin-gu": "광진구",
-  "dongdaemun": "동대문구",
+  dongdaemun: "동대문구",
   "dongdaemun-gu": "동대문구",
-  "jungnang": "중랑구",
+  jungnang: "중랑구",
   "jungnang-gu": "중랑구",
-  "seongbuk": "성북구",
+  seongbuk: "성북구",
   "seongbuk-gu": "성북구",
-  "gangbuk": "강북구",
+  gangbuk: "강북구",
   "gangbuk-gu": "강북구",
-  "dobong": "도봉구",
+  dobong: "도봉구",
   "dobong-gu": "도봉구",
-  "nowon": "노원구",
+  nowon: "노원구",
   "nowon-gu": "노원구",
-  "eunpyeong": "은평구",
+  eunpyeong: "은평구",
   "eunpyeong-gu": "은평구",
-  "seodaemun": "서대문구",
+  seodaemun: "서대문구",
   "seodaemun-gu": "서대문구",
-  "mapo": "마포구",
+  mapo: "마포구",
   "mapo-gu": "마포구",
-  "yangcheon": "양천구",
+  yangcheon: "양천구",
   "yangcheon-gu": "양천구",
-  "gangseo": "강서구",
+  gangseo: "강서구",
   "gangseo-gu": "강서구",
-  "guro": "구로구",
+  guro: "구로구",
   "guro-gu": "구로구",
-  "geumcheon": "금천구",
+  geumcheon: "금천구",
   "geumcheon-gu": "금천구",
-  "yeongdeungpo": "영등포구",
+  yeongdeungpo: "영등포구",
   "yeongdeungpo-gu": "영등포구",
-  "dongjak": "동작구",
+  dongjak: "동작구",
   "dongjak-gu": "동작구",
-  "gwanak": "관악구",
+  gwanak: "관악구",
   "gwanak-gu": "관악구",
-  "seocho": "서초구",
+  seocho: "서초구",
   "seocho-gu": "서초구",
-  "gangnam": "강남구",
+  gangnam: "강남구",
   "gangnam-gu": "강남구",
-  "songpa": "송파구",
+  songpa: "송파구",
   "songpa-gu": "송파구",
-  "gangdong": "강동구",
+  gangdong: "강동구",
   "gangdong-gu": "강동구",
 
-  // 경기 주요 시/군
-  "suwon": "수원시",
+  // 경기 주요 시·구
+  suwon: "수원시",
   "suwon-si": "수원시",
-  "suwon_jangan": "수원시 장안구",
-  "suwon_gwonseon": "수원시 권선구",
-  "suwon_paldal": "수원시 팔달구",
-  "suwon_yeongtong": "수원시 영통구",
-  "seongnam": "성남시",
+  suwon_jangan: "수원시 장안구",
+  suwon_gwonseon: "수원시 권선구",
+  suwon_paldal: "수원시 팔달구",
+  suwon_yeongtong: "수원시 영통구",
+  seongnam: "성남시",
   "seongnam-si": "성남시",
-  "seongnam_bundang": "성남시 분당구",
-  "seongnam_sujeong": "성남시 수정구",
-  "seongnam_jungwon": "성남시 중원구",
-  "goyang": "고양시",
+  seongnam_bundang: "성남시 분당구",
+  seongnam_sujeong: "성남시 수정구",
+  seongnam_jungwon: "성남시 중원구",
+  goyang: "고양시",
   "goyang-si": "고양시",
-  "goyang_deogyang": "고양시 덕양구",
-  "goyang_ilsandong": "고양시 일산동구",
-  "goyang_ilsanseo": "고양시 일산서구",
-  "yongin": "용인시",
+  goyang_deogyang: "고양시 덕양구",
+  goyang_ilsandong: "고양시 일산동구",
+  goyang_ilsanseo: "고양시 일산서구",
+  yongin: "용인시",
   "yongin-si": "용인시",
-  "yongin_suji": "용인시 수지구",
-  "yongin_giheung": "용인시 기흥구",
-  "yongin_cheoin": "용인시 처인구",
-  "bucheon": "부천시",
+  yongin_suji: "용인시 수지구",
+  yongin_giheung: "용인시 기흥구",
+  yongin_cheoin: "용인시 처인구",
+  bucheon: "부천시",
   "bucheon-si": "부천시",
-  "bucheon_wonmi": "부천시 원미구",
-  "bucheon_sosa": "부천시 소사구",
-  "bucheon_ojeong": "부천시 오정구",
-  "anyang": "안양시",
+  bucheon_wonmi: "부천시 원미구",
+  bucheon_sosa: "부천시 소사구",
+  bucheon_ojeong: "부천시 오정구",
+  anyang: "안양시",
   "anyang-si": "안양시",
-  "anyang_manan": "안양시 만안구",
-  "anyang_dongan": "안양시 동안구",
-  "ansan": "안산시",
+  anyang_manan: "안양시 만안구",
+  anyang_dongan: "안양시 동안구",
+  ansan: "안산시",
   "ansan-si": "안산시",
-  "ansan_sangnok": "안산시 상록구",
-  "ansan_danwon": "안산시 단원구",
-  "gwangmyeong": "광명시",
-  "pyeongtaek": "평택시",
-  "gwacheon": "과천시",
-  "guri": "구리시",
-  "namyangju": "남양주시",
-  "osan": "오산시",
-  "siheung": "시흥시",
-  "gunpo": "군포시",
-  "uiwang": "의왕시",
-  "hanam": "하남시",
-  "paju": "파주시",
-  "icheon": "이천시",
-  "anseong": "안성시",
-  "gimpo": "김포시",
-  "hwaseong": "화성시",
-  "gwangju": "광주시",
-  "yangju": "양주시",
-  "pochon": "포천시",
-  "yeoju": "여주시",
-  "uijeongbu": "의정부시",
+  ansan_sangnok: "안산시 상록구",
+  ansan_danwon: "안산시 단원구",
+  gwangmyeong: "광명시",
+  pyeongtaek: "평택시",
+  gwacheon: "과천시",
+  guri: "구리시",
+  namyangju: "남양주시",
+  osan: "오산시",
+  siheung: "시흥시",
+  gunpo: "군포시",
+  uiwang: "의왕시",
+  hanam: "하남시",
+  paju: "파주시",
+  icheon: "이천시",
+  anseong: "안성시",
+  gimpo: "김포시",
+  hwaseong: "화성시",
+  gwangju: "광주시",
+  yangju: "양주시",
+  pochon: "포천시",
+  yeoju: "여주시",
+  uijeongbu: "의정부시",
 
   // 인천 주요 자치구
-  "jemulpo": "제물포구",
-  "yeongjong": "영종구",
-  "michuhol": "미추홀구",
-  "yeonsu": "연수구",
+  jemulpo: "제물포구",
+  yeongjong: "영종구",
+  michuhol: "미추홀구",
+  yeonsu: "연수구",
   "yeonsu-gu": "연수구",
-  "namdong": "남동구",
+  namdong: "남동구",
   "namdong-gu": "남동구",
-  "bupyeong": "부평구",
+  bupyeong: "부평구",
   "bupyeong-gu": "부평구",
-  "gyeyang": "계양구",
+  gyeyang: "계양구",
   "gyeyang-gu": "계양구",
-  "seohae": "서구",
-  "geomdan": "검단구",
-  "ganghwa": "강화군",
-  "ongjin": "옹진군",
+  seohae: "서구",
+  geomdan: "검단구",
+  ganghwa: "강화군",
+  ongjin: "옹진군",
 };
 
-// 🎯 영문 슬러그/한글 혼용 대응 디스플레이 함수
-function getDistrictDisplayName(rawDistrict: string): string {
+function formatDistrictName(rawDistrict: string): string {
   const decoded = safeDecode(rawDistrict);
-  const normalizedKey = decoded.toLowerCase();
-  return DISTRICT_SLUG_MAP[normalizedKey] || decoded;
+  const lower = decoded.toLowerCase();
+  return SLUG_TO_KOREAN[lower] || decoded;
 }
 
 const DISTRICT_DONGS_MAP: Record<string, string[]> = {
@@ -283,10 +286,19 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const resolvedSearchParams = searchParams ? await searchParams : {};
 
   const { region, district } = resolvedParams;
+  const regionFullName = getRegionFullName(region);
+  const rawDistrictName = formatDistrictName(district);
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
-  const districtName = getDistrictDisplayName(district);
 
-  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
+  // districtName이 regionFullName과 같거나 비어있으면 중복 표기 방지
+  const districtName = (rawDistrictName === regionFullName || !rawDistrictName)
+    ? regionFullName
+    : rawDistrictName;
+
+  const displayLocation = dongName
+    ? `${districtName} ${dongName}`
+    : (districtName === regionFullName ? regionFullName : `${regionFullName} ${districtName}`);
+
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
@@ -335,11 +347,19 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
   const resolvedSearchParams = searchParams ? await searchParams : {};
 
   const { region, district } = resolvedParams;
-  const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
-  const districtName = getDistrictDisplayName(district);
   const regionFullName = getRegionFullName(region);
+  const rawDistrictName = formatDistrictName(district);
+  const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
 
-  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
+  // districtName이 regionFullName과 같거나 비어있으면 중복 표기 방지
+  const districtName = (rawDistrictName === regionFullName || !rawDistrictName)
+    ? regionFullName
+    : rawDistrictName;
+
+  const displayLocation = dongName
+    ? `${districtName} ${dongName}`
+    : (districtName === regionFullName ? regionFullName : `${regionFullName} ${districtName}`);
+
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
