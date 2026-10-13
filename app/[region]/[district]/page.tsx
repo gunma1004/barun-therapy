@@ -27,6 +27,7 @@ function safeDecode(str: string): string {
   return decoded.trim();
 }
 
+// 🌐 영문 시/도 슬러그 변환
 function getRegionFullName(region: string): string {
   switch (region?.toLowerCase()) {
     case "seoul": return "서울";
@@ -36,6 +37,141 @@ function getRegionFullName(region: string): string {
   }
 }
 
+// 🗺️ 영문 구/시 슬러그 -> 한글 표준 행정구역명 맵핑 사전
+const DISTRICT_SLUG_MAP: Record<string, string> = {
+  // 서울 (25개 자치구 영문 및 -gu 대응)
+  "jongno": "종로구",
+  "jongno-gu": "종로구",
+  "jung": "중구",
+  "jung-gu": "중구",
+  "yongsan": "용산구",
+  "yongsan-gu": "용산구",
+  "seongdong": "성동구",
+  "seongdong-gu": "성동구",
+  "gwangjin": "광진구",
+  "gwangjin-gu": "광진구",
+  "dongdaemun": "동대문구",
+  "dongdaemun-gu": "동대문구",
+  "jungnang": "중랑구",
+  "jungnang-gu": "중랑구",
+  "seongbuk": "성북구",
+  "seongbuk-gu": "성북구",
+  "gangbuk": "강북구",
+  "gangbuk-gu": "강북구",
+  "dobong": "도봉구",
+  "dobong-gu": "도봉구",
+  "nowon": "노원구",
+  "nowon-gu": "노원구",
+  "eunpyeong": "은평구",
+  "eunpyeong-gu": "은평구",
+  "seodaemun": "서대문구",
+  "seodaemun-gu": "서대문구",
+  "mapo": "마포구",
+  "mapo-gu": "마포구",
+  "yangcheon": "양천구",
+  "yangcheon-gu": "양천구",
+  "gangseo": "강서구",
+  "gangseo-gu": "강서구",
+  "guro": "구로구",
+  "guro-gu": "구로구",
+  "geumcheon": "금천구",
+  "geumcheon-gu": "금천구",
+  "yeongdeungpo": "영등포구",
+  "yeongdeungpo-gu": "영등포구",
+  "dongjak": "동작구",
+  "dongjak-gu": "동작구",
+  "gwanak": "관악구",
+  "gwanak-gu": "관악구",
+  "seocho": "서초구",
+  "seocho-gu": "서초구",
+  "gangnam": "강남구",
+  "gangnam-gu": "강남구",
+  "songpa": "송파구",
+  "songpa-gu": "송파구",
+  "gangdong": "강동구",
+  "gangdong-gu": "강동구",
+
+  // 경기 주요 시/군
+  "suwon": "수원시",
+  "suwon-si": "수원시",
+  "suwon_jangan": "수원시 장안구",
+  "suwon_gwonseon": "수원시 권선구",
+  "suwon_paldal": "수원시 팔달구",
+  "suwon_yeongtong": "수원시 영통구",
+  "seongnam": "성남시",
+  "seongnam-si": "성남시",
+  "seongnam_bundang": "성남시 분당구",
+  "seongnam_sujeong": "성남시 수정구",
+  "seongnam_jungwon": "성남시 중원구",
+  "goyang": "고양시",
+  "goyang-si": "고양시",
+  "goyang_deogyang": "고양시 덕양구",
+  "goyang_ilsandong": "고양시 일산동구",
+  "goyang_ilsanseo": "고양시 일산서구",
+  "yongin": "용인시",
+  "yongin-si": "용인시",
+  "yongin_suji": "용인시 수지구",
+  "yongin_giheung": "용인시 기흥구",
+  "yongin_cheoin": "용인시 처인구",
+  "bucheon": "부천시",
+  "bucheon-si": "부천시",
+  "bucheon_wonmi": "부천시 원미구",
+  "bucheon_sosa": "부천시 소사구",
+  "bucheon_ojeong": "부천시 오정구",
+  "anyang": "안양시",
+  "anyang-si": "안양시",
+  "anyang_manan": "안양시 만안구",
+  "anyang_dongan": "안양시 동안구",
+  "ansan": "안산시",
+  "ansan-si": "안산시",
+  "ansan_sangnok": "안산시 상록구",
+  "ansan_danwon": "안산시 단원구",
+  "gwangmyeong": "광명시",
+  "pyeongtaek": "평택시",
+  "gwacheon": "과천시",
+  "guri": "구리시",
+  "namyangju": "남양주시",
+  "osan": "오산시",
+  "siheung": "시흥시",
+  "gunpo": "군포시",
+  "uiwang": "의왕시",
+  "hanam": "하남시",
+  "paju": "파주시",
+  "icheon": "이천시",
+  "anseong": "안성시",
+  "gimpo": "김포시",
+  "hwaseong": "화성시",
+  "gwangju": "광주시",
+  "yangju": "양주시",
+  "pochon": "포천시",
+  "yeoju": "여주시",
+  "uijeongbu": "의정부시",
+
+  // 인천 주요 자치구
+  "jemulpo": "제물포구",
+  "yeongjong": "영종구",
+  "michuhol": "미추홀구",
+  "yeonsu": "연수구",
+  "yeonsu-gu": "연수구",
+  "namdong": "남동구",
+  "namdong-gu": "남동구",
+  "bupyeong": "부평구",
+  "bupyeong-gu": "부평구",
+  "gyeyang": "계양구",
+  "gyeyang-gu": "계양구",
+  "seohae": "서구",
+  "geomdan": "검단구",
+  "ganghwa": "강화군",
+  "ongjin": "옹진군",
+};
+
+// 🎯 영문 슬러그/한글 혼용 대응 디스플레이 함수
+function getDistrictDisplayName(rawDistrict: string): string {
+  const decoded = safeDecode(rawDistrict);
+  const normalizedKey = decoded.toLowerCase();
+  return DISTRICT_SLUG_MAP[normalizedKey] || decoded;
+}
+
 const DISTRICT_DONGS_MAP: Record<string, string[]> = {
   강서구: ["화곡동", "가양동", "등촌동", "발산동", "방화동", "염창동", "공항동", "마곡동"],
   강남구: ["역삼동", "논현동", "신사동", "삼성동", "대치동", "청담동", "도곡동", "개포동"],
@@ -43,6 +179,9 @@ const DISTRICT_DONGS_MAP: Record<string, string[]> = {
   송파구: ["잠실동", "신천동", "풍납동", "송파동", "석촌동", "삼전동", "가락동", "문정동", "방이동"],
   마포구: ["공덕동", "아현동", "도화동", "용강동", "대흥동", "염리동", "서교동", "합정동", "망원동", "상암동"],
   영등포구: ["영등포동", "여의도동", "당산동", "도림동", "문래동", "양평동", "신길동", "대림동"],
+  종로구: ["청운동", "효자동", "사직동", "삼청동", "부암동", "평창동", "무악동", "교남동", "가회동", "혜화동", "이화동", "숭인동"],
+  중구: ["소공동", "회현동", "명동", "필동", "장충동", "광희동", "을지로동", "신당동", "다산동", "약수동", "청구동", "황학동"],
+  용산구: ["후암동", "남영동", "청파동", "원효로동", "효창동", "용문동", "이촌동", "이태원동", "한남동", "서빙고동", "보광동"],
 };
 
 const SEO_PATTERNS = [
@@ -145,7 +284,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const { region, district } = resolvedParams;
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
-  const districtName = safeDecode(district);
+  const districtName = getDistrictDisplayName(district);
 
   const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
@@ -154,7 +293,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const finalTitle = `${displayLocation} ${pattern.title} | 바른테라피`;
   const finalDescription = pattern.desc(districtName);
 
-  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(districtName)}${
+  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}${
     dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
   }`;
 
@@ -197,7 +336,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
 
   const { region, district } = resolvedParams;
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
-  const districtName = safeDecode(district);
+  const districtName = getDistrictDisplayName(district);
   const regionFullName = getRegionFullName(region);
 
   const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
@@ -212,7 +351,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
     `${districtName} 중앙동`,
   ];
 
-  const currentUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(districtName)}${
+  const currentUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}${
     dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
   }`;
 
@@ -220,7 +359,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      // 1. 빵가루 탐색 경로 스키마 (검색창 상단 계층 노출: 홈 > 서울/경기/인천 > 구)
+      // 1. 빵가루 탐색 경로 스키마 (검색창 상단 계층 노출: 홈 > 서울 > 종로구)
       {
         "@type": "BreadcrumbList",
         "@id": `${currentUrl}#breadcrumb`,
@@ -245,7 +384,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
           }
         ]
       },
-      // 2. 지역 비즈니스 정밀 스키마 (영업시간, 100% 현장후불, 결제수단 포함)
+      // 2. 지역 비즈니스 정밀 스키마
       {
         "@type": "HealthAndBeautyBusiness",
         "@id": `${currentUrl}#business`,
@@ -301,7 +440,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
           }
         ]
       },
-      // 4. 자주 묻는 질문 스키마 (FAQPage - 검색창 아코디언 노출)
+      // 4. 자주 묻는 질문 스키마 (FAQPage)
       {
         "@type": "FAQPage",
         "@id": `${currentUrl}#faq`,
@@ -391,7 +530,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
             {dongsList.map((dong) => (
               <Link
                 key={dong}
-                href={`/${region}/${encodeURIComponent(districtName)}?dong=${encodeURIComponent(dong)}`}
+                href={`/${region}/${encodeURIComponent(district)}?dong=${encodeURIComponent(dong)}`}
                 className="p-3 rounded-xl bg-[#141418] border border-white/5 hover:border-amber-400/50 hover:bg-amber-400/5 transition-all text-center group"
               >
                 <span className="block font-bold text-xs sm:text-sm text-gray-200 group-hover:text-amber-400 transition-colors">
