@@ -11,7 +11,6 @@ interface DongDetailClientProps {
   regionFullName: string;
 }
 
-// 바른테라피 공식 제휴 샵 5선
 const initialShops = [
   {
     id: 1,
@@ -72,10 +71,13 @@ export default function DongDetailClient({
     setShops(shuffled);
   }, []);
 
-  const fullLocation = `${regionFullName} ${districtName} ${dongName}`;
-  const shortLocation = `${districtName} ${dongName}`;
+  // "서울 서울" 또는 "종로구 종로구" 같은 중복 텍스트 방어
+  const isDongValid = dongName && dongName !== districtName && dongName !== regionFullName;
+  const shortLocation = isDongValid ? `${districtName} ${dongName}` : districtName;
+  const fullLocation = districtName.includes(regionFullName) 
+    ? shortLocation 
+    : `${regionFullName} ${shortLocation}`;
 
-  // 동 단위 제휴점 리스트 Schema.org ItemList 구조화 데이터
   const shopListJsonLd = useMemo(() => {
     return {
       "@context": "https://schema.org",
@@ -107,16 +109,14 @@ export default function DongDetailClient({
 
   return (
     <div className="space-y-8">
-      {/* 🌟 제휴 샵 리스트 전용 ItemList 구조화 데이터 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(shopListJsonLd) }}
       />
 
-      {/* 동 대표 타이틀 배너 */}
       <section className="bg-[#141418] border border-amber-500/30 rounded-3xl p-6 md:p-8 shadow-lg">
         <span className="text-amber-400 text-xs font-black tracking-widest uppercase mb-1 block">
-          {districtName} · {dongName} WELLNESS DIRECTORY
+          {fullLocation} WELLNESS DIRECTORY
         </span>
         <h2 className="text-2xl md:text-3xl font-black text-white">
           📍 {shortLocation} 마사지 안내
@@ -126,7 +126,6 @@ export default function DongDetailClient({
         </p>
       </section>
 
-      {/* 샵 리스트 */}
       <section className="space-y-4">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-black text-amber-400 tracking-wider uppercase">
@@ -143,13 +142,13 @@ export default function DongDetailClient({
             >
               <img
                 src={shop.image}
-                alt={`${shop.name} ${dongName}`}
+                alt={`${shop.name} ${shortLocation}`}
                 className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-white/10 flex-shrink-0"
               />
 
               <div className="flex-1 min-w-0">
                 <h4 className="font-extrabold text-sm md:text-base text-white truncate group-hover:text-amber-400 transition-colors">
-                  {shop.name} <span className="text-xs font-normal text-gray-400">({dongName})</span>
+                  {shop.name} <span className="text-xs font-normal text-gray-400">({shortLocation})</span>
                 </h4>
                 <p className="text-[11px] text-gray-400 mt-1 line-clamp-2 leading-snug">
                   {shop.desc}
@@ -171,7 +170,6 @@ export default function DongDetailClient({
         </div>
       </section>
 
-      {/* 하단 네비게이션 복귀 링크 */}
       <div className="pt-2 flex justify-center gap-3">
         <Link
           href="/"
@@ -183,7 +181,7 @@ export default function DongDetailClient({
           href={`/${region}/${encodeURIComponent(districtName)}`}
           className="text-xs bg-neutral-900 border border-white/10 px-4 py-2 rounded-xl text-amber-400 hover:text-yellow-300 transition-colors"
         >
-          📍 {districtName} 다른 동 보기
+          📍 {districtName} 전체보기
         </Link>
       </div>
     </div>

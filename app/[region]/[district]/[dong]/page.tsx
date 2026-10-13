@@ -1,3 +1,4 @@
+// app/[region]/[district]/[dong]/page.tsx
 import { Metadata } from "next";
 import Link from "next/link";
 import DongDetailClient from "./DongDetailClient";
@@ -25,16 +26,87 @@ function safeDecode(str: string): string {
   return decoded.trim();
 }
 
+// 🗺️ 영문 슬러그 -> 한글 표준 변환 사전
+const SLUG_TO_KOREAN: Record<string, string> = {
+  seoul: "서울",
+  gyeonggi: "경기",
+  incheon: "인천",
+  jongno: "종로구",
+  "jongno-gu": "종로구",
+  jung: "중구",
+  "jung-gu": "중구",
+  yongsan: "용산구",
+  "yongsan-gu": "용산구",
+  seongdong: "성동구",
+  "seongdong-gu": "성동구",
+  gwangjin: "광진구",
+  "gwangjin-gu": "광진구",
+  dongdaemun: "동대문구",
+  "dongdaemun-gu": "동대문구",
+  jungnang: "중랑구",
+  "jungnang-gu": "중랑구",
+  seongbuk: "성북구",
+  "seongbuk-gu": "성북구",
+  gangbuk: "강북구",
+  "gangbuk-gu": "강북구",
+  dobong: "도봉구",
+  "dobong-gu": "도봉구",
+  nowon: "노원구",
+  "nowon-gu": "노원구",
+  eunpyeong: "은평구",
+  "eunpyeong-gu": "은평구",
+  seodaemun: "서대문구",
+  "seodaemun-gu": "서대문구",
+  mapo: "마포구",
+  "mapo-gu": "마포구",
+  yangcheon: "양천구",
+  "yangcheon-gu": "양천구",
+  gangseo: "강서구",
+  "gangseo-gu": "강서구",
+  guro: "구로구",
+  "guro-gu": "구로구",
+  geumcheon: "금천구",
+  "geumcheon-gu": "금천구",
+  yeongdeungpo: "영등포구",
+  "yeongdeungpo-gu": "영등포구",
+  dongjak: "동작구",
+  "dongjak-gu": "동작구",
+  gwanak: "관악구",
+  "gwanak-gu": "관악구",
+  seocho: "서초구",
+  "seocho-gu": "서초구",
+  gangnam: "강남구",
+  "gangnam-gu": "강남구",
+  songpa: "송파구",
+  "songpa-gu": "송파구",
+  gangdong: "강동구",
+  "gangdong-gu": "강동구",
+  suwon: "수원시",
+  "suwon-si": "수원시",
+  seongnam: "성남시",
+  goyang: "고양시",
+  yongin: "용인시",
+  bucheon: "부천시",
+  yeonsu: "연수구",
+  namdong: "남동구",
+  bupyeong: "부평구",
+};
+
+function formatLocationName(str: string): string {
+  const decoded = safeDecode(str);
+  return SLUG_TO_KOREAN[decoded.toLowerCase()] || decoded;
+}
+
 function getRegionFullName(region: string): string {
   switch (region?.toLowerCase()) {
     case "seoul": return "서울";
     case "gyeonggi": return "경기";
     case "incheon": return "인천";
-    default: return region || "";
+    default: return formatLocationName(region);
   }
 }
 
-// 🎯 40가지 순환형 SEO 패턴 (수식어 분리 타이틀 + 동이름 밀착 결합 디스크립션)
+// 🎯 15가지 순환형 SEO 패턴
 const SEO_PATTERNS = [
   { title: "출장 웰니스 마사지 & 프리미엄 힐링 케어", desc: (d: string) => `${d} 출장마사지 안심 가이드. 나만의 편안한 공간에서 경험하는 1:1 맞춤 바디 테라피 코스와 100% 현장후불 정찰제 요금을 바른테라피에서 확인하세요.` },
   { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (d: string) => `${d} 출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램으로 지친 피로를 풀어드립니다.` },
@@ -53,53 +125,27 @@ const SEO_PATTERNS = [
   { title: "출장 호텔식 럭셔리 마사지 프라이빗 케어", desc: (d: string) => `${d} 출장마사지 웰니스 솔루션. 정갈한 서비스와 수준 높은 테라피 프로그램을 투명한 100% 현장후불제로 이용하세요.` }
 ];
 
-// 🌿 동(Dong)마다 문장 구조와 내용이 통째로 바뀌는 1,800자 분량의 동적 정보성 글 생성기
 function getDynamicDongInsight(districtName: string, dongName: string, seed: number) {
   const dongInsightGroups = [
     {
       subtitle: `${dongName} 거주자 및 직장인을 위한 1:1 맞춤 바디 테라피 인사이트`,
       sec1Title: `1. ${dongName} 일대 직장인들의 좌식 업무와 승모근 긴장 완화`,
       sec1Text: [
-        `${districtName} ${dongName}은 활발한 상업 공간과 주거 단지가 조화를 이루는 곳으로, 일상 업무나 컴퓨터 작업 등으로 인한 상체 근육의 긴장도가 높게 나타나는 지역입니다. 장시간 키보드와 마우스를 조작하다 보면 어깨가 안으로 말리는 라운드 숄더와 거북목 자세가 유발되기 쉽습니다. 이는 목덜미 후두하근과 상부 승모근에 지속적인 부하를 주어 혈액 순환을 저해하고, 만성적인 어깨 뻐근함과 두중감을 일으킵니다.`,
-        `이러한 국소 근막 긴장을 효과적으로 완화하기 위해서는 체온을 안정적으로 유지하면서 단축된 근섬유를 결을 따라 부드럽게 늘려주는 수기 요법이 필요합니다. 굳어있던 혈관이 확장되면서 림프액과 혈액 순환이 촉진되고, 근육 내부에 쌓인 피로 부산물이 빠르게 배출되어 가벼운 어깨 컨디션을 회복할 수 있습니다.`
+        `${districtName} ${dongName}은 일상 업무나 컴퓨터 작업 등으로 인한 상체 근육의 긴장도가 높게 나타나는 지역입니다. 장시간 키보드와 마우스를 조작하다 보면 어깨가 안으로 말리는 라운드 숄더와 거북목 자세가 유발되기 쉽습니다. 이는 목덜미 후두하근과 상부 승모근에 지속적인 부하를 주어 혈액 순환을 저해하고, 만성적인 어깨 뻐근함과 두중감을 일으킵니다.`,
+        `이러한 국소 근막 긴장을 완화하기 위해서는 체온을 안정적으로 유지하면서 단축된 근섬유를 결을 따라 부드럽게 늘려주는 수기 요법이 필요합니다. 굳어있던 혈관이 확장되면서 림프액과 혈액 순환이 촉진되고 가벼운 어깨 컨디션을 회복할 수 있습니다.`
       ],
       sec2Title: "2. 컨디션에 따른 건식 타이와 스웨디시 오일 케어 비교",
       sec2Text: [
-        `테라피를 선택할 때는 당일의 피로도와 신체 통증 양상을 파악하는 것이 중요합니다. 건식 기법의 대표인 타이는 별도의 오일 없이 진행되며, 관절의 가동 범위를 넓혀주는 수동적 전신 스트레칭을 핵심으로 합니다. 평소 운동량이 적어 관절 마디가 굳었거나 허리 및 하체의 묵직함을 개운하게 해소하고 싶을 때 알맞습니다.`,
-        `반면 프리미엄 스웨디시는 식물성 오일을 도포하여 심장 방향으로 부드럽고 리드미컬하게 밀어 올리는 림프 순환 중심 테크닉입니다. 피부 표면의 자극 없이 정서적 안정과 깊은 신체 이완을 유도하므로, 스트레스로 인해 불면증을 겪거나 은은한 휴식을 원하는 분들에게 만족스러운 결과를 제공합니다.`
+        `테라피를 선택할 때는 당일의 피로도와 신체 통증 양상을 파악하는 것이 중요합니다. 건식 기법의 대표인 타이는 관절의 가동 범위를 넓혀주는 수동적 전신 스트레칭을 핵심으로 합니다.`,
+        `반면 프리미엄 스웨디시는 식물성 오일을 도포하여 심장 방향으로 부드럽고 리드미컬하게 밀어 올리는 림프 순환 중심 테크닉으로 정서적 안정과 깊은 신체 이완을 유도합니다.`
       ],
       sec3Title: `3. ${dongName} 프라이빗 룸에서 누리는 힐링의 환경적 장점`,
       sec3Text: [
-        `테라피의 생리학적 효과를 온전히 누리기 위해서는 심리적 안정감이 필수적입니다. 외부 매장으로 직접 이동할 때 소모되는 교통 체증, 주차 스트레스, 대중교통 이용은 무의식중에 코르티솔 분비를 촉진할 수 있습니다.`,
-        `반면 내가 가장 익숙한 독립된 공간에서 진행되는 홈케어는 외부 자극이 원천 차단되어 부교감 신경계가 빠르게 활성화됩니다. 세션이 끝난 후 환복이나 추가 이동 없이 바로 아늑한 수면으로 이어질 수 있어 힐링의 잔여 효과가 다음 날 아침까지 편안하게 지속됩니다.`
+        `내가 가장 익숙한 독립된 공간에서 진행되는 홈케어는 외부 자극이 차단되어 부교감 신경계가 빠르게 활성화됩니다. 세션이 끝난 후 환복이나 추가 이동 없이 바로 아늑한 수면으로 이어질 수 있어 힐링의 잔여 효과가 지속됩니다.`
       ],
       sec4Title: "4. 안전하고 투명한 정찰제 이용 수칙",
       sec4Text: [
-        `${dongName} 출장마사지 서비스를 이용하실 때는 건전성과 투명성을 갖춘 공식 플랫폼을 확인하시는 것이 안전합니다. 정상적인 제휴 파트너는 예약 명목의 불법 선입금을 요구하지 않으며, 사전 공시된 100% 현장후불 정찰제 요금 기준을 엄격히 준수합니다.`,
-        `허리 디스크 등 특정 질환이 있거나 임신 중인 경우 세션 시작 전 담당 힐러에게 미리 전달하시면 세심한 맞춤 압 조절을 통해 가장 안전한 웰니스 케어를 경험하실 수 있습니다.`
-      ]
-    },
-    {
-      subtitle: `${dongName} 웰니스 라이프를 위한 전신 림프 순환 & 디톡스 솔루션`,
-      sec1Title: `1. 만성 피로와 교감신경 흥분이 신체에 미치는 생리적 영향`,
-      sec1Text: [
-        `현대인의 불규칙한 생활 습관과 과중한 스트레스는 체내 자율신경계의 밸런스를 무너뜨리는 주된 요인입니다. 교감신경이 지속적으로 긴장하면 말초 혈관이 수축하여 손발이 차가워지고, 근육이 무의식중에 수축 상태를 유지하게 됩니다. 이러한 긴장 상태가 지속되면 체내 노폐물 배출이 지연되고 아침에 기상할 때 몸이 무거운 만성 피로 증후군으로 발전합니다.`,
-        `정성 어린 감성 터치와 균일한 리듬의 이완 요법은 감각 신경을 안정시키고 옥시토신과 세로토닌의 분비를 촉진합니다. 이를 통해 긴장되어 있던 신체가 회복 모드로 전환되며, 전신에 온기가 돌면서 자연스러운 활력을 되찾게 됩니다.`
-      ],
-      sec2Title: "2. 부종 완화와 혈액 순환을 위한 림프 배농 테라피",
-      sec2Text: [
-        `림프계는 신체의 자가 정화 시스템 역할을 수행하지만 혈관과 달리 심장과 같은 자체 박동 펌프가 없습니다. 장시간 앉아 있거나 서 있는 생활로 서혜부와 액와부 주변 림프절이 뭉치면 림프액 흐름이 정체되어 하체 부종과 신체 피로도가 급격히 상승합니다.`,
-        `림프 순환 케어는 강한 지압을 피하고 림프의 자연스러운 흐름 방향에 맞추어 피부층을 섬세하게 밀어주는 기법을 사용합니다. 이를 통해 축적된 잉여 수분과 대사 폐기물이 림프관으로 원활히 흡수되어 둔탁했던 다리와 전신이 한결 가벼워지는 것을 체감할 수 있습니다.`
-      ],
-      sec3Title: "3. 식물성 에센셜 아로마 오일의 릴렉싱 메커니즘",
-      sec3Text: [
-        `아로마 오일 테라피는 천연 식물 추출물의 유효 성분과 후각적 자극을 동시에 활용하는 복합 힐링 기법입니다. 실내를 은은하게 채우는 에센셜 향기는 대뇌 변연계에 직접 작용하여 불안과 긴장을 완화하는 신경 전달 물질을 유도합니다.`,
-        `동시에 호호바, 스위트 아몬드 등 고급 베이스 오일이 피부 장벽에 수분막을 형성하여 건조한 환절기 피부를 윤택하게 가꾸어 줍니다. 몸의 긴장 완화와 피부 케어를 동시에 완성하는 이유입니다.`
-      ],
-      sec4Title: `4. ${dongName} 제휴 매장 신뢰 이용 팁`,
-      sec4Text: [
-        `바른테라피는 ${dongName} 전역의 고객 여러분께서 안심하고 힐링을 누리실 수 있도록 엄격한 위생 점검과 검증 절차를 통과한 파트너만을 선별합니다.`,
-        `세션 후에는 미온수를 충분히 마셔 체내로 방출된 노폐물이 원활히 배출되도록 돕고, 관리 당일은 과음을 피하고 충분한 수면을 취하는 것이 릴렉싱 효과를 극대화하는 비결입니다.`
+        `${dongName} 출장마사지 서비스를 이용하실 때는 건전성과 투명성을 갖춘 공식 플랫폼을 확인하시는 것이 안전합니다. 정상적인 제휴 파트너는 예약 명목의 불법 선입금을 요구하지 않으며, 사전 공시된 100% 현장후불 정찰제 요금 기준을 엄격히 준수합니다.`
       ]
     },
     {
@@ -132,31 +178,25 @@ function getDynamicDongInsight(districtName: string, dongName: string, seed: num
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { region, district, dong } = await params;
-  const districtName = safeDecode(district);
-  const dongName = safeDecode(dong);
+  const regionFullName = getRegionFullName(region);
+  const districtName = formatLocationName(district);
+  const rawDong = formatLocationName(dong);
 
-  const displayLocation = `${districtName} ${dongName}`;
+  // dong과 district가 같거나(구 단위 페이지 링크가 잘못 들어왔을 때) 방어
+  const dongName = (rawDong === districtName || rawDong === regionFullName) ? "" : rawDong;
+  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
+
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
   const finalTitle = `${displayLocation} ${pattern.title} | 바른테라피`;
-  const finalDescription = pattern.desc(dongName);
-  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`;
+  const finalDescription = pattern.desc(dongName || districtName);
+  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}/${encodeURIComponent(dong)}`;
 
   return {
     title: { absolute: finalTitle },
     description: finalDescription,
     alternates: { canonical: canonicalUrl },
-    keywords: [
-      `${dongName}출장마사지`,
-      `${dongName} 마사지`,
-      `${dongName} 스웨디시`,
-      `${districtName} 마사지`,
-      `${dongName} 타이마사지`,
-      `${displayLocation} 출장 웰니스 마사지`,
-      "서울 출장 신뢰케어 마사지",
-      "바른테라피"
-    ],
     robots: { index: true, follow: true },
     openGraph: {
       title: finalTitle,
@@ -170,7 +210,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           url: "https://barun-therapy.netlify.app/shop1.jpg",
           width: 1200,
           height: 630,
-          alt: `${dongName}출장마사지 바른테라피`,
+          alt: `${displayLocation} 출장마사지 바른테라피`,
         },
       ],
     },
@@ -180,148 +220,60 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Page({ params }: PageProps) {
   const resolved = await params;
   const regionFullName = getRegionFullName(resolved.region);
-  const districtName = safeDecode(resolved.district);
-  const dongName = safeDecode(resolved.dong);
+  const districtName = formatLocationName(resolved.district);
+  const rawDong = formatLocationName(resolved.dong);
 
-  const displayLocation = `${districtName} ${dongName}`;
+  const dongName = (rawDong === districtName || rawDong === regionFullName) ? "" : rawDong;
+  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
+
   const charSum = (displayLocation + resolved.region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
-  const article = getDynamicDongInsight(districtName, dongName, Math.abs(charSum));
-  const canonicalUrl = `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`;
+  const article = getDynamicDongInsight(districtName, dongName || districtName, Math.abs(charSum));
+  const canonicalUrl = `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(resolved.district)}/${encodeURIComponent(resolved.dong)}`;
 
-  // 🌟 동(Dong) 단위 최적화 통합 @graph JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      // 1. 빵가루 내비게이션 (홈 > 서울/경기/인천 > 구 > 동 4단계 완전 매핑)
       {
         "@type": "BreadcrumbList",
         "@id": `${canonicalUrl}#breadcrumb`,
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "홈",
-            "item": "https://barun-therapy.netlify.app"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": regionFullName,
-            "item": `https://barun-therapy.netlify.app/${resolved.region}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": `${districtName} 마사지`,
-            "item": `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(districtName)}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "name": `${dongName} 마사지`,
-            "item": canonicalUrl
-          }
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "홈", item: "https://barun-therapy.netlify.app" },
+          { "@type": "ListItem", position: 2, name: regionFullName, item: `https://barun-therapy.netlify.app/${resolved.region}` },
+          { "@type": "ListItem", position: 3, name: `${districtName} 마사지`, item: `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(resolved.district)}` },
+          { "@type": "ListItem", position: 4, name: `${displayLocation} 마사지`, item: canonicalUrl }
         ]
       },
-      // 2. 동 단위 세부 로컬 비즈니스 스키마
       {
         "@type": "HealthAndBeautyBusiness",
         "@id": `${canonicalUrl}#business`,
-        "name": `${displayLocation} 출장 신뢰케어 마사지 - 바른테라피`,
-        "description": pattern.desc(dongName),
-        "url": canonicalUrl,
-        "telephone": "0507-1280-3303",
-        "image": "https://barun-therapy.netlify.app/shop1.jpg",
-        "priceRange": "60,000원~",
-        "currenciesAccepted": "KRW",
-        "paymentAccepted": "Cash, Credit Card (100% 현장 후불제)",
-        "openingHours": "Mo-Su 00:00-24:00",
-        "areaServed": {
-          "@type": "AdministrativeArea",
-          "name": `${districtName} ${dongName}`
-        },
-        "address": {
+        name: `${displayLocation} 출장 신뢰케어 마사지 - 바른테라피`,
+        description: pattern.desc(dongName || districtName),
+        url: canonicalUrl,
+        telephone: "0507-1280-3303",
+        image: "https://barun-therapy.netlify.app/shop1.jpg",
+        priceRange: "60,000원~",
+        currenciesAccepted: "KRW",
+        paymentAccepted: "Cash, Credit Card (100% 현장 후불제)",
+        openingHours: "Mo-Su 00:00-24:00",
+        address: {
           "@type": "PostalAddress",
-          "addressLocality": `${districtName} ${dongName}`,
-          "addressRegion": regionFullName,
-          "addressCountry": "KR"
+          addressLocality: displayLocation,
+          addressRegion: regionFullName,
+          addressCountry: "KR"
         }
-      },
-      // 3. 이용 절차 HowTo 스키마
-      {
-        "@type": "HowTo",
-        "@id": `${canonicalUrl}#howto`,
-        "name": `${dongName} 출장 안심 예약 4단계 절차`,
-        "step": [
-          {
-            "@type": "HowToStep",
-            "position": 1,
-            "name": "샵 확인",
-            "text": `${dongName} 추천 제휴 샵 목록 및 정찰제 요금을 확인합니다.`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 2,
-            "name": "프로그램 선택",
-            "text": "타이, 아로마, 스웨디시 중 원하는 코스를 결정합니다."
-          },
-          {
-            "@type": "HowToStep",
-            "position": 3,
-            "name": "전화 상담",
-            "text": "0507 직통 안심번호로 샵 매니저와 직접 시간 및 장소를 조율합니다."
-          },
-          {
-            "@type": "HowToStep",
-            "position": 4,
-            "name": "안심 후불 힐링",
-            "text": "선입금 없는 원칙에 따라 관리사 도착 후 직접 확인하고 결제합니다."
-          }
-        ]
-      },
-      // 4. 검색창 아코디언 노출용 FAQPage 스키마
-      {
-        "@type": "FAQPage",
-        "@id": `${canonicalUrl}#faq`,
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": `${dongName} 당일 예약도 가능한가요?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": `네, ${dongName} 대다수 제휴 샵에서 당일 예약이 가능하며, 원활한 일정 조율을 위해 사전 연락을 권장합니다.`
-            }
-          },
-          {
-            "@type": "Question",
-            "name": `${dongName} 출장마사지 정찰제 요금인가요?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "바른테라피에 등록된 매장들은 선입금 사기 없는 100% 현장 후불제 및 투명한 정찰 요금을 준수합니다."
-            }
-          }
-        ]
       }
     ]
   };
 
   return (
     <div className="bg-[#070709] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
-      {/* 고도화 구조화 데이터 주입 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 네이버 Yeti 크롤러 수집용 SSR 시맨틱 블록 */}
-      <div className="sr-only" aria-hidden="true">
-        <h1>{displayLocation} {pattern.title}</h1>
-        <p>{pattern.desc(dongName)}</p>
-      </div>
-
-      {/* 상단 네비게이션 헤더 */}
       <header className="sticky top-0 z-40 bg-[#070709]/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-4xl mx-auto h-16 px-4 flex items-center justify-between">
           <Link href="/" className="font-black text-lg text-white flex items-center gap-1.5">
@@ -330,7 +282,7 @@ export default async function Page({ params }: PageProps) {
           </Link>
           <div className="flex items-center gap-2">
             <Link
-              href={`/${resolved.region}/${encodeURIComponent(districtName)}`}
+              href={`/${resolved.region}/${encodeURIComponent(resolved.district)}`}
               className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-colors"
             >
               ← {districtName} 전체보기
@@ -346,17 +298,16 @@ export default async function Page({ params }: PageProps) {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-12">
-        {/* 상단 동별 대표 배너 */}
         <section className="relative rounded-3xl overflow-hidden border border-amber-500/30 shadow-[0_0_40px_rgba(245,158,11,0.12)] bg-[#141418]">
           <div className="p-6 md:p-10 space-y-2">
             <span className="text-amber-400 text-xs font-black tracking-widest uppercase mb-1 block">
-              {regionFullName.toUpperCase()} · {districtName.toUpperCase()} · {dongName.toUpperCase()}
+              {regionFullName} · {districtName} {dongName ? `· ${dongName}` : ""}
             </span>
             <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-md">
               {displayLocation} {pattern.title}
             </h1>
             <p className="text-xs md:text-sm text-gray-300 mt-2 max-w-xl leading-relaxed">
-              {pattern.desc(dongName)}
+              {pattern.desc(dongName || districtName)}
             </p>
           </div>
         </section>
@@ -365,11 +316,11 @@ export default async function Page({ params }: PageProps) {
         <DongDetailClient
           region={resolved.region}
           districtName={districtName}
-          dongName={dongName}
+          dongName={dongName || districtName}
           regionFullName={regionFullName}
         />
 
-        {/* 동별 맞춤형 칼럼 섹션 */}
+        {/* 정보성 칼럼 섹션 */}
         <section className="bg-[#0e0e12] p-6 sm:p-10 rounded-3xl border border-white/10 space-y-8 text-gray-300 leading-relaxed text-xs sm:text-sm">
           <div className="border-b border-white/10 pb-4">
             <span className="text-amber-400 font-extrabold text-xs tracking-widest block uppercase mb-1">
@@ -420,7 +371,7 @@ export default async function Page({ params }: PageProps) {
           </div>
 
           <div className="pt-4 border-t border-white/5 text-[11px] text-gray-500">
-            * 본 콘텐츠는 {dongName} 출장마사지 이용 고객 여러분의 건강한 라이프스타일과 안전한 힐링 테라피 정보 제공을 목적으로 작성되었습니다.
+            * 본 콘텐츠는 {displayLocation} 출장마사지 이용 고객 여러분의 건강한 라이프스타일과 안전한 힐링 테라피 정보 제공을 목적으로 작성되었습니다.
           </div>
         </section>
 
@@ -428,13 +379,13 @@ export default async function Page({ params }: PageProps) {
         <section className="bg-[#0f0f13] p-6 md:p-8 rounded-3xl border border-amber-500/20 space-y-6">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">SERVICE PROCESS</span>
-            <h2 className="text-xl font-black text-white mt-1">{dongName} 안심 예약 4단계</h2>
+            <h2 className="text-xl font-black text-white mt-1">{displayLocation} 안심 예약 4단계</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 text-center">
               <span className="text-xs text-amber-400 font-bold">STEP 1</span>
               <h3 className="font-bold text-white mt-1">샵 확인</h3>
-              <p className="text-xs text-gray-400 mt-1">{dongName} 추천 제휴점 확인</p>
+              <p className="text-xs text-gray-400 mt-1">{displayLocation} 추천 제휴점 확인</p>
             </div>
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 text-center">
               <span className="text-xs text-amber-400 font-bold">STEP 2</span>
@@ -454,16 +405,16 @@ export default async function Page({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 동 단위 FAQ */}
+        {/* FAQ */}
         <section className="space-y-4">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">FAQ</span>
-            <h2 className="text-xl font-black text-white mt-1">{dongName} 자주 묻는 질문</h2>
+            <h2 className="text-xl font-black text-white mt-1">{displayLocation} 자주 묻는 질문</h2>
           </div>
           <div className="space-y-3">
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 space-y-1.5">
               <div className="font-bold text-sm text-gray-200 flex items-center gap-2">
-                <span className="text-amber-400">Q.</span> {dongName} 당일 예약도 가능한가요?
+                <span className="text-amber-400">Q.</span> {displayLocation} 당일 예약도 가능한가요?
               </div>
               <p className="text-xs text-gray-400 pl-6 leading-relaxed">
                 <span className="text-amber-400 font-bold">A.</span> 네, 대다수 제휴 샵에서 당일 예약이 가능하며, 원활한 일정 조율을 위해 1~2시간 전 사전 연락을 권장합니다.
@@ -471,7 +422,7 @@ export default async function Page({ params }: PageProps) {
             </div>
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 space-y-1.5">
               <div className="font-bold text-sm text-gray-200 flex items-center gap-2">
-                <span className="text-amber-400">Q.</span> {dongName} 출장마사지 정찰제 요금인가요?
+                <span className="text-amber-400">Q.</span> {displayLocation} 출장마사지 정찰제 요금인가요?
               </div>
               <p className="text-xs text-gray-400 pl-6 leading-relaxed">
                 <span className="text-amber-400 font-bold">A.</span> 바른테라피에 등록된 매장들은 선입금 사기 없는 투명한 정찰제 요금을 준수합니다.
