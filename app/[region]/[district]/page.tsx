@@ -29,9 +29,9 @@ function safeDecode(str: string): string {
 
 function getRegionFullName(region: string): string {
   switch (region?.toLowerCase()) {
-    case "seoul": return "서울특별시";
-    case "gyeonggi": return "경기도";
-    case "incheon": return "인천광역시";
+    case "seoul": return "서울";
+    case "gyeonggi": return "경기";
+    case "incheon": return "인천";
     default: return region || "";
   }
 }
@@ -46,21 +46,21 @@ const DISTRICT_DONGS_MAP: Record<string, string[]> = {
 };
 
 const SEO_PATTERNS = [
-  { title: "출장 웰니스 마사지 & 프리미엄 케어", desc: (r: string) => `${r}출장마사지 안심 가이드. 나만의 편안한 공간에서 경험하는 1:1 맞춤 바디 테라피 코스와 정찰제 요금을 케어존마사지에서 확인하세요.` },
-  { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (r: string) => `${r}출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램으로 지친 피로를 풀어드립니다.` },
-  { title: "출장 아로마 마사지 오일 테라피 안내", desc: (r: string) => `${r}출장마사지 힐링 케어. 천연 에센셜 오일로 누적된 일상 스트레스를 부드럽게 비워내는 솔루션입니다.` },
-  { title: "출장 타이 마사지 정통 바디 스트레칭", desc: (r: string) => `${r}출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절로 굳은 몸을 개운하게 풀어드립니다.` },
-  { title: "출장 릴렉스 마사지 집중 피로 회복", desc: (r: string) => `${r}출장마사지 큐레이션. 집이나 편안한 숙소에서 언제든 프라이빗하게 누리는 맞춤형 힐링 플랫폼입니다.` },
-  { title: "출장 딥티슈 마사지 속근육 집중 케어", desc: (r: string) => `${r}출장마사지 프로그램. 만성적인 목 어깨 결림과 등, 허리의 뭉친 피로를 집중적으로 완화해 드립니다.` },
-  { title: "출장 림프 순환 마사지 바디 솔루션", desc: (r: string) => `${r}출장마사지 정찰제 안내. 정체된 신체 림프 순환을 돕고 붓기 관리에 집중한 편안한 웰니스 케어입니다.` },
-  { title: "출장 감성 테라피 마사지 제휴 안내", desc: (r: string) => `${r}출장마사지 실시간 연결. 편안한 휴식을 제공하는 검증된 파트너 샵 정보를 한눈에 비교해 보세요.` },
-  { title: "출장 밸런스 힐링 마사지 가이드", desc: (r: string) => `${r}출장마사지 추천. 균형 잡힌 바디 컨디션과 활력 회복을 돕는 1:1 방문 맞춤 테라피를 만나보세요.` },
-  { title: "출장 프리미엄 바디 마사지 힐링 안내", desc: (r: string) => `${r}출장마사지 VIP 안내. 고급 천연 오일과 세심한 케어가 어우러진 최고급 릴렉싱 프로그램을 안내합니다.` },
-  { title: "출장 건식 스트레칭 마사지 포인트 케어", desc: (r: string) => `${r}출장마사지 코스 비교. 끈적임 없이 산뜻하게 굳은 근육의 긴장을 해소하는 수기 스트레칭 케어입니다.` },
-  { title: "출장 에스테틱 힐링 마사지 바디 웰빙", desc: (r: string) => `${r}출장마사지 안내. 피부 보습과 뭉친 피로 회복을 함께 챙기는 복합 바디 웰니스 트리트먼트를 경험하세요.` },
-  { title: "출장 로열 바디케어 마사지 1:1 안내", desc: (r: string) => `${r}출장마사지 매칭 플랫폼. 독립된 프라이빗 공간에서 온전한 휴식을 누리는 스마트 힐링 가이드라인을 제공합니다.` },
-  { title: "출장 소프트 아로마 마사지 포근한 이완", desc: (r: string) => `${r}출장마사지 가이드. 자극 없는 편안한 손길로 일상의 피로와 스트레스를 부드럽게 녹여드립니다.` },
-  { title: "출장 호텔식 럭셔리 마사지 프라이빗 케어", desc: (r: string) => `${r}출장마사지 웰니스 솔루션. 정갈한 서비스와 수준 높은 테라피 프로그램을 투명한 정찰제로 이용하세요.` }
+  { title: "출장 신뢰케어 마사지 & 프리미엄 케어", desc: (r: string) => `${r} 출장마사지 안심 가이드. 나만의 편안한 공간에서 경험하는 1:1 맞춤 바디 테라피 코스와 100% 현장후불 정찰제 요금을 바른테라피에서 확인하세요.` },
+  { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (r: string) => `${r} 출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램으로 지친 피로를 풀어드립니다.` },
+  { title: "출장 아로마 마사지 오일 테라피 안내", desc: (r: string) => `${r} 출장마사지 힐링 케어. 천연 에센셜 오일로 누적된 일상 스트레스를 부드럽게 비워내는 솔루션입니다.` },
+  { title: "출장 타이 마사지 정통 바디 스트레칭", desc: (r: string) => `${r} 출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절로 굳은 몸을 개운하게 풀어드립니다.` },
+  { title: "출장 릴렉스 마사지 집중 피로 회복", desc: (r: string) => `${r} 출장마사지 큐레이션. 집이나 편안한 숙소에서 언제든 프라이빗하게 누리는 맞춤형 힐링 플랫폼입니다.` },
+  { title: "출장 딥티슈 마사지 속근육 집중 케어", desc: (r: string) => `${r} 출장마사지 프로그램. 만성적인 목 어깨 결림과 등, 허리의 뭉친 피로를 집중적으로 완화해 드립니다.` },
+  { title: "출장 림프 순환 마사지 바디 솔루션", desc: (r: string) => `${r} 출장마사지 정찰제 안내. 정체된 신체 림프 순환을 돕고 붓기 관리에 집중한 편안한 웰니스 케어입니다.` },
+  { title: "출장 감성 테라피 마사지 제휴 안내", desc: (r: string) => `${r} 출장마사지 실시간 연결. 편안한 휴식을 제공하는 검증된 파트너 샵 정보를 한눈에 비교해 보세요.` },
+  { title: "출장 밸런스 힐링 마사지 가이드", desc: (r: string) => `${r} 출장마사지 추천. 균형 잡힌 바디 컨디션과 활력 회복을 돕는 1:1 방문 맞춤 테라피를 만나보세요.` },
+  { title: "출장 프리미엄 바디 마사지 힐링 안내", desc: (r: string) => `${r} 출장마사지 VIP 안내. 고급 천연 오일과 세심한 케어가 어우러진 최고급 릴렉싱 프로그램을 안내합니다.` },
+  { title: "출장 건식 스트레칭 마사지 포인트 케어", desc: (r: string) => `${r} 출장마사지 코스 비교. 끈적임 없이 산뜻하게 굳은 근육의 긴장을 해소하는 수기 스트레칭 케어입니다.` },
+  { title: "출장 에스테틱 힐링 마사지 바디 웰빙", desc: (r: string) => `${r} 출장마사지 안내. 피부 보습과 뭉친 피로 회복을 함께 챙기는 복합 바디 웰니스 트리트먼트를 경험하세요.` },
+  { title: "출장 로열 바디케어 마사지 1:1 안내", desc: (r: string) => `${r} 출장마사지 매칭 플랫폼. 독립된 프라이빗 공간에서 온전한 휴식을 누리는 스마트 힐링 가이드라인을 제공합니다.` },
+  { title: "출장 소프트 아로마 마사지 포근한 이완", desc: (r: string) => `${r} 출장마사지 가이드. 자극 없는 편안한 손길로 일상의 피로와 스트레스를 부드럽게 녹여드립니다.` },
+  { title: "출장 호텔식 럭셔리 마사지 프라이빗 케어", desc: (r: string) => `${r} 출장마사지 웰니스 솔루션. 정갈한 서비스와 수준 높은 테라피 프로그램을 투명한 100% 현장후불제로 이용하세요.` }
 ];
 
 function getDynamicDistrictInsight(districtName: string, seed: number) {
@@ -84,7 +84,7 @@ function getDynamicDistrictInsight(districtName: string, seed: number) {
       ],
       sec4Title: "4. 안전하고 투명한 웰니스 이용 수칙",
       sec4Text: [
-        `건전하고 투명한 이용 환경을 위해 ${districtName} 고객님께서는 다음 사항을 사전에 확인하시는 것이 좋습니다. 신뢰할 수 있는 공식 등록 파트너는 예약 명목의 불법 선입금을 일절 요구하지 않으며 정찰제 요금 기준을 엄격히 준수합니다.`,
+        `건전하고 투명한 이용 환경을 위해 ${districtName} 고객님께서는 다음 사항을 사전에 확인하시는 것이 좋습니다. 신뢰할 수 있는 공식 등록 파트너는 예약 명목의 불법 선입금을 일절 요구하지 않으며 100% 현장 후불제 기준을 엄격히 준수합니다.`,
         `또한 최근 디스크 시술을 받았거나 임신, 급성 염증 질환이 있는 경우에는 관리 시작 전 담당 힐러에게 컨디션을 명확히 전달하여 안전한 맞춤 압 조절을 진행하시길 권장합니다.`
       ]
     },
@@ -108,7 +108,7 @@ function getDynamicDistrictInsight(districtName: string, seed: number) {
       sec4Title: "4. 올바른 테라피 이용 및 사후 관리 팁",
       sec4Text: [
         `관리를 마친 후에는 체내 노폐물 배출이 활발해지므로 미온수를 충분히 섭취해 주는 것이 바람직합니다. 관리 당일에는 무리한 고강도 운동이나 과도한 음주를 삼가고 따뜻한 휴식을 취해야 근육의 미세 이완 효과가 오래 보존됩니다.`,
-        `${districtName} 케어존마사지는 고객 여러분께서 믿고 선택하실 수 있도록 위생 수칙과 에티켓을 준수하는 검증된 매장 정보만을 엄선하여 실시간 제공합니다.`
+        `${districtName} 바른테라피는 고객 여러분께서 믿고 선택하실 수 있도록 위생 수칙과 100% 현장후불 원칙을 준수하는 검증된 매장 정보만을 엄선하여 실시간 제공합니다.`
       ]
     },
     {
@@ -130,7 +130,7 @@ function getDynamicDistrictInsight(districtName: string, seed: number) {
       ],
       sec4Title: "4. 투명한 가격 정책과 매너 있는 웰니스 문화",
       sec4Text: [
-        `케어존마사지는 사전 공시된 정찰제 요금제 원칙을 엄격하게 적용하여 부당한 추가 요금 요구를 사전에 방지합니다. 누구나 투명하고 명확한 기준 아래에서 안심하고 코스를 선택하실 수 있습니다.`,
+        `바른테라피는 선입금 없는 100% 현장 후불제 원칙을 엄격하게 적용하여 부당한 추가 요금 요구나 예약 사기를 사전에 방지합니다. 누구나 투명하고 명확한 기준 아래에서 안심하고 코스를 선택하실 수 있습니다.`,
         `철저한 소독과 위생 어메니티를 갖춘 전문 관리사와의 신뢰 관계를 통해 ${districtName} 전역 어디서든 수준 높은 휴식의 가치를 누려보시기 바랍니다.`
       ]
     }
@@ -146,16 +146,15 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const { region, district } = resolvedParams;
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
   const districtName = safeDecode(district);
-  const regionFullName = getRegionFullName(region);
 
-  const displayLocation = dongName ? `${districtName}${dongName}` : districtName;
+  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
-  const finalTitle = `${displayLocation}${pattern.title} | 케어존마사지`;
+  const finalTitle = `${displayLocation} ${pattern.title} | 바른테라피`;
   const finalDescription = pattern.desc(districtName);
 
-  const canonicalUrl = `https://carezone-massage.netlify.app/${region}/${encodeURIComponent(districtName)}${
+  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(districtName)}${
     dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
   }`;
 
@@ -164,27 +163,28 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     description: finalDescription,
     alternates: { canonical: canonicalUrl },
     keywords: [
-      `${districtName}출장마사지`,
+      `${districtName}출장 신뢰 마사지`,
       `${districtName} 마사지`,
       `${districtName} 스웨디시`,
       `${displayLocation} 출장 웰니스 마사지`,
       `${displayLocation} 출장 타이 마사지`,
-      "케어존마사지"
+      "서울 출장 신뢰케어 마사지",
+      "바른테라피"
     ],
     robots: { index: true, follow: true },
     openGraph: {
       title: finalTitle,
       description: finalDescription,
       url: canonicalUrl,
-      siteName: "케어존마사지",
+      siteName: "바른테라피",
       locale: "ko_KR",
       type: "website",
       images: [
         {
-          url: "https://carezone-massage.netlify.app/images/logo.png",
+          url: "https://barun-therapy.netlify.app/shop1.jpg",
           width: 1200,
           height: 630,
-          alt: `${districtName}출장마사지 케어존마사지`,
+          alt: `${districtName}출장마사지 바른테라피`,
         },
       ],
     },
@@ -200,7 +200,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
   const districtName = safeDecode(district);
   const regionFullName = getRegionFullName(region);
 
-  const displayLocation = dongName ? `${districtName}${dongName}` : districtName;
+  const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
@@ -212,25 +212,124 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
     `${districtName} 중앙동`,
   ];
 
+  const currentUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(districtName)}${
+    dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
+  }`;
+
+  // 🌟 케어맵 상위 호환 통합 @graph JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: `${districtName}출장마사지 제휴 안내 - 케어존마사지`,
-    description: pattern.desc(districtName),
-    url: `https://carezone-massage.netlify.app/${region}/${encodeURIComponent(districtName)}`,
-    telephone: "0507-1280-3344",
-    image: "https://carezone-massage.netlify.app/images/logo.png",
-    priceRange: "KRW",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: districtName,
-      addressRegion: regionFullName,
-      addressCountry: "KR",
-    },
+    "@graph": [
+      // 1. 빵가루 탐색 경로 스키마 (검색창 상단 계층 노출: 홈 > 서울/경기/인천 > 구)
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${currentUrl}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "홈",
+            "item": "https://barun-therapy.netlify.app"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": regionFullName,
+            "item": `https://barun-therapy.netlify.app/${region}`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": `${districtName} 마사지`,
+            "item": currentUrl
+          }
+        ]
+      },
+      // 2. 지역 비즈니스 정밀 스키마 (영업시간, 100% 현장후불, 결제수단 포함)
+      {
+        "@type": "HealthAndBeautyBusiness",
+        "@id": `${currentUrl}#business`,
+        "name": `${displayLocation} 출장 신뢰케어 마사지 - 바른테라피`,
+        "description": pattern.desc(districtName),
+        "url": currentUrl,
+        "telephone": "0507-1280-3303",
+        "image": "https://barun-therapy.netlify.app/shop1.jpg",
+        "priceRange": "60,000원~",
+        "currenciesAccepted": "KRW",
+        "paymentAccepted": "Cash, Credit Card (100% 현장 후불제)",
+        "openingHours": "Mo-Su 00:00-24:00",
+        "areaServed": {
+          "@type": "AdministrativeArea",
+          "name": displayLocation
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": districtName,
+          "addressRegion": regionFullName,
+          "addressCountry": "KR"
+        }
+      },
+      // 3. 이용 방법 스키마 (HowTo)
+      {
+        "@type": "HowTo",
+        "@id": `${currentUrl}#howto`,
+        "name": `${displayLocation} 출장 안심 케어 이용 절차`,
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "지역 코스 확인",
+            "text": `${districtName} 추천 제휴 샵 목록과 코스별 정찰제 요금을 확인합니다.`
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "직통 안심 전화 상담",
+            "text": "0507 안심번호로 샵과 직접 통화하여 방문 희망 시간과 위치를 조율합니다."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "신속 방문 케어",
+            "text": "약속된 시간 내 전문 테라피스트가 방문하여 프라이빗 1:1 맞춤 관리를 진행합니다."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "100% 현장 후불 결제",
+            "text": "선입금 없는 안심 원칙에 따라 관리사 도착 후 계신 자리에서 직접 결제합니다."
+          }
+        ]
+      },
+      // 4. 자주 묻는 질문 스키마 (FAQPage - 검색창 아코디언 노출)
+      {
+        "@type": "FAQPage",
+        "@id": `${currentUrl}#faq`,
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": `${districtName} 출장마사지 예약은 어떻게 하나요?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "리스트에서 원하시는 샵 카드의 전화연결 버튼을 누르시면 해당 업체 매니저와 직접 프로그램 및 시간을 조율하실 수 있습니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "바른테라피 플랫폼 이용 시 별도 수수료나 예약금이 있나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "바른테라피는 선입금 없는 100% 현장후불 안내 플랫폼으로 이용자에게 어떠한 중개 수수료나 예약금도 요구하지 않습니다."
+            }
+          }
+        ]
+      }
+    ]
   };
 
   return (
     <div className="bg-[#070709] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
+      {/* 최적화된 통합 구조화 데이터 주입 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -245,7 +344,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
         <div className="max-w-4xl mx-auto h-16 px-4 flex items-center justify-between">
           <Link href="/" className="font-black text-lg text-white flex items-center gap-1.5">
             <span className="w-2.5 h-5 bg-amber-400 rounded-full inline-block"></span>
-            케어존마사지
+            바른테라피
           </Link>
           <div className="flex items-center gap-2">
             <Link
@@ -255,10 +354,10 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
               전체 지역
             </Link>
             <a
-              href="tel:0507-1280-3344"
+              href="tel:0507-1280-3303"
               className="px-3.5 py-1.5 rounded-full bg-amber-400 text-black font-black text-xs hover:scale-105 transition-transform"
             >
-              📞 제휴 문의
+              📞 전화 상담
             </a>
           </div>
         </div>
@@ -292,14 +391,14 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
             {dongsList.map((dong) => (
               <Link
                 key={dong}
-                href={`/${region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dong)}`}
+                href={`/${region}/${encodeURIComponent(districtName)}?dong=${encodeURIComponent(dong)}`}
                 className="p-3 rounded-xl bg-[#141418] border border-white/5 hover:border-amber-400/50 hover:bg-amber-400/5 transition-all text-center group"
               >
                 <span className="block font-bold text-xs sm:text-sm text-gray-200 group-hover:text-amber-400 transition-colors">
                   {dong}
                 </span>
                 <span className="text-[10px] text-gray-400 group-hover:text-gray-300 mt-0.5 block">
-                  {dong}출장마사지 →
+                  {dong} 출장마사지 →
                 </span>
               </Link>
             ))}
@@ -386,7 +485,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 text-center">
               <span className="text-xs text-amber-400 font-bold">STEP 4</span>
               <h3 className="font-bold text-white mt-1">맞춤 힐링</h3>
-              <p className="text-xs text-gray-400 mt-1">정찰제 요금으로 편안한 관리를 경험합니다.</p>
+              <p className="text-xs text-gray-400 mt-1">100% 현장후불 정찰제 요금으로 편안한 관리를 경험합니다.</p>
             </div>
           </div>
         </section>
@@ -399,7 +498,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
           <div className="space-y-3">
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 space-y-1.5">
               <div className="font-bold text-sm text-gray-200 flex items-center gap-2">
-                <span className="text-amber-400">Q.</span> {districtName}출장마사지 예약은 어떻게 하나요?
+                <span className="text-amber-400">Q.</span> {districtName} 출장마사지 예약은 어떻게 하나요?
               </div>
               <p className="text-xs text-gray-400 pl-6 leading-relaxed">
                 <span className="text-amber-400 font-bold">A.</span> 리스트에서 원하시는 샵 카드의 전화연결 버튼을 누르시면 해당 업체 매니저와 직접 프로그램 및 시간을 조율하실 수 있습니다.
@@ -407,10 +506,10 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
             </div>
             <div className="bg-black/60 p-4 rounded-2xl border border-white/5 space-y-1.5">
               <div className="font-bold text-sm text-gray-200 flex items-center gap-2">
-                <span className="text-amber-400">Q.</span> 케어존마사지 플랫폼 이용 시 별도 수수료가 있나요?
+                <span className="text-amber-400">Q.</span> 바른테라피 플랫폼 이용 시 별도 수수료가 있나요?
               </div>
               <p className="text-xs text-gray-400 pl-6 leading-relaxed">
-                <span className="text-amber-400 font-bold">A.</span> 케어존마사지는 순수 정보 안내 플랫폼으로 이용자에게 어떠한 중개 수수료도 부과하지 않습니다.
+                <span className="text-amber-400 font-bold">A.</span> 바른테라피는 선입금 없는 100% 현장후불 안내 플랫폼으로 이용자에게 어떠한 중개 수수료나 예약금도 요구하지 않습니다.
               </p>
             </div>
           </div>
@@ -421,14 +520,14 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
         <div className="max-w-4xl mx-auto px-4 space-y-4">
           <div>
             <a 
-              href="tel:0507-1280-3344" 
+              href="tel:0507-1280-3303" 
               className="inline-flex items-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold px-4 py-2 rounded-xl border border-amber-500/30 hover:border-amber-400 transition-all text-xs shadow-md"
             >
-              <span>🤝</span> 케어존마사지 제휴 문의 (0507-1280-3344)
+              <span>🤝</span> 바른테라피 제휴 문의
             </a>
           </div>
-          <p className="text-gray-400 font-medium">케어존마사지는 쾌적하고 건전한 프리미엄 바디 웰니스 제휴 정보를 제공합니다.</p>
-          <p className="text-[11px] text-gray-600">COPYRIGHT &copy; CAREZONE MASSAGE ALL RIGHTS RESERVED.</p>
+          <p className="text-gray-400 font-medium">바른테라피는 쾌적하고 건전한 프리미엄 바디 웰니스 제휴 정보를 제공합니다.</p>
+          <p className="text-[11px] text-gray-600">COPYRIGHT &copy; BARUN THERAPY ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
     </div>

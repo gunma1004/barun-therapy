@@ -1,8 +1,13 @@
 import { MetadataRoute } from 'next';
 
-const regionData: Record<string, { name: string; districts: Record<string, { name: string; dongs: string[] }> }> = {
+const BASE_URL = 'https://barun-therapy.netlify.app';
+
+const regionData: Record<
+  string,
+  { name: string; districts: Record<string, { name: string; dongs: string[] }> }
+> = {
   seoul: {
-    name: "서울특별시",
+    name: "서울",
     districts: {
       jongno: { name: "종로구", dongs: ["청운동", "효자동", "사직동", "삼청동", "부암동", "평창동", "무악동", "교남동", "가회동", "종로1.2.3.4가동", "종로5.6가동", "이화동", "혜화동", "창신1동", "창신2동", "창신3동", "숭인1동", "숭인2동"] },
       jung: { name: "중구", dongs: ["소공동", "회현동", "명동", "필동", "장충동", "광희동", "을지로동", "신당동", "다산동", "약수동", "청구동", "동화동", "황학동", "중림동"] },
@@ -32,7 +37,7 @@ const regionData: Record<string, { name: string; districts: Record<string, { nam
     }
   },
   gyeonggi: {
-    name: "경기도",
+    name: "경기",
     districts: {
       suwon_jangan: { name: "수원시 장안구", dongs: ["파장동", "정자1동", "정자2동", "정자3동", "영화동", "송죽동", "조원1동", "조원2동", "율천동"] },
       suwon_gwonseon: { name: "수원시 권선구", dongs: ["세류1동", "세류2동", "세류3동", "권선1동", "권선2동", "곡선동", "평동", "호매실동", "서둔동", "금곡동"] },
@@ -81,7 +86,7 @@ const regionData: Record<string, { name: string; districts: Record<string, { nam
     }
   },
   incheon: {
-    name: "인천광역시",
+    name: "인천",
     districts: {
       jemulpo: { name: "제물포구", dongs: ["신포동", "연안동", "신흥동", "도원동", "율목동", "동인천동", "개항동", "만석동", "화수동", "송현동", "송림동", "금창동"] },
       yeongjong: { name: "영종구", dongs: ["영종동", "영종1동", "영종2동", "운서동", "용유동", "중산동", "운남동", "운북동"] },
@@ -99,19 +104,19 @@ const regionData: Record<string, { name: string; districts: Record<string, { nam
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://carezone-massage.netlify.app';
+  const currentDate = new Date();
 
-  // 1. 메인 대표 홈 페이지
+  // 1. 메인 홈페이지
   const mainRoute: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      url: BASE_URL,
+      lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 1.0,
     },
   ];
 
-  // 2. 상단 카테고리 메인 페이지들
+  // 2. 상단 카테고리 메인 페이지 5종
   const categoryRoutes: MetadataRoute.Sitemap = [
     'services',
     'prices',
@@ -119,52 +124,57 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'places',
     'reviews',
   ].map((route) => ({
-    url: `${baseUrl}/${route}`,
-    lastModified: new Date(),
+    url: `${BASE_URL}/${route}`,
+    lastModified: currentDate,
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
-  // 3. 지역(구/시/군) 및 하위 동 단위 검색 페이지 라우트 생성
+  // 3. 지역(구/시/군) 및 하위 행정동 단위 검색 페이지 라우트
   const regionRoutes: MetadataRoute.Sitemap = [];
+
+  // 4. 개별 제휴 샵 상세 페이지 라우트 (/areas/.../shop/[id])
+  const shopRoutes: MetadataRoute.Sitemap = [];
+  const shopIds = [1, 2, 3, 4, 5];
 
   for (const [regionKey, regionVal] of Object.entries(regionData)) {
     for (const districtVal of Object.values(regionVal.districts)) {
       const districtName = districtVal.name;
 
-      // ① 구/시/군 단위 페이지 (예: /gyeonggi/고양시 덕양구)
+      // ① 구/시/군 단위 페이지 (예: /gyeonggi/수원시 장안구)
       regionRoutes.push({
-        url: `${baseUrl}/${regionKey}/${encodeURIComponent(districtName)}`,
-        lastModified: new Date(),
+        url: `${BASE_URL}/${regionKey}/${encodeURIComponent(districtName)}`,
+        lastModified: currentDate,
         changeFrequency: 'daily',
         priority: 0.9,
       });
 
-      // ② 하위 동 단위 페이지 (예: /gyeonggi/고양시 덕양구/원신동)
+      // ② 하위 동 단위 페이지 및 해당 동 제휴 샵 상세 라우트
       for (const dongName of districtVal.dongs) {
         regionRoutes.push({
-          url: `${baseUrl}/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`,
-          lastModified: new Date(),
+          url: `${BASE_URL}/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`,
+          lastModified: currentDate,
           changeFrequency: 'weekly',
           priority: 0.7,
         });
+
+        // ③ 제휴 샵 상세 페이지 색인 등록
+        for (const id of shopIds) {
+          shopRoutes.push({
+            url: `${BASE_URL}/areas/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/shop/${id}`,
+            lastModified: currentDate,
+            changeFrequency: 'weekly',
+            priority: 0.6,
+          });
+        }
       }
     }
   }
-
-  // ※ 만약 실제 상세 페이지(/shop/1 등) 라우트를 구현해 두셨다면 아래 주석을 풀어 사용하시면 됩니다.
-  /*
-  const shopRoutes: MetadataRoute.Sitemap = [1, 2, 3, 4, 5].map((id) => ({
-    url: `${baseUrl}/shop/${id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }));
-  */
 
   return [
     ...mainRoute,
     ...categoryRoutes,
     ...regionRoutes,
+    ...shopRoutes,
   ];
 }

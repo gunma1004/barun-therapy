@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "수도권 힐링 여행지 & 드라이브 코스 가이드 | 케어존마사지",
+  title: "수도권 힐링 여행지 & 드라이브 코스 가이드 | 바른테라피",
   description:
-    "서울, 경기, 인천 도심 근교 힐링 여행지와 야경 드라이브 코스 가이드. 맑은 공기와 자연 속에서 일상의 스트레스를 비워내는 추천 명소를 케어존마사지에서 확인하세요.",
+    "서울, 경기, 인천 도심 근교 힐링 여행지와 야경 드라이브 코스 가이드. 맑은 공기와 자연 속에서 일상의 스트레스를 비워내는 추천 명소를 바른테라피에서 확인하세요.",
   keywords: [
-    "케어존마사지",
+    "바른테라피",
     "수도권 힐링 여행",
     "서울 드라이브 코스",
     "경기 근교 나들이",
@@ -15,13 +15,13 @@ export const metadata: Metadata = {
     "야경 산책로"
   ],
   alternates: {
-    canonical: "https://carezone-massage.netlify.app/travel",
+    canonical: "https://barun-therapy.netlify.app/travel",
   },
   openGraph: {
-    title: "수도권 힐링 여행지 & 휴식 명소 가이드 | 케어존마사지",
+    title: "수도권 힐링 여행지 & 휴식 명소 가이드 | 바른테라피",
     description: "서울·경기·인천 추천 산책로, 드라이브 코스 및 도심 근교 웰니스 쉼터 안내.",
-    url: "https://carezone-massage.netlify.app/travel",
-    siteName: "케어존마사지",
+    url: "https://barun-therapy.netlify.app/travel",
+    siteName: "바른테라피",
     locale: "ko_KR",
     type: "website",
   },
@@ -38,28 +38,28 @@ interface TravelSpot {
 const travelSpots: TravelSpot[] = [
   {
     region: "서울 코스",
-    regionLink: "/seoul/서울특별시",
+    regionLink: "/",
     title: "남산 둘레길 & 한강 야경 드라이브",
     desc: "도심 속 탁 트인 전망대와 시원한 강바람을 맞으며 하루의 긴장을 부드럽게 비워낼 수 있는 야경 코스입니다.",
     tag: "#도심야경 #산책로 #기분전환",
   },
   {
     region: "경기 코스",
-    regionLink: "/gyeonggi/경기도",
+    regionLink: "/gyeonggi/",
     title: "가평 수목원 & 양평 두물머리 드라이브",
     desc: "울창한 숲길 산림욕과 잔잔한 강변 풍경을 바라보며 깊은 휴식을 누릴 수 있는 자연 친화적 코스입니다.",
     tag: "#자연속휴식 #산림욕 #물멍드라이브",
   },
   {
     region: "인천 코스",
-    regionLink: "/incheon/인천광역시",
+    regionLink: "/incheon/",
     title: "송도 센트럴파크 & 영종도 오션로드",
     desc: "이국적인 도심 수변 공원 산책과 서해 낙조를 감상하며 차분히 마음을 정리하기 좋은 해안 힐링 코스입니다.",
     tag: "#오션뷰 #일몰명소 #여유로운산책",
   },
   {
     region: "수도권 근교",
-    regionLink: "/gyeonggi/경기도",
+    regionLink: "/gyeonggi/",
     title: "파주 마장호수 출렁다리 & 숲길 산책",
     desc: "넓은 호수를 따라 조성된 수변 데크길을 천천히 걸으며 신선한 공기를 마실 수 있는 쾌적한 쉼터입니다.",
     tag: "#호수산책 #주말나들이 #힐링로드",
@@ -80,7 +80,7 @@ export default function TravelPage() {
 
   return (
     <div className="bg-[#070709] text-gray-100 min-h-screen py-10 px-4 font-sans selection:bg-amber-500 selection:text-black">
-      {/* 구조화 데이터 */}
+      {/* 검색엔진 구조화 데이터 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -145,10 +145,10 @@ export default function TravelPage() {
             href="/"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs px-5 py-3 rounded-2xl border border-amber-500/30 transition-all shadow-md"
           >
-            <span>🏠</span> 케어존마사지 메인으로
+            <span>🏠</span> 바른테라피 메인으로
           </Link>
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-extrabold text-xs px-6 py-3 rounded-2xl shadow-md transition-all active:scale-95"
           >
             📞 제휴 및 상담 문의

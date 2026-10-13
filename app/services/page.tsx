@@ -2,26 +2,27 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "프리미엄 웰니스 바디케어 프로그램 안내 | 케어존마사지",
+  title: "프리미엄 웰니스 바디케어 프로그램 안내 | 바른테라피",
   description:
-    "케어존마사지 맞춤형 바디 테라피 프로그램 안내. 타이 건식 릴렉스, 최고급 천연 아로마 오일 케어, 감성 스웨디시 등 체계적인 웰니스 서비스 코스를 확인하세요.",
+    "바른테라피 맞춤형 바디 테라피 프로그램 안내. 타이 건식 릴렉스, 최고급 천연 아로마 오일 케어, 감성 스웨디시 등 체계적인 웰니스 서비스 코스를 확인하세요.",
   keywords: [
-    "케어존마사지",
+    "바른테라피",
     "마사지프로그램",
     "타이마사지코스",
     "아로마오일케어",
     "스웨디시테라피",
     "바디릴렉싱",
     "수도권마사지안내",
+    "서울 출장 신뢰케어 마사지",
   ],
   alternates: {
-    canonical: "https://carezone-massage.netlify.app/services",
+    canonical: "https://barun-therapy.netlify.app/services",
   },
   openGraph: {
-    title: "프리미엄 웰니스 바디 테라피 코스 안내 | 케어존마사지",
+    title: "프리미엄 웰니스 바디 테라피 코스 안내 | 바른테라피",
     description: "개인 맞춤형 릴렉싱 케어와 안락한 프라이빗 바디 테라피 상세 가이드.",
-    url: "https://carezone-massage.netlify.app/services",
-    siteName: "케어존마사지",
+    url: "https://barun-therapy.netlify.app/services",
+    siteName: "바른테라피",
     locale: "ko_KR",
     type: "website",
   },
@@ -56,8 +57,8 @@ export default function ServicesPage() {
       description: prog.desc,
       provider: {
         "@type": "Organization",
-        name: "케어존마사지",
-        url: "https://carezone-massage.netlify.app",
+        name: "바른테라피",
+        url: "https://barun-therapy.netlify.app",
       },
     })),
   };
@@ -77,7 +78,7 @@ export default function ServicesPage() {
             PREMIUM CARE SERVICE
           </span>
           <h1 className="text-2xl md:text-3xl font-black text-white">
-            케어존마사지 코스별 프로그램 안내
+            바른테라피 코스별 프로그램 안내
           </h1>
           <p className="text-xs md:text-sm text-gray-400">
             고객님의 컨디션과 취향에 맞춘 최상의 프라이빗 힐링 솔루션
@@ -103,7 +104,7 @@ export default function ServicesPage() {
         {/* 안심 정찰제 안내 박스 */}
         <div className="bg-[#0e0e12] border border-white/10 p-6 rounded-3xl text-center space-y-2">
           <p className="text-xs md:text-sm text-gray-300 font-semibold">
-            ✨ 모든 프로그램은 검증된 정찰제 가이드라인에 따라 투명하게 진행됩니다.
+            ✨ 모든 프로그램은 100% 현장 후불제 및 검증된 정찰제 가이드라인에 따라 투명하게 진행됩니다.
           </p>
           <p className="text-[11px] text-gray-500">
             숙련된 전문 테라피스트의 정성 어린 1:1 맞춤형 케어로 일상의 활력을 되찾아보세요.
@@ -124,10 +125,10 @@ export default function ServicesPage() {
             href="/"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs px-5 py-3 rounded-2xl border border-amber-500/30 transition-all shadow-md"
           >
-            <span>🏠</span> 케어존마사지 메인으로
+            <span>🏠</span> 바른테라피 메인으로
           </Link>
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-extrabold text-xs px-6 py-3 rounded-2xl shadow-md transition-all active:scale-95"
           >
             📞 프로그램 맞춤 상담

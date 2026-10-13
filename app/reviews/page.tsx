@@ -2,11 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "실제 이용 고객 생생 이용후기 | 케어존마사지",
+  title: "실제 이용 고객 생생 이용후기 | 바른테라피",
   description:
-    "케어존마사지 서울·경기·인천 실제 이용 고객님들의 솔직한 이용후기 모음. 전문 테라피스트의 수준 높은 바디 테라피와 힐링 케어 만족도를 직접 확인하세요.",
+    "바른테라피 서울·경기·인천 실제 이용 고객님들의 솔직한 이용후기 모음. 선입금 없는 100% 현장 후불제 전문 테라피스트의 수준 높은 바디 테라피 만족도를 직접 확인하세요.",
   keywords: [
-    "케어존마사지후기",
+    "바른테라피",
+    "바른테라피후기",
+    "서울 출장 신뢰케어 마사지",
     "마사지이용후기",
     "스웨디시후기",
     "타이마사지후기",
@@ -14,14 +16,14 @@ export const metadata: Metadata = {
     "수도권마사지리뷰",
   ],
   alternates: {
-    canonical: "https://carezone-massage.netlify.app/reviews",
+    canonical: "https://barun-therapy.netlify.app/reviews",
   },
   openGraph: {
-    title: "실제 이용 고객 솔직 후기 모음 | 케어존마사지",
+    title: "실제 이용 고객 솔직 후기 모음 | 바른테라피",
     description:
       "수도권 실이용 고객들의 생생한 리뷰! 검증된 프리미엄 바디 웰니스 케어 만족도를 확인하세요.",
-    url: "https://carezone-massage.netlify.app/reviews",
-    siteName: "케어존마사지",
+    url: "https://barun-therapy.netlify.app/reviews",
+    siteName: "바른테라피",
     locale: "ko_KR",
     type: "website",
   },
@@ -51,7 +53,7 @@ const reviews: ReviewItem[] = [
     rate: "★★★★★ 5.0",
     course: "타이 건식 릴렉스",
     date: "최근 이용",
-    text: "안내받은 정찰제 코스 그대로 투명하게 진행되어 믿음이 갔습니다. 테라피스트 분의 친절한 매너와 숙련된 압 조절 기술도 인상 깊었습니다.",
+    text: "선입금 없는 100% 현장 후불제라 안심되었고, 안내받은 정찰제 코스 그대로 투명하게 진행되어 믿음이 갔습니다. 테라피스트 분의 친절한 매너도 인상 깊었습니다.",
   },
   {
     name: "인천 연수구 고객님",
@@ -67,7 +69,7 @@ const reviews: ReviewItem[] = [
     rate: "★★★★★ 5.0",
     course: "프라이빗 릴렉싱",
     date: "최근 이용",
-    text: "번거롭게 멀리 이동할 필요 없이 가까운 샵에서 여유롭게 케어받을 수 있어 만족스럽습니다. 약속 시간도 정확히 지켜주셨어요.",
+    text: "번거롭게 멀리 이동할 필요 없이 프라이빗한 공간에서 여유롭게 케어받을 수 있어 만족스럽습니다. 약속 시간도 정확히 지켜주셨어요.",
   },
   {
     name: "경기 성남 분당구 고객님",
@@ -75,7 +77,7 @@ const reviews: ReviewItem[] = [
     rate: "★★★★★ 5.0",
     course: "VIP 시그니처 바디케어",
     date: "최근 이용",
-    text: "공간 관리와 타월 위생 상태가 청결해서 안심하고 받았습니다. 세심한 1:1 맞춤 관리 덕분에 피로가 싹 가셨습니다.",
+    text: "위생 상태와 관리 용품이 청결해서 안심하고 받았습니다. 세심한 1:1 맞춤 관리 덕분에 피로가 싹 가셨습니다.",
   },
 ];
 
@@ -84,8 +86,8 @@ export default function ReviewsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: "케어존마사지 웰니스 테라피 서비스",
-    description: "서울, 경기, 인천 전지역 프리미엄 힐링 마사지 및 바디 테라피 제휴 안내",
+    name: "바른테라피 웰니스 테라피 서비스",
+    description: "서울, 경기, 인천 전지역 프리미엄 100% 현장후불 안심 마사지 및 바디 테라피 제휴 안내",
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "4.9",
@@ -126,7 +128,7 @@ export default function ReviewsPage() {
             실제 이용 고객 생생 이용후기
           </h1>
           <p className="text-xs md:text-sm text-gray-400">
-            케어존마사지 제휴 샵을 경험한 고객님들의 진솔하고 투명한 평가입니다.
+            바른테라피 제휴 샵을 경험한 고객님들의 진솔하고 투명한 평가입니다.
           </p>
         </div>
 
@@ -141,14 +143,14 @@ export default function ReviewsPage() {
           <div className="hidden sm:block w-px h-12 bg-white/10" />
           <div>
             <span className="text-xl md:text-2xl font-black text-white">
-              정찰제 가이드
+              100% 현장후불
             </span>
-            <p className="text-xs text-gray-400 mt-1">투명한 요금 체계</p>
+            <p className="text-xs text-gray-400 mt-1">선입금 없는 안심 원칙</p>
           </div>
           <div className="hidden sm:block w-px h-12 bg-white/10" />
           <div>
             <span className="text-xl md:text-2xl font-black text-white">
-              검증된 힐러
+              검증 제휴 샵
             </span>
             <p className="text-xs text-gray-400 mt-1">철저한 위생 및 매너</p>
           </div>
@@ -187,10 +189,10 @@ export default function ReviewsPage() {
             href="/"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs px-5 py-3 rounded-2xl border border-amber-500/30 transition-all shadow-md"
           >
-            <span>🏠</span> 케어존마사지 메인으로
+            <span>🏠</span> 바른테라피 메인으로
           </Link>
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-extrabold text-xs px-6 py-3 rounded-2xl shadow-md transition-all active:scale-95"
           >
             📞 빠른 코스 안내 받기

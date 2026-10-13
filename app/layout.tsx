@@ -1,71 +1,62 @@
-// app/layout.tsx
-import type { Metadata } from 'next';
-import './globals.css';
-
-export const metadata: Metadata = {
-  metadataBase: new URL('https://carezone-massage.netlify.app'),
-  title: {
-    default: '경기·인천·서울 출장 힐링케어 마사지 할인 예약 플랫폼|케어존 ',
-    template: '%s | 케어존마사지',
-  },
-  description:
-    '서울, 인천, 경기 출장마사지, 스웨디시, 타이, 아로마 힐링 케어정보 및 최저가 제휴할인 플랫폼 케어존마사지입니다.',
-  keywords: [
-    '케어존마사지',
-    '서울마사지',
-    '경기마사지',
-    '인천마사지',
-    '스웨디시',
-    '타이마사지',
-    '아로마마사지',
-    '마사지할인',
-  ],
-  authors: [{ name: '케어존마사지' }],
-  creator: '케어존마사지',
-  openGraph: {
-    type: 'website',
-    locale: 'ko_KR',
-    url: 'https://carezone-massage.netlify.app',
-    siteName: '케어존마사지',
-    title: '경기·인천·서울 출장 힐링케어 마사지 할인 예약 플랫폼|케어존',
-    description:
-      '서울, 인천, 경기 출장마사지, 스웨디시, 타이, 아로마 힐링 케어 정보 및 최저가 제휴 할인 정보 제공.',
-    images: [
-      {
-        url: '/og-image.png', // public/og-image.png (권장: 1200x630px)
-        width: 1200,
-        height: 630,
-        alt: '케어존마사지',
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
+// 바른테라피 지역 상세 페이지용 - 케어맵 상위 호환 통합 JSON-LD 예시
+const advancedJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    // 1. 빵가루 내비게이션
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://barun-therapy.netlify.app" },
+        { "@type": "ListItem", "position": 2, "name": regionFullName, "item": `https://barun-therapy.netlify.app/${region}` },
+        { "@type": "ListItem", "position": 3, "name": `${districtName} 출장마사지`, "item": canonicalUrl }
+      ]
     },
-  },
-  // 네이버 서치어드바이저 소유권 확인 태그 (발급받은 코드 입력)
-  verification: {
-    other: {
-      'naver-site-verification': '9992595a7b731f47f23a2ac97bd1c3c1f93cb664',
+    // 2. 비즈니스 엔티티 (영업시간, 가격, 결제방식 정밀 등록)
+    {
+      "@type": "HealthAndBeautyBusiness",
+      "@id": `${canonicalUrl}#business`,
+      "name": `${districtName} 출장 신뢰케어 마사지 - 바른테라피`,
+      "description": pattern.desc(districtName),
+      "url": canonicalUrl,
+      "telephone": "0507-1280-3303",
+      "image": "https://barun-therapy.netlify.app/shop1.jpg",
+      "openingHours": "Mo-Su 00:00-24:00",
+      "priceRange": "60,000원~",
+      "currenciesAccepted": "KRW",
+      "paymentAccepted": "Cash, Credit Card (100% 현장 후불)",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": districtName,
+        "addressRegion": regionFullName,
+        "addressCountry": "KR"
+      }
     },
-  },
-  alternates: {
-    canonical: 'https://carezone-massage.netlify.app',
-  },
+    // 3. 케어맵의 강점인 HowTo (이용 절차 스키마 추가)
+    {
+      "@type": "HowTo",
+      "name": `${districtName} 출장 안심 힐링 케어 이용 절차`,
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "지역 및 코스 선택", "text": "바른테라피에서 거주 지역의 제휴 샵 코스와 정찰제 요금을 확인합니다." },
+        { "@type": "HowToStep", "position": 2, "name": "직통 안심 전화 상담", "text": "0507 안심번호로 샵과 직접 통화하여 방문 희망 시간과 장소를 조율합니다." },
+        { "@type": "HowToStep", "position": 3, "name": "신속 방문 및 프라이빗 케어", "text": "평균 25~35분 내 약속 장소로 전문 관리사가 방문하여 1:1 맞춤 세션을 진행합니다." },
+        { "@type": "HowToStep", "position": 4, "name": "100% 현장 후불 결제", "text": "선입금 없이 관리사 도착 후 계신 자리에서 직접 확인하고 결제합니다." }
+      ]
+    },
+    // 4. FAQ 스키마 (검색창 아코디언 노출)
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": `${districtName} 출장마사지 예약 및 이용 방법은?`,
+          "acceptedAnswer": { "@type": "Answer", "text": "리스트의 직통 전화 버튼을 통해 샵 매니저와 직접 시간과 위치를 조율하실 수 있습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "선입금이나 예약금이 발생하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "바른테라피의 모든 제휴점은 100% 현장 후불 결제를 준수하며 예약금을 요구하지 않습니다." }
+        }
+      ]
+    }
+  ]
 };
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="ko">
-      <body>{children}</body>
-    </html>
-  );
-}

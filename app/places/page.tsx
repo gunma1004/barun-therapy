@@ -2,11 +2,12 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "수도권 미식 & 힐링 쉼터 가이드 | 케어존마사지",
+  title: "수도권 미식 & 힐링 쉼터 가이드 | 바른테라피",
   description:
-    "서울, 경기, 인천 주요 도심 내 엄선된 미식 명소와 안락한 휴식 공간 가이드. 하루의 피로를 풀고 여유를 더하는 웰니스 플레이스를 케어존마사지에서 확인하세요.",
+    "서울, 경기, 인천 주요 도심 내 엄선된 미식 명소와 안락한 휴식 공간 가이드. 하루의 피로를 풀고 여유를 더하는 웰니스 플레이스를 바른테라피에서 확인하세요.",
   keywords: [
-    "케어존마사지",
+    "바른테라피",
+    "서울 출장 신뢰케어 마사지",
     "수도권힐링플레이스",
     "서울휴식공간",
     "경기힐링카페",
@@ -15,13 +16,13 @@ export const metadata: Metadata = {
     "웰니스플레이스",
   ],
   alternates: {
-    canonical: "https://carezone-massage.netlify.app/places",
+    canonical: "https://barun-therapy.netlify.app/places",
   },
   openGraph: {
-    title: "수도권 힐링 플레이스 & 편안한 휴식 공간 가이드 | 케어존마사지",
+    title: "수도권 힐링 플레이스 & 편안한 휴식 공간 가이드 | 바른테라피",
     description: "서울·경기·인천 도심 속 쾌적한 쉼터와 프라이빗 미식 공간 정보 안내.",
-    url: "https://carezone-massage.netlify.app/places",
-    siteName: "케어존마사지",
+    url: "https://barun-therapy.netlify.app/places",
+    siteName: "바른테라피",
     locale: "ko_KR",
     type: "website",
   },
@@ -161,10 +162,10 @@ export default function PlacesPage() {
             href="/"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs px-5 py-3 rounded-2xl border border-amber-500/30 transition-all shadow-md"
           >
-            <span>🏠</span> 케어존마사지 메인으로
+            <span>🏠</span> 바른테라피 메인으로
           </Link>
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-extrabold text-xs px-6 py-3 rounded-2xl shadow-md transition-all active:scale-95"
           >
             📞 제휴 및 입점 문의

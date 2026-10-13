@@ -13,14 +13,14 @@ export default function NavigationHeader() {
         {/* 로고 영역 */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black text-lg shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
-            C
+            B
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-black tracking-wider bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              케어존마사지
+              바른테라피
             </span>
             <span className="text-[9px] text-gray-400 tracking-tighter hidden sm:block">
-              CAREZONE MASSAGE
+              BARUN THERAPY
             </span>
           </div>
         </Link>
@@ -76,19 +76,19 @@ export default function NavigationHeader() {
             {isRegionOpen && (
               <div className="absolute top-full left-0 w-36 bg-[#121215] border border-amber-500/30 rounded-2xl shadow-2xl py-2 space-y-1 text-xs z-50">
                 <Link
-                  href="/seoul/서울특별시"
+                  href="/"
                   className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
                 >
                   📍 서울 권역
                 </Link>
                 <Link
-                  href="/gyeonggi/경기도"
+                  href="/gyeonggi/"
                   className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
                 >
                   📍 경기 권역
                 </Link>
                 <Link
-                  href="/incheon/인천광역시"
+                  href="/incheon/"
                   className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
                 >
                   📍 인천 권역
@@ -109,7 +109,7 @@ export default function NavigationHeader() {
         {/* 우측 빠른 문의 CTA 및 모바일 햄버거 버튼 */}
         <div className="flex items-center gap-2">
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 hover:brightness-105"
           >
             📞 빠른 문의
@@ -148,7 +148,7 @@ export default function NavigationHeader() {
         </div>
       </div>
 
-      {/* 모바일 슬라이드/드롭 메뉴 (검색엔진 크롤링 지원) */}
+      {/* 모바일 슬라이드/드롭 메뉴 (네이버/구글 크롤러 링크 추적 호환) */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-white/10 mt-3 pt-3 space-y-2 text-xs font-bold text-gray-300">
           <Link
@@ -185,23 +185,23 @@ export default function NavigationHeader() {
             </span>
             <div className="flex gap-2 pt-1">
               <Link
-                href="/seoul/서울특별시"
+                href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300"
+                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
               >
                 서울
               </Link>
               <Link
-                href="/gyeonggi/경기도"
+                href="/gyeonggi/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300"
+                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
               >
                 경기
               </Link>
               <Link
-                href="/incheon/인천광역시"
+                href="/incheon/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300"
+                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
               >
                 인천
               </Link>

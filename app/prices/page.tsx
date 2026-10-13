@@ -2,27 +2,30 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "투명한 코스별 웰니스 테라피 요금 안내 | 케어존마사지",
+  title: "투명한 코스별 웰니스 테라피 요금 안내 | 바른테라피",
   description:
-    "케어존마사지 정찰제 기반 프로그램별 이용 요금 안내. 타이 건식 릴렉스, 아로마 케어, 감성 스웨디시 등 투명하고 정직한 테라피 코스 비용을 확인하세요.",
+    "바른테라피 100% 현장 후불제 및 정찰제 기반 프로그램별 이용 요금 안내. 타이 건식 릴렉스, 아로마 케어, 감성 스웨디시 등 투명하고 정직한 테라피 코스 비용을 확인하세요.",
   keywords: [
-    "케어존마사지가격",
+    "바른테라피",
+    "서울 출장 신뢰케어 마사지",
+    "바른테라피가격",
     "마사지가격",
     "스웨디시가격",
     "타이마사지가격",
     "아로마마사지가격",
     "마사지할인요금",
     "수도권정찰제마사지",
+    "출장마사지 후불제",
   ],
   alternates: {
-    canonical: "https://carezone-massage.netlify.app/prices",
+    canonical: "https://barun-therapy.netlify.app/prices",
   },
   openGraph: {
-    title: "투명한 코스별 웰니스 테라피 요금 가이드 | 케어존마사지",
+    title: "투명한 코스별 웰니스 테라피 요금 가이드 | 바른테라피",
     description:
-      "수도권 전지역 엄선된 제휴 네트워크! 투명하고 합리적인 힐링 바디 테라피 정찰 요금 안내.",
-    url: "https://carezone-massage.netlify.app/prices",
-    siteName: "케어존마사지",
+      "수도권 전지역 선입금 없는 안심 후불제 네트워크! 투명하고 합리적인 힐링 바디 테라피 정찰 요금 안내.",
+    url: "https://barun-therapy.netlify.app/prices",
+    siteName: "바른테라피",
     locale: "ko_KR",
     type: "website",
   },
@@ -60,8 +63,8 @@ const priceList: PriceItem[] = [
   },
   {
     title: "한국인 베테랑 VIP 시그니처 (60분)",
-    price: "140,000원부터",
-    priceNumber: 140000,
+    price: "100,000원부터",
+    priceNumber: 100000,
     desc: "숙련된 전문 테라피스트의 체형별 1:1 맞춤형 피로 해소 및 딥 릴렉스 솔루션",
     tag: "최고급 맞춤형",
   },
@@ -72,7 +75,7 @@ export default function PricesPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
-    name: "케어존마사지 코스별 이용 요금표",
+    name: "바른테라피 코스별 이용 요금표",
     itemListElement: priceList.map((item) => ({
       "@type": "Offer",
       name: item.title,
@@ -82,8 +85,8 @@ export default function PricesPage() {
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
-        name: "케어존마사지",
-        url: "https://carezone-massage.netlify.app",
+        name: "바른테라피",
+        url: "https://barun-therapy.netlify.app",
       },
     })),
   };
@@ -106,17 +109,17 @@ export default function PricesPage() {
             투명한 코스별 이용 요금 안내
           </h1>
           <p className="text-xs md:text-sm text-gray-400">
-            투명한 정찰제 가격 안내 / 안심 제휴 네트워크 가이드
+            선입금 0원 · 100% 현장 후불제 정찰 가격 안내
           </p>
         </div>
 
         {/* 정찰제 안심 약속 공지 배너 */}
         <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-l-4 border-amber-500 p-4 rounded-2xl">
           <p className="text-xs md:text-sm font-bold text-amber-300">
-            🔒 케어존마사지 안심 약속: 투명하고 정직한 정찰제 요금 체계를 지향합니다.
+            🔒 바른테라피 안심 약속: 선입금 없는 100% 현장 후불 결제 원칙을 엄격히 준수합니다.
           </p>
           <p className="text-[11px] text-gray-400 mt-1">
-            모든 제휴 업체는 명시된 표준 코스 가이드라인을 준수하며 부당한 추가 요금을 요구하지 않습니다.
+            모든 제휴 업체는 명시된 표준 코스 가이드라인을 준수하며, 예약금이나 부당한 추가 요금을 절대 요구하지 않습니다.
           </p>
         </div>
 
@@ -156,7 +159,7 @@ export default function PricesPage() {
             • 기본 코스는 60분 기준이며, 90분·120분 등 맞춤 시간 선택 시 보다 여유로운 집중 관리가 가능합니다.
           </p>
           <p>
-            • 각 제휴 샵의 세부 코스 옵션 및 프로모션 혜택은 유선 상담 시 즉시 확인하실 수 있습니다.
+            • 관리사 도착 후 계신 장소에서 직접 확인하시고 결제하는 100% 현장 후불제 시스템입니다.
           </p>
           <div className="pt-1">
             <Link
@@ -174,10 +177,10 @@ export default function PricesPage() {
             href="/"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs px-5 py-3 rounded-2xl border border-amber-500/30 transition-all shadow-md"
           >
-            <span>🏠</span> 케어존마사지 메인으로
+            <span>🏠</span> 바른테라피 메인으로
           </Link>
           <a
-            href="tel:0507-1280-3344"
+            href="tel:0507-1280-3303"
             className="w-full sm:w-auto text-center inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-extrabold text-xs px-6 py-3 rounded-2xl shadow-md transition-all active:scale-95"
           >
             📞 코스 실시간 문의

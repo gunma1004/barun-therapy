@@ -40,109 +40,119 @@ export const regionData: Record<
   gyeonggi: {
     name: "경기도",
     districts: {
-      suwon_jangan: { name: "수원시 장안구", dongs: ["파장동", "정자1동", "정자2동", "정자3동", "영화동", "송죽동", "조원1동", "조원2동", "율천동"] },
-      suwon_gwonseon: { name: "수원시 권선구", dongs: ["세류1동", "세류2동", "세류3동", "권선1동", "권선2동", "곡선동", "평동", "호매실동", "서둔동", "금곡동"] },
-      suwon_paldal: { name: "수원시 팔달구", dongs: ["매교동", "매산동", "고등동", "화서1동", "화서2동", "지동", "우만1동", "우만2동", "인계동"] },
-      suwon_yeongtong: { name: "수원시 영통구", dongs: ["매탄1동", "매탄2동", "매탄3동", "매탄4동", "원천동", "영통1동", "영통2동", "영통3동", "망포1동", "망포2동", "광교1동", "광교2동"] },
-      seongnam_sujeong: { name: "성남시 수정구", dongs: ["신흥동", "태평동", "수진동", "단대동", "산성동", "양지동", "복정동", "위례동", "신촌동", "고등동", "창곡동"] },
-      seongnam_jungwon: { name: "성남시 중원구", dongs: ["성남동", "중앙동", "금광동", "은행동", "상대원동", "하대원동", "도촌동"] },
-      seongnam_bundang: { name: "성남시 분당구", dongs: ["분당동", "수내동", "정자동", "서현동", "이매동", "야탑동", "금곡동", "구미동", "판교동", "삼평동", "백현동", "운중동"] },
-      goyang_deogyang: { name: "고양시 덕양구", dongs: ["주교동", "원신동", "흥도동", "성사동", "효자동", "신도동", "창릉동", "능곡동", "행주동", "행신동", "화정동", "대덕동"] },
-      goyang_ilsandong: { name: "고양시 일산동구", dongs: ["식사동", "중산동", "정발산동", "풍산동", "백석동", "마두동", "장항동", "고봉동"] },
-      goyang_ilsanseo: { name: "고양시 일산서구", dongs: ["일산동", "탄현동", "주엽동", "대화동", "송포동", "덕이동", "가좌동"] },
-      yongin_cheoin: { name: "용인시 처인구", dongs: ["포곡읍", "모현읍", "남사읍", "이동읍", "원삼면", "백암면", "양지면", "중앙동", "역북동", "삼가동", "유림동", "동부동"] },
-      yongin_giheung: { name: "용인시 기흥구", dongs: ["신갈동", "영덕동", "구갈동", "상갈동", "보라동", "기흥동", "서농동", "구성동", "마북동", "동백동", "상하동", "보정동"] },
-      yongin_suji: { name: "용인시 수지구", dongs: ["풍덕천동", "신봉동", "죽전동", "동천동", "상현동", "성복동"] },
-      bucheon_wonmi: { name: "부천시 원미구", dongs: ["심곡동", "원미동", "소사동", "역곡동", "중동", "상동", "약대동"] },
-      bucheon_sosa: { name: "부천시 소사구", dongs: ["소사본동", "심곡본동", "범박동", "괴안동", "송내동", "옥길동", "계수동"] },
-      bucheon_ojeong: { name: "부천시 오정구", dongs: ["오정동", "원종동", "고강동", "삼정동", "내동", "여월동", "작동"] },
-      anyang_manan: { name: "안양시 만안구", dongs: ["안양동", "석수동", "박달동"] },
-      anyang_dongan: { name: "안양시 동안구", dongs: ["비산동", "관양동", "평촌동", "호계동", "범계동", "달안동", "부흥동", "귀인동"] },
-      ansan_sangnok: { name: "안산시 상록구", dongs: ["일동", "이동", "사동", "본오동", "팔곡동", "양상동", "부곡동", "성포동", "월피동", "건건동", "사사동", "수암동", "장상동", "반월동"] },
-      ansan_danwon: { name: "안산시 단원구", dongs: ["고잔동", "와동", "신길동", "성곡동", "원시동", "목내동", "초지동", "원곡동", "선부동", "대부동"] },
-      gwangmyeong: { name: "광명시", dongs: ["광명동", "철산동", "하안동", "소하동", "노온사동", "일직동", "가학동", "옥길동"] },
-      pyeongtaek: { name: "평택시", dongs: ["팽성읍", "안중읍", "포승읍", "청북읍", "진위면", "서탄면", "고덕동", "중앙동", "서정동", "송탄동", "지산동", "송북동", "신장동", "신평동", "원평동", "통복동", "비전동", "세교동", "용이동", "동삭동"] },
+      suwon: { name: "수원시", dongs: ["인계동", "영통동", "광교동", "매산동", "정자동", "조원동", "화서동", "세류동"] },
+      seongnam: { name: "성남시", dongs: ["분당동", "수내동", "정자동", "서현동", "야탑동", "판교동", "삼평동", "백현동"] },
+      goyang: { name: "고양시", dongs: ["일산동", "주엽동", "마두동", "백석동", "화정동", "행신동", "식사동", "탄현동"] },
+      yongin: { name: "용인시", dongs: ["풍덕천동", "신봉동", "죽전동", "동천동", "상현동", "기흥동", "신갈동", "동백동"] },
+      bucheon: { name: "부천시", dongs: ["중동", "상동", "심곡동", "원미동", "소사동", "송내동", "역곡동", "오정동"] },
+      ansan: { name: "안산시", dongs: ["고잔동", "중앙동", "초지동", "본오동", "선부동", "와동", "월피동", "성포동"] },
+      anyang: { name: "안양시", dongs: ["안양동", "석수동", "박달동", "비산동", "관양동", "평촌동", "호계동", "범계동"] },
+      namyangju: { name: "남양주시", dongs: ["다산동", "별내동", "호평동", "평내동", "와부읍", "진접읍", "화도읍", "퇴계원읍"] },
+      hwaseong: { name: "화성시", dongs: ["동탄동", "병점동", "향남읍", "봉담읍", "남양읍", "진안동", "반월동", "새솔동"] },
+      pyeongtaek: { name: "평택시", dongs: ["고덕동", "서정동", "송탄동", "지산동", "비전동", "세교동", "안중읍", "포승읍"] },
+      uijeongbu: { name: "의정부시", dongs: ["의정부동", "호원동", "장암동", "신곡동", "용현동", "민락동", "금오동", "가능동"] },
+      paju: { name: "파주시", dongs: ["운정동", "금촌동", "문산읍", "조리읍", "야당동", "교하동", "탄현면", "월롱면"] },
+      siheung: { name: "시흥시", dongs: ["정왕동", "배곧동", "은행동", "대야동", "신천동", "목감동", "은계동", "능곡동"] },
+      gimpo: { name: "김포시", dongs: ["사우동", "풍무동", "장기동", "구래동", "마산동", "운양동", "고촌읍", "통진읍"] },
+      gwangmyeong: { name: "광명시", dongs: ["철산동", "하안동", "소하동", "광명동", "일직동", "옥길동", "노온사동"] },
+      gwangju: { name: "광주시", dongs: ["경안동", "송정동", "탄벌동", "태전동", "오포읍", "초월읍", "곤지암읍", "쌍령동"] },
+      gunpo: { name: "군포시", dongs: ["산본동", "금정동", "당동", "당정동", "부곡동", "대야미동", "광정동", "재궁동"] },
+      icheon: { name: "이천시", dongs: ["창전동", "증포동", "중리동", "관고동", "부발읍", "마장면", "신둔면", "안흥동"] },
+      osan: { name: "오산시", dongs: ["오산동", "원동", "궐동", "수청동", "세교동", "양산동", "세마동", "부산동"] },
+      hanam: { name: "하남시", dongs: ["미사동", "신장동", "덕풍동", "망월동", "풍산동", "감일동", "위례동", "천현동"] },
+      yangju: { name: "양주시", dongs: ["옥정동", "회천동", "덕정도", "고읍동", "백석읍", "광적면", "장흥면", "양주동"] },
+      guri: { name: "구리시", dongs: ["인창동", "교문동", "수택동", "갈매동", "토평동", "사노동", "아천동", "동구동"] },
+      anseong: { name: "안성시", dongs: ["공도읍", "대덕면", "안성동", "보개면", "원곡면", "양성면", "일죽면", "죽산면"] },
+      pocheon: { name: "포천시", dongs: ["소흘읍", "포천동", "선단동", "군내면", "가산면", "신북면", "영북면", "일동면"] },
+      uiwang: { name: "의왕시", dongs: ["고천동", "오전동", "내손동", "포일동", "청계동", "삼동", "학의동", "왕곡동"] },
+      yeoju: { name: "여주시", dongs: ["여흥동", "중앙동", "오학동", "가남읍", "점동면", "대신면", "북내면", "흥천면"] },
+      yangpyeong: { name: "양평군", dongs: ["양평읍", "용문면", "양서면", "강상면", "강하면", "옥천면", "서종면", "지평면"] },
       dongducheon: { name: "동두천시", dongs: ["생연동", "중앙동", "보산동", "불현동", "송내동", "소요동", "상패동", "광암동"] },
-      gwacheon: { name: "과천시", dongs: ["중앙동", "갈현동", "별양동", "부림동", "원문동", "문원동", "과천동", "주암동"] },
-      guri: { name: "구리시", dongs: ["갈매동", "사노동", "인창동", "교문동", "수택동", "아천동", "토평동", "동구동"] },
-      namyangju: { name: "남양주시", dongs: ["호평동", "평내동", "금곡동", "일패동", "이패동", "삼패동", "수석동", "다산동", "와부읍", "진접읍", "화도읍", "진건읍", "오남읍", "퇴계원읍", "별내동"] },
-      osan: { name: "오산시", dongs: ["오산동", "부산동", "원동", "궐동", "청학동", "가장동", "금암동", "수청동", "은계동", "세교동", "지곶동", "서랑동", "양산동", "세마동", "초평동"] },
-      siheung: { name: "시흥시", dongs: ["대야동", "신천동", "방산동", "포동", "미산동", "은행동", "안현동", "매화동", "도창동", "금이동", "과림동", "계수동", "화정동", "능곡동", "하중동", "하상동", "광석동", "물왕동", "산현동", "조남동", "논곡동", "목감동", "거모동", "군자동", "장현동", "장곡동", "월곶동", "정왕동", "배곧동"] },
-      gunpo: { name: "군포시", dongs: ["당동", "당정동", "부곡동", "산본동", "금정동", "둔대동", "속달동", "대야미동", "도마교동", "재궁동", "오금동", "수리동", "궁내동", "광정동"] },
-      uiwang: { name: "의왕시", dongs: ["고천동", "이동", "삼동", "왕곡동", "오전동", "학의동", "내손동", "청계동", "포일동", "월암동", "초평동"] },
-      hanam: { name: "하남시", dongs: ["천현동", "하산곡동", "창우동", "배알미동", "상산곡동", "신장동", "당정동", "덕풍동", "망월동", "풍산동", "미사동", "선동", "감북동", "감일동", "감이동", "학암동", "교산동", "춘궁동", "하사창동", "상사창동", "항동", "초일동", "초이동", "광암동"] },
-      paju: { name: "파주시", dongs: ["문산읍", "조리읍", "법원읍", "파주읍", "광탄면", "탄현면", "월롱면", "적성면", "파평면", "교하동", "운정동", "금촌동"] },
-      icheon: { name: "이천시", dongs: ["장호원읍", "부발읍", "신둔면", "백사면", "호법면", "마장면", "대월면", "모가면", "설성면", "율면", "창전동", "증일동", "율현동", "진리동", "중리동", "관고동", "안흥동", "갈산동", "증포동", "송정동"] },
-      anseong: { name: "안성시", dongs: ["공도읍", "보개면", "금광면", "서운면", "미양면", "대덕면", "양성면", "원곡면", "일죽면", "죽산면", "삼죽면", "고삼면", "안성동"] },
-      gimpo: { name: "김포시", dongs: ["통진읍", "고촌읍", "양촌읍", "대곶면", "월곶면", "하성면", "김포본동", "장기본동", "사우동", "풍무동", "장기동", "구래동", "마산동", "운양동"] },
-      hwaseong: { name: "화성시", dongs: ["봉담읍", "우정읍", "향남읍", "남양읍", "매송면", "비봉면", "마도면", "송산면", "서신면", "팔탄면", "장안면", "양감면", "정남면", "새솔동", "진안동", "병점동", "반월동", "기배동", "화산동", "동탄동"] },
-      gwangju: { name: "광주시", dongs: ["오포읍", "초월읍", "곤지암읍", "도척면", "퇴촌면", "남종면", "남한산성면", "경안동", "쌍령동", "송정동", "탄벌동", "광남동"] },
-      yangju: { name: "양주시", dongs: ["백석읍", "은현면", "남면", "광적면", "장흥면", "양주동", "회천동", "옥정동"] },
-      pochon: { name: "포천시", dongs: ["소흘읍", "군내면", "내촌면", "가산면", "신북면", "창수면", "영중면", "일동면", "이동면", "영북면", "관인면", "화현면", "포천동", "선단동"] },
-      yeoju: { name: "여주시", dongs: ["가남읍", "점동면", "흥천면", "금사면", "산북면", "대신면", "북내면", "강천면", "여흥동", "중앙동", "오학동"] },
-      uijeongbu: { name: "의정부시", dongs: ["의정부동", "호원동", "장암동", "신곡동", "용현동", "민락동", "낙양동", "자일동", "금오동", "가능동", "녹양동", "고산동", "산곡동"] },
-      yeoncheon: { name: "연천군", dongs: ["연천읍", "전곡읍", "군남면", "청산면", "백학면", "미산면", "왕징면", "신서면", "중면", "장남면"] },
-      gapyeong: { name: "가평군", dongs: ["가평읍", "설악면", "청평면", "상면", "조종면", "북면"] },
-      yangpyeong: { name: "양평군", dongs: ["양평읍", "강상면", "강하면", "양서면", "옥천면", "서종면", "단월면", "청운면", "양동면", "지평면", "용문면", "개군면"] },
+      gwacheon: { name: "과천시", dongs: ["중앙동", "갈현동", "별양동", "원문동", "부림동", "문원동", "과천동", "주암동"] },
+      gapyeong: { name: "가평군", dongs: ["가평읍", "청평면", "설악면", "상면", "조종면", "북면"] },
+      yeoncheon: { name: "연천군", dongs: ["연천읍", "전곡읍", "군남면", "청산면", "백학면", "신서면", "미산면", "왕징면"] },
     },
   },
   incheon: {
     name: "인천광역시",
     districts: {
-      jemulpo: { name: "제물포구", dongs: ["신포동", "연안동", "신흥동", "도원동", "율목동", "동인천동", "개항동", "만석동", "화수동", "송현동", "송림동", "금창동"] },
-      yeongjong: { name: "영종구", dongs: ["영종동", "영종1동", "영종2동", "운서동", "용유동", "중산동", "운남동", "운북동"] },
-      michuhol: { name: "미추홀구", dongs: ["숭의동", "용현동", "학익동", "도화동", "주안동", "관교동", "문학동"] },
-      yeonsu: { name: "연수구", dongs: ["옥련동", "선학동", "연수동", "청학동", "동춘동", "송도1동", "송도2동", "송도3동", "송도4동", "송도5동"] },
-      namdong: { name: "남동구", dongs: ["구월동", "간석동", "만수동", "장수서창동", "서창동", "남촌도림동", "논현동", "논현고잔동"] },
+      yeonsu: { name: "연수구", dongs: ["송도1동", "송도2동", "송도3동", "송도4동", "송도5동", "옥련동", "선학동", "연수동", "청학동", "동춘동"] },
+      namdong: { name: "남동구", dongs: ["구월동", "간석동", "만수동", "논현동", "서창동", "남촌도림동", "장수서창동", "논현고잔동"] },
       bupyeong: { name: "부평구", dongs: ["부평동", "산곡동", "청천동", "갈산동", "삼산동", "부개동", "일신동", "십정동"] },
-      gyeyang: { name: "계양구", dongs: ["효성동", "계산동", "작전동", "작전서운동", "계양동"] },
-      seohae: { name: "서해구 (서구)", dongs: ["검암경서동", "연희동", "청라1동", "청라2동", "청라3동", "가정동", "신현원창동", "석남동", "가좌동"] },
-      geomdan: { name: "검단구", dongs: ["검단동", "불로대곡동", "원당동", "당하동", "오류왕길동", "마전동", "아라동", "금곡동"] },
-      ganghwa: { name: "강화군", dongs: ["강화읍", "선원면", "불은면", "길상면", "화도면", "양도면", "내가면", "하점면", "양사면", "송해면", "교동면", "삼산면", "서도면"] },
-      ongjin: { name: "옹진군", dongs: ["북도면", "연평면", "백령면", "대청면", "덕적면", "자월면", "영흥면"] },
+      seo: { name: "서구", dongs: ["청라1동", "청라2동", "청라3동", "검단동", "가정동", "신현원창동", "석남동", "가좌동", "연희동"] },
+      michuhol: { name: "미추홀구", dongs: ["주안동", "용현동", "학익동", "도화동", "숭의동", "관교동", "문학동"] },
+      jung: { name: "중구", dongs: ["영종동", "영종1동", "영종2동", "운서동", "신포동", "연안동", "신흥동", "도원동", "동인천동"] },
+      gyeyang: { name: "계양구", dongs: ["계산동", "작전동", "효성동", "작전서운동", "계양동"] },
+      dong: { name: "동구", dongs: ["송림동", "송현동", "화수동", "만석동", "금창동"] },
+      ganghwa: { name: "강화군", dongs: ["강화읍", "선원면", "불은면", "길상면", "화도면", "내가면", "양도면", "교동면"] },
+      ongjin: { name: "옹진군", dongs: ["백령면", "연평면", "대청면", "덕적면", "자월면", "영흥면", "북도면"] },
     },
   },
+};
+
+// URL 매핑용 영문 키 변환 테이블
+const districtSlugMap: Record<string, string> = {
+  // 서울
+  gangnam: "gangnam-gu", gangdong: "gangdong-gu", gangbuk: "gangbuk-gu", gangseo: "gangseo-gu",
+  gwanak: "gwanak-gu", gwangjin: "gwangjin-gu", guro: "guro-gu", geumcheon: "geumcheon-gu",
+  nowon: "nowon-gu", dobong: "dobong-gu", dongdaemun: "dongdaemun-gu", dongjak: "dongjak-gu",
+  mapo: "mapo-gu", seodaemun: "seodaemun-gu", seocho: "seocho-gu", seongdong: "seongdong-gu",
+  seongbuk: "seongbuk-gu", songpa: "songpa-gu", yangcheon: "yangcheon-gu", yeongdeungpo: "yeongdeungpo-gu",
+  yongsan: "yongsan-gu", eunpyeong: "eunpyeong-gu", jongno: "jongno-gu", jung: "jung-gu", jungnang: "jungnang-gu",
+  // 경기
+  suwon: "suwon-si", seongnam: "seongnam-si", goyang: "goyang-si", yongin: "yongin-si",
+  bucheon: "bucheon-si", ansan: "ansan-si", anyang: "anyang-si", namyangju: "namyangju-si",
+  hwaseong: "hwaseong-si", pyeongtaek: "pyeongtaek-si", uijeongbu: "uijeongbu-si", paju: "paju-si",
+  siheung: "siheung-si", gimpo: "gimpo-si", gwangmyeong: "gwangmyeong-si", gwangju: "gwangju-si",
+  gunpo: "gunpo-si", icheon: "icheon-si", osan: "osan-si", hanam: "hanam-si", yangju: "yangju-si",
+  guri: "guri-si", anseong: "anseong-si", pocheon: "pocheon-si", uiwang: "uiwang-si", yeoju: "yeoju-si",
+  yangpyeong: "yangpyeong-gun", dongducheon: "dongducheon-si", gwacheon: "gwacheon-si",
+  gapyeong: "gapyeong-gun", yeoncheon: "yeoncheon-gun",
+  // 인천
+  yeonsu: "yeonsu-gu", namdong: "namdong-gu", bupyeong: "bupyeong-gu", seo: "seo-gu",
+  michuhol: "michuhol-gu", gyeyang: "gyeyang-gu", dong: "dong-gu",
+  ganghwa: "ganghwa-gun", ongjin: "ongjin-gun",
 };
 
 const initialShops = [
   {
     id: 1,
-    name: "한국미인테라피",
-    desc: "서울·경기·인천 전지역 신속 매칭, 정성 가득한 프리미엄 감성 바디 테라피 & 1:1 맞춤 케어",
-    phone: "0507-1280-3140",
-    price: "90,000원부터~",
+    name: "한국미인홈케어",
+    desc: "서울·경기·인천 전지역 신속 방문, 정성 가득한 프리미엄 감성 바디 테라피 & 1:1 맞춤 케어",
+    phone: "0507-1280-3303",
+    price: "100,000원부터~",
     image: "/shop1.jpg",
   },
   {
     id: 2,
     name: "오늘밤테라피",
     desc: "최고급 천연 아로마 오일 블렌딩, 지친 일상을 깨우는 고품격 프라이빗 힐링 바디 테라피 전문",
-    phone: "0507-1280-3199",
+    phone: "0507-1280-3223",
     price: "60,000원부터~",
     image: "/shop2.jpg",
   },
   {
     id: 3,
-    name: "주주홈타이",
+    name: "주주테라피",
     desc: "재방문율 1위, 철저한 위생 관리와 숙련된 테라피스트의 정통 바디 릴렉싱 프로그램",
-    phone: "0507-1280-3197",
+    phone: "0507-1280-3193",
     price: "60,000원부터~",
     image: "/shop3.jpg",
   },
   {
     id: 4,
-    name: "한국골든테라피",
+    name: "퀸즈홈테라피",
     desc: "전문 테라피스트의 VIP 집중 피로회복 솔루션, 수도권 어디서나 편안하게 만나는 맞춤 힐링",
-    phone: "0507-1280-3360",
+    phone: "0507-1280-3334",
     price: "60,000원부터~",
     image: "/shop4.jpg",
   },
   {
     id: 5,
-    name: "퀸즈홈테라피",
+    name: "골든테라피",
     desc: "수도권 전역 빠른 안내, 검증된 전문 매니저의 힐링 테라피 & 프리미엄 바디 밸런스 프로그램",
-    phone: "0507-1280-3296",
-    price: "60,000원부터~",
+    phone: "0507-1280-3360",
+    price: "110,000원부터~",
     image: "/shop5.jpg",
   },
 ];
@@ -203,14 +213,14 @@ export default function MainClientUI() {
       alert("원하시는 지역(구/시/군)을 먼저 선택해주세요!");
       return;
     }
-    const districtObj = regionData[selectedRegion]?.districts[selectedDistrict];
-    const districtName = districtObj ? districtObj.name : selectedDistrict;
-
-    const targetUrl = selectedDong
-      ? `/${selectedRegion}/${encodeURIComponent(districtName)}/${encodeURIComponent(selectedDong)}`
-      : `/${selectedRegion}/${encodeURIComponent(districtName)}`;
-
-    window.location.href = targetUrl;
+    
+    // 영문 슬러그 매핑 확인
+    const slug = districtSlugMap[selectedDistrict];
+    if (slug) {
+      window.location.href = `/areas/${selectedRegion}/${slug}/`;
+    } else {
+      window.location.href = `/${selectedRegion}/`;
+    }
   };
 
   const currentDistricts = regionData[selectedRegion]?.districts || {};
@@ -228,7 +238,7 @@ export default function MainClientUI() {
             <div className="absolute inset-0 z-0">
               <img
                 src="/banner.jpg"
-                alt="케어존마사지 메인 배너"
+                alt="바른테라피 서울 출장 신뢰케어 마사지 메인 배너"
                 className="w-full h-full object-cover filter brightness-[0.4] scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
@@ -236,16 +246,16 @@ export default function MainClientUI() {
 
             <div className="relative z-10 space-y-3">
               <span className="inline-block px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold text-xs tracking-wider">
-                수도권 힐링 테라피 큐레이션 플랫폼
+                100% 현장후불 · 안심 매칭 플랫폼
               </span>
               <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight drop-shadow-lg">
                 서울·경기·인천{" "}
                 <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                  케어존마사지 프리미엄 바디 웰니스 가이드
+                  바른테라피 서울 출장 신뢰케어 마사지 가이드
                 </span>
               </h1>
               <p className="text-gray-200 text-xs md:text-sm font-medium max-w-lg mx-auto leading-relaxed drop-shadow">
-                엄선된 전문 테라피스트들의 1:1 맞춤 바디 릴렉싱 프로그램을 케어존마사지에서 손쉽게 비교하고 확인하세요.
+                선입금 없는 100% 현장 후불제! 검증된 전문 테라피스트들의 1:1 맞춤 바디 릴렉싱 프로그램을 바른테라피에서 손쉽게 비교하고 확인하세요.
               </p>
             </div>
           </div>
@@ -255,10 +265,10 @@ export default function MainClientUI() {
         <section className="space-y-6">
           <div className="text-center mb-4">
             <p className="text-xs text-amber-400 font-bold tracking-widest uppercase">
-              RECOMMENDED PARTNERS
+              VERIFIED PARTNERS
             </p>
             <h2 className="text-xl md:text-2xl font-black text-white mt-1">
-              🏆 케어존마사지 베스트 추천 제휴 샵
+              🏆 바른테라피 베스트 추천 제휴 샵
             </h2>
           </div>
 
@@ -306,7 +316,7 @@ export default function MainClientUI() {
                 📍 내 주변 맞춤 테라피 찾기
               </label>
               <span className="text-[11px] text-gray-400 bg-black/40 px-2.5 py-1 rounded-lg border border-white/5">
-                서울·경기·인천 전역
+                수도권 66개 시·군·구 전역
               </span>
             </div>
 
@@ -350,7 +360,7 @@ export default function MainClientUI() {
 
               <div>
                 <span className="text-[11px] text-gray-400 block mb-1 font-semibold">
-                  3단계: 동 선택 (세부 필터)
+                  3단계: 동 선택 (상세 안내)
                 </span>
                 <select
                   value={selectedDong}
@@ -379,36 +389,40 @@ export default function MainClientUI() {
           </div>
         </section>
 
-        {/* 🌟 네이버 로봇 크롤링 누락 방지용 주요 지역 내부 링크 */}
+        {/* 네이버 로봇 크롤링 누락 방지용 주요 지역 내부 정적 링크 */}
         <section className="bg-[#0b0b0e] border border-white/5 p-6 rounded-3xl space-y-4">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-sm font-bold text-amber-400 flex items-center gap-1.5">
               <span>🗺️</span> 수도권 주요 지역별 바로가기
             </h3>
             <p className="text-[11px] text-gray-400 mt-1">
-              원하시는 지역을 선택하시면 해당 지역의 추천 샵 목록을 바로 확인하실 수 있습니다.
+              원하시는 지역을 선택하시면 해당 지역의 추천 샵 목록과 코스를 바로 확인하실 수 있습니다.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 pt-2">
             {Object.entries(regionData).map(([rKey, rVal]) =>
-              Object.entries(rVal.districts).slice(0, 10).map(([dKey, dVal]) => (
-                <Link
-                  key={dKey}
-                  href={`/${rKey}/${encodeURIComponent(dVal.name)}`}
-                  className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-3 py-1.5 rounded-lg border border-white/5 transition-colors"
-                >
-                  {dVal.name} 마사지
-                </Link>
-              ))
+              Object.entries(rVal.districts).map(([dKey, dVal]) => {
+                const slug = districtSlugMap[dKey];
+                const href = slug ? `/areas/${rKey}/${slug}/` : `/${rKey}/`;
+                return (
+                  <Link
+                    key={dKey}
+                    href={href}
+                    className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-3 py-1.5 rounded-lg border border-white/5 transition-colors"
+                  >
+                    {dVal.name} 마사지
+                  </Link>
+                );
+              })
             )}
           </div>
         </section>
 
-        {/* 📚 [메인 페이지 전용: 네이버 C-Rank / D.I.A. 상위 노출용 3,000자 전문 웰니스 인사이트] */}
+        {/* 전문 웰니스 칼럼 */}
         <section className="bg-[#0e0e12] p-6 sm:p-10 rounded-3xl border border-white/10 space-y-10 text-gray-300 leading-relaxed text-xs sm:text-sm">
           <div className="border-b border-white/10 pb-5">
             <span className="text-amber-400 font-extrabold text-xs tracking-widest block uppercase mb-1">
-              CAREZONE WELLNESS ESSENTIALS & THEORY
+              BARUN THERAPY WELLNESS ESSENTIALS & THEORY
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-white">
               도심 생활 속 신체 밸런스 회복과 지속 가능한 바디 테라피 가이드
@@ -418,7 +432,6 @@ export default function MainClientUI() {
             </p>
           </div>
 
-          {/* 챕터 1 */}
           <div className="space-y-3.5">
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="text-amber-400 font-black">1.</span> 현대인의 고정 좌식 생활과 만성 근막 긴장의 병리학적 기전
@@ -434,102 +447,83 @@ export default function MainClientUI() {
             </p>
           </div>
 
-          {/* 챕터 2 */}
           <div className="space-y-3.5">
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="text-amber-400 font-black">2.</span> 자율신경계 불균형과 심신 릴렉싱의 상호작용
             </h3>
             <p>
-              과중한 업무 스트레스와 불규칙한 생활 리듬은 인체의 교감신경계를 만성 흥분 상태로 몰아넣습니다. 교감신경의 지속적인 과활성화는 스트레스 호르몬인 코르티솔과 아드레날린 분비를 촉진하고, 심박수 증가와 말초 혈관 수축을 야기하여 신체를 항시적인 전투 및 도피 상태(Fight or Flight)로 유지시킵니다. 이러한 상태가 장기화되면 야간 숙면을 방해하는 수면 장애, 소화 흡수 장애, 만성 무기력증이 동반됩니다.
+              과중한 업무 스트레스와 불규칙한 생활 리듬은 인체의 교감신경계를 만성 흥분 상태로 몰아넣습니다. 교감신경의 지속적인 과활성화는 스트레스 호르몬인 코르티솔과 아드레날린 분비를 촉진하고, 심박수 증가와 말초 혈관 수축을 야기하여 신체를 항시적인 긴장 상태로 유지시킵니다. 이러한 상태가 장기화되면 야간 숙면을 방해하는 수면 장애, 소화 흡수 장애, 만성 무기력증이 동반됩니다.
             </p>
             <p>
-              숙련된 테라피스트에 의한 균일하고 차분한 압력 자극은 피부 감각 수용기 중 마이스너 소체와 파치니 소체를 자극하여 뇌로 전달되는 감각 신호를 안정화시킵니다. 이는 부교감신경계를 활성화하여 심장 박동을 안정시키고 혈관을 확장시키며, 체내 행복 호르몬인 옥시토신과 세로토닌의 분비를 촉진합니다.
-            </p>
-            <p>
-              신체가 진정한 이완 상태에 도달하면 뇌파는 각성 상태인 베타파에서 깊은 안정 상태인 알파파 및 세타파로 전환됩니다. 이는 단순한 신체적 편안함을 넘어 뇌의 인지적 피로를 리셋하고 면역계 세포의 재생 활동을 촉진하는 근본적인 힐링 환경을 조성합니다.
+              숙련된 테라피스트에 의한 균일하고 차분한 압력 자극은 피부 감각 수용기를 자극하여 뇌로 전달되는 감각 신호를 안정화시킵니다. 이는 부교감신경계를 활성화하여 심장 박동을 안정시키고 혈관을 확장시키며, 체내 행복 호르몬인 옥시토신과 세로토닌의 분비를 촉진합니다.
             </p>
           </div>
 
-          {/* 챕터 3 */}
           <div className="space-y-3.5">
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="text-amber-400 font-black">3.</span> 프로그램별 물리적 기전 비교와 맞춤형 선택 가이드
             </h3>
-            <p>
-              전문 바디 웰니스 프로그램은 사용하는 매개체와 물리적 자극의 깊이에 따라 뚜렷한 기능적 특성을 가집니다. 이용자의 당일 체력 상태와 피로 원인에 맞추어 올바른 코스를 선택하는 것이 중요합니다.
-            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 my-3">
               <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
                 <h4 className="font-bold text-amber-400 text-xs sm:text-sm">클래식 건식 스트레칭 (타이 케어)</h4>
                 <p className="text-gray-400 text-[11px] sm:text-xs">
-                  오일을 사용하지 않고 매트 위에서 진행되는 정통 기법입니다. 수기 압박과 요가 형태의 수동적 관절 신전 운동이 결합되어 굳어있는 햄스트링, 고관절 굴곡근, 척추 기립근의 운동 가동 범위를 물리적으로 넓혀줍니다. 평소 활동량이 적어 몸이 뻣뻣하고 시원한 관절 이완을 원하는 분에게 적합합니다.
+                  오일을 사용하지 않고 매트 위에서 진행되는 정통 기법입니다. 수기 압박과 요가 형태의 수동적 관절 신전 운동이 결합되어 굳어있는 햄스트링, 고관절 굴곡근, 척추 기립근의 운동 가동 범위를 물리적으로 넓혀줍니다.
                 </p>
               </div>
               <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
                 <h4 className="font-bold text-amber-400 text-xs sm:text-sm">스웨디시 감성 바디 테라피</h4>
                 <p className="text-gray-400 text-[11px] sm:text-xs">
-                  식물성 베이스 오일을 도포하여 마찰 저항을 최소화한 상태에서 심장 방향으로 부드럽게 밀어 올리는 유러피언 테크닉입니다. 피부 표층의 미세 순환을 촉진하고 통증 없이 림프절을 자극하여 부종 완화와 깊은 정신적 안도감을 선사합니다. 강한 압박에 거부감이 있는 분에게 추천됩니다.
+                  식물성 베이스 오일을 도포하여 마찰 저항을 최소화한 상태에서 심장 방향으로 부드럽게 밀어 올리는 테크닉입니다. 미세 순환을 촉진하고 통증 없이 림프절을 자극하여 부종 완화와 깊은 안도감을 선사합니다.
                 </p>
               </div>
               <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
                 <h4 className="font-bold text-amber-400 text-xs sm:text-sm">에센셜 아로마 림프 테라피</h4>
                 <p className="text-gray-400 text-[11px] sm:text-xs">
-                  라벤더, 유칼립투스, 베르가못 등 식물에서 추출한 순수 에센셜 오일의 후각적 아로마콜로지 효과를 접목한 기법입니다. 피부 보습 장벽을 보호하는 동시에 피하 지방층 주변 림프액의 배농을 유도하여 붓기를 개선하고 환절기 피부 건조증을 예방합니다.
+                  라벤더, 유칼립투스 등 순수 에센셜 오일의 후각적 아로마 효과를 접목한 기법입니다. 피부 보습 장벽을 보호하는 동시에 피하 지방층 주변 림프액의 배농을 유도하여 붓기를 개선합니다.
                 </p>
               </div>
               <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
                 <h4 className="font-bold text-amber-400 text-xs sm:text-sm">심부 근막 집중 딥티슈 케어</h4>
                 <p className="text-gray-400 text-[11px] sm:text-xs">
-                  표층 근육을 넘어 뼈와 관절에 맞닿아 있는 심부 근막의 단단한 매듭을 팔꿈치와 체중을 이용해 서서히 압박하는 기법입니다. 고질적인 목 결림이나 허리 통증을 유발하는 만성 유착 부위를 분리하여 깊은 속근육의 피로를 근본적으로 해소합니다.
+                  표층 근육을 넘어 뼈와 관절에 맞닿아 있는 심부 근막의 단단한 매듭을 체중을 이용해 서서히 압박하는 기법입니다. 만성 유착 부위를 분리하여 깊은 속근육의 피로를 근본적으로 해소합니다.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* 챕터 4 */}
           <div className="space-y-3.5">
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="text-amber-400 font-black">4.</span> 프라이빗 1인 케어 환경이 선사하는 심리·시간적 효율성
             </h3>
             <p>
-              전통적인 웰니스 서비스는 고객이 직접 매장을 방문하는 오프라인 중심이었으나, 현대 도시 생활에서는 이동 자체에 소모되는 물리적·정신적 비용이 상당합니다. 번화가의 교통 체증, 주차 공간 확보의 어려움, 대기 시간, 타인과의 대면 접촉은 휴식을 취하러 가는 과정 자체를 또 다른 피로 원인으로 만들 수 있습니다.
-            </p>
-            <p>
-              개인 자택이나 호텔 객실 등 독립된 사적 공간에서 진행되는 프라이빗 케어는 외부의 소음과 자극을 원천 차단하여 부교감신경이 방해 없이 활성화될 수 있는 환경을 제공합니다. 관리사가 방문하여 세션을 진행함으로써 고객은 이동에 필요한 에너지를 보존할 수 있으며, 관리가 종료된 직후 환복이나 귀가 이동 없이 온전히 자신의 침상에서 깊은 숙면으로 전환할 수 있습니다.
-            </p>
-            <p>
-              이러한 환경적 연속성은 근육이 따뜻하게 이완된 상태에서 찬 바람이나 외부 온도 변화에 노출되어 다시 수축하는 현상을 예방합니다. 교대 근무, 야간 업무, 혹은 바쁜 주말 일정을 소화하는 현대인들에게 시간 절약과 완전한 휴식을 동시에 보장하는 스마트한 자기 관리 솔루션입니다.
+              개인 자택이나 호텔 객실 등 독립된 사적 공간에서 진행되는 프라이빗 케어는 외부 소음과 이동 스트레스를 차단하여 부교감신경이 방해 없이 활성화될 수 있는 최적의 환경을 제공합니다. 관리가 끝난 후 환복이나 복잡한 귀가 이동 없이 온전히 자신의 공간에서 깊은 숙면으로 전환할 수 있습니다.
             </p>
           </div>
 
-          {/* 챕터 5 */}
           <div className="space-y-3.5">
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="text-amber-400 font-black">5.</span> 안전하고 신뢰할 수 있는 웰니스 플랫폼 이용 수칙
             </h3>
-            <p>
-              투명하고 건강한 힐링 문화를 지속하기 위해 케어존마사지는 모든 제휴 매장과 파트너 샵의 건전성과 운영 수칙을 주기적으로 모니터링합니다. 소비자의 권익 보호와 안전한 세션 진행을 위해 다음 가이드라인을 확인하시기 바랍니다.
-            </p>
             <ul className="list-disc list-inside space-y-1.5 text-gray-400 pl-2">
-              <li><strong className="text-gray-200">정찰제 요금 준수:</strong> 신뢰할 수 있는 공인 파트너는 불법적인 예약 선입금이나 불투명한 현장 추가금을 요구하지 않으며, 공시된 표준 요금표를 엄격히 준수합니다.</li>
-              <li><strong className="text-gray-200">기저 질환 사전 고지:</strong> 최근 관절 시술을 받았거나 골절 병력, 심혈관계 질환, 임신 중인 경우 세션 전 매니저 및 테라피스트에게 신체 상태를 고지하여 적절한 강도를 조율해야 합니다.</li>
-              <li><strong className="text-gray-200">사후 수분 섭취와 체온 유지:</strong> 관리를 마친 후에는 림프 순환을 통해 체내로 배출된 대사 부산물이 원활히 배설될 수 있도록 미온수를 500ml 이상 섭취하고, 급격한 체온 저하를 방지하기 위해 따뜻한 실내 환경을 유지하시기 바랍니다.</li>
+              <li><strong className="text-gray-200">100% 현장 후불 원칙:</strong> 신뢰할 수 있는 공인 파트너는 불법적인 예약 선입금이나 불투명한 현장 추가금을 절대 요구하지 않습니다.</li>
+              <li><strong className="text-gray-200">기저 질환 사전 고지:</strong> 최근 관절 시술을 받았거나 골절 병력, 임신 중인 경우 세션 전 테라피스트에게 신체 상태를 고지하여 적절한 강도를 조율해야 합니다.</li>
+              <li><strong className="text-gray-200">사후 수분 섭취와 체온 유지:</strong> 관리를 마친 후에는 림프 순환을 통해 체내로 배출된 대사 부산물이 원활히 배설될 수 있도록 미온수를 충분히 섭취하시기 바랍니다.</li>
             </ul>
           </div>
 
           <div className="pt-5 border-t border-white/5 text-[11px] text-gray-500">
-            * 본 콘텐츠는 수도권 전역의 건강한 라이프스타일 구축과 올바른 신체 생리학적 테라피 정보 제공을 목적으로 케어존마사지 리서치 팀에 의해 작성 및 검수되었습니다.
+            * 본 콘텐츠는 수도권 전역의 건강한 라이프스타일 구축과 올바른 신체 생리학적 테라피 정보 제공을 목적으로 바른테라피 리서치 팀에 의해 작성 및 검수되었습니다.
           </div>
         </section>
 
-        {/* 가이드 섹션 */}
+        {/* 서비스 가이드 */}
         <section className="bg-[#0f0f13] border border-amber-500/20 p-6 md:p-8 rounded-3xl space-y-6">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">
               SERVICE GUIDE
             </span>
             <h3 className="text-xl font-black text-white mt-1">
-              케어존마사지 안심 이용 가이드
+              바른테라피 안심 이용 가이드
             </h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -607,7 +601,11 @@ export default function MainClientUI() {
           <div className="space-y-3">
             <FaqItem
               question="예약 및 상담은 어떻게 진행되나요?"
-              answer="케어존마사지에 등록된 각 제휴 업체의 전화연결 버튼을 통해 샵으로 직접 연결되며, 코스 및 시간을 바로 조율하실 수 있습니다."
+              answer="바른테라피에 등록된 각 제휴 업체의 전화연결 버튼을 통해 샵으로 직접 연결되며, 코스 및 시간을 바로 조율하실 수 있습니다."
+            />
+            <FaqItem
+              question="선입금이나 예약금이 발생하나요?"
+              answer="아닙니다. 바른테라피의 모든 제휴 샵은 100% 현장 후불 결제를 철저히 준수하고 있습니다."
             />
             <FaqItem
               question="수도권 전 지역 이용이 가능한가요?"
@@ -622,18 +620,18 @@ export default function MainClientUI() {
         <div className="max-w-4xl mx-auto px-4 space-y-4">
           <div>
             <a
-              href="tel:0507-1280-3344"
+              href="tel:0507-1280-3303"
               className="inline-flex items-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold px-4 py-2 rounded-xl border border-amber-500/30 hover:border-amber-400 transition-all text-xs shadow-md"
             >
-              <span>🤝</span> 케어존마사지 제휴 문의 (0507-1280-3344)
+              <span>🤝</span> 바른테라피 제휴 문의
             </a>
           </div>
 
           <p className="text-gray-400 font-medium">
-            케어존마사지는 건전하고 쾌적한 프리미엄 바디 테라피 제휴 정보를 제공하는 웰니스 안내 플랫폼입니다.
+            바른테라피는 건전하고 쾌적한 프리미엄 바디 테라피 제휴 정보를 제공하는 웰니스 안내 플랫폼입니다.
           </p>
           <p className="text-[11px] text-gray-600">
-            COPYRIGHT &copy; CAREZONE MASSAGE ALL RIGHTS RESERVED.
+            COPYRIGHT &copy; BARUN THERAPY ALL RIGHTS RESERVED.
           </p>
         </div>
       </footer>
