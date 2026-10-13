@@ -1,62 +1,154 @@
-// 바른테라피 지역 상세 페이지용 - 케어맵 상위 호환 통합 JSON-LD 예시
-const advancedJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    // 1. 빵가루 내비게이션
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://barun-therapy.netlify.app" },
-        { "@type": "ListItem", "position": 2, "name": regionFullName, "item": `https://barun-therapy.netlify.app/${region}` },
-        { "@type": "ListItem", "position": 3, "name": `${districtName} 출장마사지`, "item": canonicalUrl }
-      ]
+import type { Metadata } from 'next';
+import './globals.css';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://barun-therapy.netlify.app'),
+  title: {
+    default: '서울 출장 신뢰케어 마사지 | 일정에 맞춘 홈타이 코스 - 바른테라피',
+    template: '%s | 바른테라피',
+  },
+  description:
+    '바른테라피 - 선입금 없는 100% 현장 후불제 서울 출장마사지 안내. 서울·경기·인천 일정과 공간에 맞춘 검증 제휴 샵과 투명한 코스 가격을 확인하세요.',
+  keywords: [
+    '바른테라피',
+    '서울 출장 신뢰케어 마사지',
+    '서울 출장 안심 마사지',
+    '서울 홈타이',
+    '서울출장마사지',
+    '스웨디시',
+    '아로마마사지',
+    '출장마사지 후불제',
+  ],
+  authors: [{ name: '바른테라피' }],
+  creator: '바른테라피',
+  publisher: '바른테라피',
+  formatDetection: {
+    telephone: true,
+  },
+  alternates: {
+    canonical: 'https://barun-therapy.netlify.app',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: 'https://barun-therapy.netlify.app',
+    siteName: '바른테라피',
+    title: '서울 출장 신뢰케어 마사지 | 일정에 맞춘 홈타이 코스 - 바른테라피',
+    description:
+      '선입금 없는 100% 현장 후불제 서울 출장마사지 정보 플랫폼 바른테라피. 검증 제휴 샵과 투명한 가격 안내.',
+    images: [
+      {
+        url: '/shop1.jpg',
+        width: 1200,
+        height: 675,
+        alt: '바른테라피 서울 출장 신뢰케어 마사지 대표 이미지',
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
-    // 2. 비즈니스 엔티티 (영업시간, 가격, 결제방식 정밀 등록)
-    {
-      "@type": "HealthAndBeautyBusiness",
-      "@id": `${canonicalUrl}#business`,
-      "name": `${districtName} 출장 신뢰케어 마사지 - 바른테라피`,
-      "description": pattern.desc(districtName),
-      "url": canonicalUrl,
-      "telephone": "0507-1280-3303",
-      "image": "https://barun-therapy.netlify.app/shop1.jpg",
-      "openingHours": "Mo-Su 00:00-24:00",
-      "priceRange": "60,000원~",
-      "currenciesAccepted": "KRW",
-      "paymentAccepted": "Cash, Credit Card (100% 현장 후불)",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": districtName,
-        "addressRegion": regionFullName,
-        "addressCountry": "KR"
-      }
+  },
+  verification: {
+    other: {
+      'naver-site-verification': '6b62e9c4236f7cb461e8699f5031abfd5491f545',
     },
-    // 3. 케어맵의 강점인 HowTo (이용 절차 스키마 추가)
+  },
+};
+
+// 전역 사이트 구조화 데이터
+const globalStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
     {
-      "@type": "HowTo",
-      "name": `${districtName} 출장 안심 힐링 케어 이용 절차`,
-      "step": [
-        { "@type": "HowToStep", "position": 1, "name": "지역 및 코스 선택", "text": "바른테라피에서 거주 지역의 제휴 샵 코스와 정찰제 요금을 확인합니다." },
-        { "@type": "HowToStep", "position": 2, "name": "직통 안심 전화 상담", "text": "0507 안심번호로 샵과 직접 통화하여 방문 희망 시간과 장소를 조율합니다." },
-        { "@type": "HowToStep", "position": 3, "name": "신속 방문 및 프라이빗 케어", "text": "평균 25~35분 내 약속 장소로 전문 관리사가 방문하여 1:1 맞춤 세션을 진행합니다." },
-        { "@type": "HowToStep", "position": 4, "name": "100% 현장 후불 결제", "text": "선입금 없이 관리사 도착 후 계신 자리에서 직접 확인하고 결제합니다." }
-      ]
+      '@type': 'WebSite',
+      '@id': 'https://barun-therapy.netlify.app/#website',
+      url: 'https://barun-therapy.netlify.app',
+      name: '바른테라피',
+      alternateName: ['Barun Therapy', '바른 테라피'],
+      description: '서울·수도권 전지역 선입금 없는 100% 현장 후불제 출장 홈케어 안내 플랫폼',
+      inLanguage: 'ko-KR',
+      publisher: {
+        '@id': 'https://barun-therapy.netlify.app/#organization',
+      },
     },
-    // 4. FAQ 스키마 (검색창 아코디언 노출)
     {
-      "@type": "FAQPage",
-      "mainEntity": [
+      '@type': 'Organization',
+      '@id': 'https://barun-therapy.netlify.app/#organization',
+      name: '바른테라피',
+      url: 'https://barun-therapy.netlify.app',
+      logo: 'https://barun-therapy.netlify.app/shop1.jpg',
+      telephone: '0507-1280-3303',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '0507-1280-3303',
+        contactType: 'customer service',
+        areaServed: 'KR',
+        availableLanguage: 'Korean',
+      },
+    },
+    {
+      '@type': 'ItemList',
+      '@id': 'https://barun-therapy.netlify.app/#navigation',
+      name: '바른테라피 주요 메뉴',
+      itemListElement: [
         {
-          "@type": "Question",
-          "name": `${districtName} 출장마사지 예약 및 이용 방법은?`,
-          "acceptedAnswer": { "@type": "Answer", "text": "리스트의 직통 전화 버튼을 통해 샵 매니저와 직접 시간과 위치를 조율하실 수 있습니다." }
+          '@type': 'SiteNavigationElement',
+          position: 1,
+          name: '프로그램',
+          url: 'https://barun-therapy.netlify.app/services',
         },
         {
-          "@type": "Question",
-          "name": "선입금이나 예약금이 발생하나요?",
-          "acceptedAnswer": { "@type": "Answer", "text": "바른테라피의 모든 제휴점은 100% 현장 후불 결제를 준수하며 예약금을 요구하지 않습니다." }
-        }
-      ]
-    }
-  ]
+          '@type': 'SiteNavigationElement',
+          position: 2,
+          name: '코스비용',
+          url: 'https://barun-therapy.netlify.app/prices',
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          position: 3,
+          name: '지역여행',
+          url: 'https://barun-therapy.netlify.app/travel',
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          position: 4,
+          name: '맛집·숙소',
+          url: 'https://barun-therapy.netlify.app/places',
+        },
+        {
+          '@type': 'SiteNavigationElement',
+          position: 5,
+          name: '이용후기',
+          url: 'https://barun-therapy.netlify.app/reviews',
+        },
+      ],
+    },
+  ],
 };
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="ko">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalStructuredData) }}
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
