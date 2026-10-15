@@ -168,7 +168,7 @@ export default async function RegionHubPage({ params }: PageProps) {
             <Link href="/incheon" className="hover:text-amber-400 transition-colors">인천</Link>
             <Link href="/gyeonggi" className="hover:text-amber-400 transition-colors">경기</Link>
             <a
-              href="tel:0507-1280-3303"
+              href="tel:0507-1280-3360"
               className="ml-2 px-3.5 py-1.5 rounded-full bg-amber-400 text-black font-black hover:scale-105 transition-transform"
             >
               📞 전화문의
