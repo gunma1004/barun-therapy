@@ -7,9 +7,7 @@ interface PageProps {
   params: Promise<{
     region?: string;
     district?: string;
-    dong?: string;
-    shopId?: string;
-    id?: string;
+    slug?: string[]; // [...slug] 배열 (예: ['1'] 또는 ['역삼동', '1'])
   }>;
 }
 
@@ -24,24 +22,15 @@ function getRegionFullName(region?: string): string {
 
 function safeDecode(str?: string): string {
   if (!str) return "";
-  let decoded = str;
   try {
-    decoded = decodeURIComponent(decodeURIComponent(str));
+    return decodeURIComponent(decodeURIComponent(str)).trim();
   } catch {
     try {
-      decoded = decodeURIComponent(str);
+      return decodeURIComponent(str).trim();
     } catch {
-      decoded = str;
+      return str.trim();
     }
   }
-  return decoded.trim();
-}
-
-function parseLocationText(region?: string, district?: string, dong?: string): string {
-  const regionName = getRegionFullName(region);
-  const decodedDistrict = safeDecode(district);
-  const decodedDong = safeDecode(dong);
-  return `${regionName} ${decodedDistrict} ${decodedDong}`.replace(/\s+/g, " ").trim();
 }
 
 const shopData: Record<string, {
@@ -74,9 +63,7 @@ const shopData: Record<string, {
     badge: "재방문율 최우수",
     image: "/shop2.jpg",
     desc: "지친 하루의 피로를 말끔히 풀어드리는 1:1 방문 홈케어 서비스입니다.",
-    courses: [
-      { name: "출장 타이 마사지 (베이직)", time: "60분", price: "60,000원", priceNumber: 60000, desc: "전신 근육을 시원하게 스트레칭하는 출장 타이 코스" }
-    ],
+    courses: [{ name: "출장 타이 마사지 (베이직)", time: "60분", price: "60,000원", priceNumber: 60000, desc: "전신 근육을 시원하게 스트레칭하는 출장 타이 코스" }],
     features: ["선입금 0원", "전문 힐러", "간편 결제"]
   },
   "3": {
@@ -86,9 +73,7 @@ const shopData: Record<string, {
     badge: "칼도착 25분",
     image: "/shop3.jpg",
     desc: "정통 타이 마사지와 림프 순환을 돕는 아로마 마사지 전문 제휴 샵입니다.",
-    courses: [
-      { name: "스탠다드 정통 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "머리부터 발끝까지 뭉친 근육을 풀어주는 코스" }
-    ],
+    courses: [{ name: "스탠다드 정통 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "머리부터 발끝까지 뭉친 근육을 풀어주는 코스" }],
     features: ["100% 후불제", "평균 25분 방문", "개인정보 보호"]
   },
   "4": {
@@ -98,9 +83,7 @@ const shopData: Record<string, {
     badge: "인기도 TOP",
     image: "/shop4.jpg",
     desc: "베테랑 테라피스트들의 1:1 방문 맞춤 케어를 제공합니다.",
-    courses: [
-      { name: "컨디션 케어 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "지친 몸의 피로를 스트레칭으로 해소" }
-    ],
+    courses: [{ name: "컨디션 케어 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "지친 몸의 피로를 스트레칭으로 해소" }],
     features: ["감성 테라피", "후불 결제", "상시 대기"]
   },
   "5": {
@@ -110,21 +93,27 @@ const shopData: Record<string, {
     badge: "정찰제 안심센터",
     image: "/shop5.jpg",
     desc: "투명한 정찰제 가격으로 계신 곳에서 편안하게 받아보세요.",
-    courses: [
-      { name: "출장 타이 릴렉스", time: "60분", price: "60,000원", priceNumber: 60000, desc: "기본 스트레칭 프로그램" }
-    ],
+    courses: [{ name: "출장 타이 릴렉스", time: "60분", price: "60,000원", priceNumber: 60000, desc: "기본 스트레칭 프로그램" }],
     features: ["100% 현장후불제", "빠른 도착", "만족도 최상"]
   }
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const targetId = resolvedParams.shopId || resolvedParams.id || "1";
-  const shop = shopData[targetId] || shopData["1"];
+  const slug = resolvedParams.slug || [];
+  
+  const shopId = slug.length >= 2 ? slug[1] : slug[0] || "1";
+  const dongName = slug.length >= 2 ? safeDecode(slug[0]) : "";
+  
+  const regionName = getRegionFullName(resolvedParams.region);
+  const districtName = safeDecode(resolvedParams.district);
+  const locationText = dongName ? `${districtName} ${dongName}` : `${districtName}`;
+  const currentRegion = `${regionName} ${locationText}`.trim();
 
-  const currentRegion = parseLocationText(resolvedParams.region, resolvedParams.district, resolvedParams.dong);
+  const shop = shopData[shopId] || shopData["1"];
 
-  const charSum = (currentRegion + shop.cleanName + targetId + "shop_seo").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // 🌟 30종 SEO 롱테일 키워드 순환 회전 패턴
+  const charSum = (currentRegion + shop.cleanName + shopId + "shop_seo").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const variantIndex = charSum % 30;
 
   const titleVariants = [
@@ -195,238 +184,99 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const pageTitle = titleVariants[variantIndex];
   const pageDescription = descriptionVariants[variantIndex];
-
-  const canonicalPath = resolvedParams.dong
-    ? `/shop/${resolvedParams.region}/${encodeURIComponent(safeDecode(resolvedParams.district))}/${encodeURIComponent(safeDecode(resolvedParams.dong))}/${targetId}`
-    : `/shop/${resolvedParams.region}/${encodeURIComponent(safeDecode(resolvedParams.district))}/${targetId}`;
+  const canonicalPath = `/shop/${resolvedParams.region}/${encodeURIComponent(districtName)}${dongName ? `/${encodeURIComponent(dongName)}` : ''}/${shopId}`;
 
   return {
     title: { absolute: pageTitle },
     description: pageDescription,
     alternates: { canonical: `${SITE_URL}${canonicalPath}` },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-      },
-    },
-    // 🌟 robots 객체 외부 최상위 other에 Yeti 배치 (TS2353 에러 해결)
-    other: {
-      Yeti: "index,follow,max-image-preview:large",
-    },
-    openGraph: {
-      title: pageTitle,
-      description: pageDescription,
-      url: `${SITE_URL}${canonicalPath}`,
-      siteName: "바른테라피",
-      locale: "ko_KR",
-      type: "article",
-      images: [
-        {
-          url: `${SITE_URL}${shop.image}`,
-          width: 1200,
-          height: 630,
-          alt: `${shop.cleanName} ${currentRegion} 출장마사지 바른테라피`,
-        },
-      ],
-    },
   };
 }
 
 export default async function ShopDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const targetId = resolvedParams.shopId || resolvedParams.id || "1";
-  const shop = shopData[targetId] || shopData["1"];
-
-  const regionFullName = getRegionFullName(resolvedParams.region);
+  const slug = resolvedParams.slug || [];
+  
+  const shopId = slug.length >= 2 ? slug[1] : slug[0] || "1";
+  const dongName = slug.length >= 2 ? safeDecode(slug[0]) : "";
+  
+  const regionName = getRegionFullName(resolvedParams.region);
   const districtName = safeDecode(resolvedParams.district);
-  const dongName = safeDecode(resolvedParams.dong);
-  const currentRegion = parseLocationText(resolvedParams.region, resolvedParams.district, resolvedParams.dong);
+  const locationText = dongName ? `${districtName} ${dongName}` : `${districtName}`;
+  const currentRegion = `${regionName} ${locationText}`.trim();
 
-  const canonicalPath = resolvedParams.dong
-    ? `/shop/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/${targetId}`
-    : `/shop/${resolvedParams.region}/${encodeURIComponent(districtName)}/${targetId}`;
-  const currentUrl = `${SITE_URL}${canonicalPath}`;
-
-  const backUrl = resolvedParams.dong
+  const shop = shopData[shopId] || shopData["1"];
+  const backUrl = dongName 
     ? `/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`
     : `/${resolvedParams.region}/${encodeURIComponent(districtName)}`;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": `${currentUrl}#breadcrumb`,
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "홈", "item": SITE_URL },
-          { "@type": "ListItem", "position": 2, "name": regionFullName, "item": `${SITE_URL}/${resolvedParams.region}` },
-          { "@type": "ListItem", "position": 3, "name": `${districtName} 마사지`, "item": `${SITE_URL}/${resolvedParams.region}/${encodeURIComponent(districtName)}` },
-          ...(dongName ? [{ "@type": "ListItem", "position": 4, "name": `${dongName} 마사지`, "item": `${SITE_URL}/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}` }] : []),
-          { "@type": "ListItem", "position": dongName ? 5 : 4, "name": shop.cleanName, "item": currentUrl }
-        ]
-      },
-      {
-        "@type": ["HealthAndBeautyBusiness", "LocalBusiness"],
-        "@id": `${currentUrl}#business`,
-        "name": `${shop.cleanName} (${currentRegion} 출장마사지)`,
-        "description": shop.desc,
-        "image": `${SITE_URL}${shop.image}`,
-        "telephone": shop.phone,
-        "url": currentUrl,
-        "priceRange": "60,000원~160,000원",
-        "currenciesAccepted": "KRW",
-        "paymentAccepted": "Cash, Credit Card (100% 현장 후불제)",
-        "openingHours": "Mo-Su 00:00-24:00",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": dongName ? `${districtName} ${dongName}` : districtName,
-          "addressRegion": regionFullName,
-          "addressCountry": "KR"
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": `${shop.cleanName} 코스 요금표`,
-          "itemListElement": shop.courses.map((course, idx) => ({
-            "@type": "Offer",
-            "position": idx + 1,
-            "name": course.name,
-            "description": course.desc,
-            "price": course.priceNumber,
-            "priceCurrency": "KRW",
-            "availability": "https://schema.org/InStock"
-          }))
-        }
-      }
-    ]
-  };
-
   return (
-    <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black pb-28">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <header className="sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-xl border-b border-amber-500/20 px-4 py-3.5 shadow-[0_4px_20px_rgba(245,158,11,0.1)]">
+    <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans pb-28">
+      <header className="sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-xl border-b border-amber-500/20 px-4 py-3.5">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black text-lg shadow-[0_0_12px_rgba(245,158,11,0.4)]">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black">
               B
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-black tracking-wider bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-                바른테라피
-              </span>
-              <span className="text-[9px] text-gray-400 tracking-tighter">BARUN THERAPY PARTNER</span>
-            </div>
+            <span className="text-lg font-black bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent">
+              바른테라피
+            </span>
           </Link>
-          
           <Link 
             href={backUrl}
             className="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 hover:bg-amber-500 hover:text-black transition-all"
           >
-            ← {dongName || districtName} 목록
+            ← 이전 목록으로
           </Link>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-8">
-        <section className="bg-[#121214] border border-amber-500/30 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-          <div className="relative h-64 md:h-80 w-full overflow-hidden bg-neutral-900">
-            <img 
-              src={shop.image} 
-              alt={`${currentRegion} 출장 마사지 - ${shop.cleanName}`} 
-              className="w-full h-full object-cover filter brightness-[0.7]" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#121214] via-transparent to-black/30"></div>
-            <span className="absolute top-4 left-4 bg-amber-500 text-black text-xs font-black px-3.5 py-1.5 rounded-full shadow-lg">
+        <section className="bg-[#121214] border border-amber-500/30 rounded-3xl overflow-hidden shadow-xl">
+          <div className="relative h-64 md:h-80 w-full bg-neutral-900">
+            <img src={shop.image} alt={shop.cleanName} className="w-full h-full object-cover filter brightness-[0.7]" />
+            <span className="absolute top-4 left-4 bg-amber-500 text-black text-xs font-black px-3.5 py-1.5 rounded-full">
               {shop.badge}
             </span>
           </div>
 
-          <div className="p-6 md:p-8 space-y-4 -mt-8 relative z-10">
+          <div className="p-6 md:p-8 space-y-4">
             <div className="inline-block bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-xl text-amber-400 text-xs font-bold">
-              📍 {currentRegion} 출장 타이·아로마·스웨디시 마사지 24시 신속 방문
+              📍 {currentRegion} 출장 마사지 신속 방문
             </div>
-
             <h1 className="text-2xl md:text-3xl font-black text-white">
-              {currentRegion} 출장마사지 24시 안내 - <span className="text-amber-400">{shop.cleanName}</span>
+              {currentRegion} 출장마사지 - <span className="text-amber-400">{shop.cleanName}</span>
             </h1>
-
-            <p className="text-xs md:text-sm text-gray-300 leading-relaxed bg-black/50 p-4 rounded-2xl border border-white/5">
+            <p className="text-xs md:text-sm text-gray-300 bg-black/50 p-4 rounded-2xl border border-white/5">
               {shop.desc}
             </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
-              {shop.features.map((feat, idx) => (
-                <div key={idx} className="bg-black/60 border border-amber-500/20 px-3 py-2 rounded-xl text-center text-[11px] font-bold text-amber-300">
-                  ✓ {feat}
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
-        <section className="bg-[#0d0d0f] border border-amber-500/20 p-6 md:p-8 rounded-3xl space-y-6">
-          <div className="text-center">
-            <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">PROGRAM & PRICE</span>
-            <h2 className="text-xl md:text-2xl font-black text-white mt-1">
-              💎 {currentRegion} 출장 마사지 코스 및 정찰제 요금표
-            </h2>
-          </div>
-
-          <div className="space-y-4">
+        <section className="bg-[#0d0d0f] border border-amber-500/20 p-6 rounded-3xl space-y-4">
+          <h2 className="text-xl font-black text-white">💎 코스 및 정찰제 요금표</h2>
+          <div className="space-y-3">
             {shop.courses.map((course, idx) => (
-              <div key={idx} className="bg-black/60 border border-white/10 hover:border-amber-500/40 p-5 rounded-2xl flex flex-col md:flex-row justify-between md:items-center gap-3 transition-colors">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-amber-500/20 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded border border-amber-500/30">
-                      {course.time}
-                    </span>
-                    <h3 className="font-extrabold text-white text-base md:text-lg">{course.name}</h3>
-                  </div>
+              <div key={idx} className="bg-black/60 border border-white/10 p-4 rounded-2xl flex justify-between items-center">
+                <div>
+                  <span className="text-xs text-amber-300 font-bold">{course.time}</span>
+                  <h3 className="font-extrabold text-white text-base">{course.name}</h3>
                   <p className="text-xs text-gray-400">{course.desc}</p>
                 </div>
-                <div className="text-right">
-                  <span className="text-lg font-black text-amber-400 bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20 inline-block">
-                    {course.price}
-                  </span>
-                </div>
+                <span className="text-base font-black text-amber-400">{course.price}</span>
               </div>
             ))}
           </div>
         </section>
-
-        <section className="bg-black/80 p-5 rounded-2xl border border-white/10">
-          <h3 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-1.5">
-            <span>📌</span> {currentRegion} 마사지 안심 이용 안내
-          </h3>
-          <ul className="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
-            <li>바른테라피의 모든 제휴 업체는 <strong>100% 현장 후불제</strong>로만 운영되며, 사전 선입금이나 예약금을 일절 요구하지 않습니다.</li>
-            <li>원하시는 시간 20~30분 전에 문의해 주시면 출장 타이 마사지, 아로마 마사지, 감성 스웨디시 전문 테라피스트가 신속하게 방문합니다.</li>
-          </ul>
-        </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#08080a]/95 backdrop-blur-xl border-t border-amber-500/30 p-3 md:p-4 shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#08080a]/95 border-t border-amber-500/30 p-3">
         <div className="max-w-4xl mx-auto grid grid-cols-2 gap-3">
-          <a 
-            href={`tel:${shop.phone.replace(/-/g, "")}`}
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black py-3.5 rounded-2xl text-xs md:text-sm shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-transform active:scale-95"
-          >
-            <span className="text-lg">📞</span> 전화로 즉시예약
+          <a href={`tel:${shop.phone.replace(/-/g, "")}`} className="flex items-center justify-center gap-2 bg-amber-500 text-black font-black py-3 rounded-2xl text-sm">
+            📞 전화로 즉시예약
           </a>
-          <a 
-            href={`sms:${shop.phone.replace(/-/g, "")}?body=${encodeURIComponent(`[${currentRegion}]${shop.cleanName} 출장마사지 예약 문의드립니다. (바른테라피 보고 연락드렸어요)`)}`}
-            className="flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-black py-3.5 rounded-2xl text-xs md:text-sm border border-white/10 hover:border-amber-500/40 transition-transform active:scale-95"
-          >
-            <span className="text-lg">💬</span> 간편 문자상담
+          <a href={`sms:${shop.phone.replace(/-/g, "")}`} className="flex items-center justify-center gap-2 bg-neutral-900 text-white font-black py-3 rounded-2xl text-sm border border-white/10">
+            💬 간편 문자상담
           </a>
         </div>
       </div>
