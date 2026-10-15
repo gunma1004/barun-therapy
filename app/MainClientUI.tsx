@@ -90,30 +90,6 @@ export const regionData: Record<
   },
 };
 
-// URL 매핑용 영문 키 변환 테이블
-const districtSlugMap: Record<string, string> = {
-  // 서울
-  gangnam: "gangnam-gu", gangdong: "gangdong-gu", gangbuk: "gangbuk-gu", gangseo: "gangseo-gu",
-  gwanak: "gwanak-gu", gwangjin: "gwangjin-gu", guro: "guro-gu", geumcheon: "geumcheon-gu",
-  nowon: "nowon-gu", dobong: "dobong-gu", dongdaemun: "dongdaemun-gu", dongjak: "dongjak-gu",
-  mapo: "mapo-gu", seodaemun: "seodaemun-gu", seocho: "seocho-gu", seongdong: "seongdong-gu",
-  seongbuk: "seongbuk-gu", songpa: "songpa-gu", yangcheon: "yangcheon-gu", yeongdeungpo: "yeongdeungpo-gu",
-  yongsan: "yongsan-gu", eunpyeong: "eunpyeong-gu", jongno: "jongno-gu", jung: "jung-gu", jungnang: "jungnang-gu",
-  // 경기
-  suwon: "suwon-si", seongnam: "seongnam-si", goyang: "goyang-si", yongin: "yongin-si",
-  bucheon: "bucheon-si", ansan: "ansan-si", anyang: "anyang-si", namyangju: "namyangju-si",
-  hwaseong: "hwaseong-si", pyeongtaek: "pyeongtaek-si", uijeongbu: "uijeongbu-si", paju: "paju-si",
-  siheung: "siheung-si", gimpo: "gimpo-si", gwangmyeong: "gwangmyeong-si", gwangju: "gwangju-si",
-  gunpo: "gunpo-si", icheon: "icheon-si", osan: "osan-si", hanam: "hanam-si", yangju: "yangju-si",
-  guri: "guri-si", anseong: "anseong-si", pocheon: "pocheon-si", uiwang: "uiwang-si", yeoju: "yeoju-si",
-  yangpyeong: "yangpyeong-gun", dongducheon: "dongducheon-si", gwacheon: "gwacheon-si",
-  gapyeong: "gapyeong-gun", yeoncheon: "yeoncheon-gun",
-  // 인천
-  yeonsu: "yeonsu-gu", namdong: "namdong-gu", bupyeong: "bupyeong-gu", seo: "seo-gu",
-  michuhol: "michuhol-gu", gyeyang: "gyeyang-gu", dong: "dong-gu",
-  ganghwa: "ganghwa-gun", ongjin: "ongjin-gun",
-};
-
 const initialShops = [
   {
     id: 1,
@@ -162,6 +138,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
     <div className="bg-neutral-900/70 rounded-2xl border border-white/5 overflow-hidden transition-colors">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-4 text-left flex justify-between items-center font-bold text-sm text-gray-200 hover:text-amber-400 transition-colors"
       >
@@ -189,6 +166,7 @@ export default function MainClientUI() {
   const [shops, setShops] = useState(initialShops);
 
   useEffect(() => {
+    // 마운트 후 안전한 셔플
     const shuffled = [...initialShops];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -208,29 +186,65 @@ export default function MainClientUI() {
     setSelectedDong("");
   };
 
-  const handleSearch = () => {
-    if (!selectedDistrict) {
-      alert("원하시는 지역(구/시/군)을 먼저 선택해주세요!");
-      return;
-    }
-    
-    // 영문 슬러그 매핑 확인
-    const slug = districtSlugMap[selectedDistrict];
-    if (slug) {
-      window.location.href = `/areas/${selectedRegion}/${slug}/`;
-    } else {
-      window.location.href = `/${selectedRegion}/`;
-    }
-  };
-
   const currentDistricts = regionData[selectedRegion]?.districts || {};
   const currentDongs =
     selectedDistrict && currentDistricts[selectedDistrict]
       ? currentDistricts[selectedDistrict].dongs
       : [];
 
+  // 🌟 네이버 수집 봇이 추적 가능한 표준 URL (`/[region]/[district]` 형식)
+  const calculatedSearchUrl = (() => {
+    if (!selectedDistrict) {
+      return `/${selectedRegion}`;
+    }
+    const districtObj = currentDistricts[selectedDistrict];
+    const districtName = districtObj ? districtObj.name : selectedDistrict;
+    return selectedDong
+      ? `/${selectedRegion}/${encodeURIComponent(districtName)}/${encodeURIComponent(selectedDong)}`
+      : `/${selectedRegion}/${encodeURIComponent(districtName)}`;
+  })();
+
+  // 🌟 네이버 서치어드바이저 수집용 FAQPage JSON-LD 스키마
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "예약 및 상담은 어떻게 진행되나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "바른테라피에 등록된 각 제휴 업체의 전화연결 버튼을 통해 샵으로 직접 연결되며, 코스 및 시간을 바로 조율하실 수 있습니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "선입금이나 예약금이 발생하나요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "아닙니다. 바른테라피의 모든 제휴 샵은 100% 현장 후불 결제를 철저히 준수하고 있습니다.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "수도권 전 지역 이용이 가능한가요?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "서울 25개 구, 경기도 31개 시·군, 인천 전역의 주요 권역별로 등록된 제휴 샵 정보를 편리하게 확인하실 수 있습니다.",
+        },
+      },
+    ],
+  };
+
   return (
     <div className="bg-[#070709] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
+      
+      {/* 검색엔진 구조화 데이터 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-12">
         {/* 상단 메인 배너 */}
         <section className="text-center my-2">
@@ -251,14 +265,39 @@ export default function MainClientUI() {
               <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight drop-shadow-lg">
                 서울·경기·인천{" "}
                 <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                  바른테라피 서울 출장 신뢰케어 마사지 가이드
+                  바른테라피 출장 신뢰케어 마사지
                 </span>
               </h1>
               <p className="text-gray-200 text-xs md:text-sm font-medium max-w-lg mx-auto leading-relaxed drop-shadow">
-                선입금 없는 100% 현장 후불제! 검증된 전문 테라피스트들의 1:1 맞춤 바디 릴렉싱 프로그램을 바른테라피에서 손쉽게 비교하고 확인하세요.
+                바른테라피 - 선입금 없는 100% 현장 후불제 출장마사지 안내. 서울·경기·인천 검증 제휴 샵 코스와 투명한 가격을 확인하세요.
               </p>
             </div>
           </div>
+        </section>
+
+        {/* 🌟 네이버 로봇용 단독 권역 허브 바로가기 칩 3종 */}
+        <section className="grid grid-cols-3 gap-3">
+          <Link 
+            href="/seoul" 
+            className="p-4 rounded-2xl bg-neutral-900/90 border border-amber-500/30 hover:border-amber-400 text-center transition-all group shadow-md"
+          >
+            <span className="text-xs text-amber-400 font-extrabold block">SEOUL</span>
+            <strong className="text-sm md:text-base text-white group-hover:text-amber-300 transition-colors">서울 마사지 ↗</strong>
+          </Link>
+          <Link 
+            href="/gyeonggi" 
+            className="p-4 rounded-2xl bg-neutral-900/90 border border-amber-500/30 hover:border-amber-400 text-center transition-all group shadow-md"
+          >
+            <span className="text-xs text-amber-400 font-extrabold block">GYEONGGI</span>
+            <strong className="text-sm md:text-base text-white group-hover:text-amber-300 transition-colors">경기 마사지 ↗</strong>
+          </Link>
+          <Link 
+            href="/incheon" 
+            className="p-4 rounded-2xl bg-neutral-900/90 border border-amber-500/30 hover:border-amber-400 text-center transition-all group shadow-md"
+          >
+            <span className="text-xs text-amber-400 font-extrabold block">INCHEON</span>
+            <strong className="text-sm md:text-base text-white group-hover:text-amber-300 transition-colors">인천 마사지 ↗</strong>
+          </Link>
         </section>
 
         {/* 메인 추천 제휴 샵 */}
@@ -276,16 +315,17 @@ export default function MainClientUI() {
             {shops.map((lShop) => (
               <div
                 key={lShop.id}
-                className="bg-[#111114] border border-amber-500/20 rounded-2xl p-4 flex gap-4 items-center shadow-md"
+                className="bg-[#111114] border border-amber-500/20 rounded-2xl p-4 flex gap-4 items-center shadow-md relative group hover:border-amber-500/60 transition-all"
               >
+                <Link href={`/shop/${lShop.id}`} className="absolute inset-0 z-10" aria-label={`${lShop.name} 상세페이지 보기`} />
                 <img
                   src={lShop.image}
                   alt={lShop.name}
-                  className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-white/10 flex-shrink-0"
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-white/10 flex-shrink-0 group-hover:scale-105 transition-transform"
                 />
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-extrabold text-sm md:text-base text-white truncate">
+                  <h3 className="font-extrabold text-sm md:text-base text-white truncate group-hover:text-amber-400 transition-colors">
                     {lShop.name}
                   </h3>
                   <p className="text-[11px] text-gray-400 mt-1 line-clamp-2 leading-snug">
@@ -297,7 +337,7 @@ export default function MainClientUI() {
                     </span>
                     <a
                       href={`tel:${lShop.phone.replace(/-/g, "")}`}
-                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs px-3.5 py-1.5 rounded-xl shadow transition-colors active:scale-95 flex items-center gap-1"
+                      className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs px-3.5 py-1.5 rounded-xl shadow transition-colors relative z-20 flex items-center gap-1"
                     >
                       <span>📞</span> 전화연결
                     </a>
@@ -308,6 +348,55 @@ export default function MainClientUI() {
           </div>
         </section>
 
+        {/* 🌟 표준 기준 요금표 안내 테이블 (네이버 C-Rank 가산점) */}
+        <section className="bg-[#0f0f12] border border-amber-500/30 p-6 rounded-3xl space-y-4">
+          <div className="text-center">
+            <span className="text-xs text-amber-400 font-bold tracking-widest uppercase">COURSE & PRICE</span>
+            <h3 className="text-xl font-black text-white mt-1">바른테라피 표준 기준 요금표</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-center text-xs md:text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-white/10 text-gray-400">
+                  <th className="py-3 px-2">관리 코스</th>
+                  <th className="py-3 px-2">60분</th>
+                  <th className="py-3 px-2">90분</th>
+                  <th className="py-3 px-2">120분</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-gray-200">
+                <tr>
+                  <td className="py-3 font-bold text-white">타이마사지</td>
+                  <td className="py-3 text-amber-400 font-semibold">60,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">80,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">100,000원</td>
+                </tr>
+                <tr>
+                  <td className="py-3 font-bold text-white">아로마마사지</td>
+                  <td className="py-3 text-amber-400 font-semibold">70,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">90,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">110,000원</td>
+                </tr>
+                <tr>
+                  <td className="py-3 font-bold text-white">힐링마사지</td>
+                  <td className="py-3 text-amber-400 font-semibold">100,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">110,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">130,000원</td>
+                </tr>
+                <tr>
+                  <td className="py-3 font-bold text-white">스웨디시</td>
+                  <td className="py-3 text-amber-400 font-semibold">140,000원</td>
+                  <td className="py-3 text-amber-400 font-semibold">160,000원</td>
+                  <td className="py-3 text-gray-600">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[11px] text-gray-500 text-center mt-2">
+            ※ 100% 현장 후불제 기준이며 심야할증 없는 정찰제 가격을 준수합니다.
+          </p>
+        </section>
+
         {/* 수도권 지역 검색 박스 */}
         <section className="pt-6 border-t border-white/10">
           <div className="bg-gradient-to-b from-[#16161b] to-[#0e0e12] border border-amber-500/30 p-6 rounded-3xl max-w-xl mx-auto shadow-2xl text-left relative overflow-hidden">
@@ -316,7 +405,7 @@ export default function MainClientUI() {
                 📍 내 주변 맞춤 테라피 찾기
               </label>
               <span className="text-[11px] text-gray-400 bg-black/40 px-2.5 py-1 rounded-lg border border-white/5">
-                수도권 66개 시·군·구 전역
+                수도권 전지역 이동
               </span>
             </div>
 
@@ -379,17 +468,18 @@ export default function MainClientUI() {
                 </select>
               </div>
 
-              <button
-                onClick={handleSearch}
-                className="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black py-4 rounded-2xl text-sm transition-all shadow-[0_0_25px_rgba(245,158,11,0.35)] mt-3 cursor-pointer transform active:scale-[0.98]"
+              {/* 검색엔진 봇이 수집할 수 있는 직접 링크 */}
+              <Link
+                href={calculatedSearchUrl}
+                className="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black py-4 rounded-2xl text-sm transition-all shadow-[0_0_25px_rgba(245,158,11,0.35)] mt-3 block text-center cursor-pointer transform active:scale-[0.98]"
               >
                 🔍 선택한 지역 테라피 샵 정보 확인하기
-              </button>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* 네이버 로봇 크롤링 누락 방지용 주요 지역 내부 정적 링크 */}
+        {/* 네이버 로봇 크롤링 누락 방지용 주요 지역 내부 정적 링크 (표준 경로 연동) */}
         <section className="bg-[#0b0b0e] border border-white/5 p-6 rounded-3xl space-y-4">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-sm font-bold text-amber-400 flex items-center gap-1.5">
@@ -399,22 +489,52 @@ export default function MainClientUI() {
               원하시는 지역을 선택하시면 해당 지역의 추천 샵 목록과 코스를 바로 확인하실 수 있습니다.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2 pt-2">
-            {Object.entries(regionData).map(([rKey, rVal]) =>
-              Object.entries(rVal.districts).map(([dKey, dVal]) => {
-                const slug = districtSlugMap[dKey];
-                const href = slug ? `/areas/${rKey}/${slug}/` : `/${rKey}/`;
-                return (
+          
+          <div className="space-y-3 pt-2">
+            <div>
+              <span className="text-[11px] text-amber-300 font-extrabold block mb-1.5">서울특별시</span>
+              <div className="flex flex-wrap gap-1.5">
+                {Object.entries(regionData.seoul.districts).map(([dKey, dVal]) => (
                   <Link
                     key={dKey}
-                    href={href}
-                    className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-3 py-1.5 rounded-lg border border-white/5 transition-colors"
+                    href={`/seoul/${encodeURIComponent(dVal.name)}`}
+                    className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-2.5 py-1.5 rounded-lg border border-white/5 transition-colors"
                   >
-                    {dVal.name} 마사지
+                    {dVal.name}
                   </Link>
-                );
-              })
-            )}
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/5">
+              <span className="text-[11px] text-amber-300 font-extrabold block mb-1.5">경기도</span>
+              <div className="flex flex-wrap gap-1.5">
+                {Object.entries(regionData.gyeonggi.districts).map(([dKey, dVal]) => (
+                  <Link
+                    key={dKey}
+                    href={`/gyeonggi/${encodeURIComponent(dVal.name)}`}
+                    className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-2.5 py-1.5 rounded-lg border border-white/5 transition-colors"
+                  >
+                    {dVal.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/5">
+              <span className="text-[11px] text-amber-300 font-extrabold block mb-1.5">인천광역시</span>
+              <div className="flex flex-wrap gap-1.5">
+                {Object.entries(regionData.incheon.districts).map(([dKey, dVal]) => (
+                  <Link
+                    key={dKey}
+                    href={`/incheon/${encodeURIComponent(dVal.name)}`}
+                    className="text-xs bg-neutral-900/90 text-gray-300 hover:text-amber-400 hover:border-amber-500/40 px-2.5 py-1.5 rounded-lg border border-white/5 transition-colors"
+                  >
+                    {dVal.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -452,7 +572,7 @@ export default function MainClientUI() {
               <span className="text-amber-400 font-black">2.</span> 자율신경계 불균형과 심신 릴렉싱의 상호작용
             </h3>
             <p>
-              과중한 업무 스트레스와 불규칙한 생활 리듬은 인체의 교감신경계를 만성 흥분 상태로 몰아넣습니다. 교감신경의 지속적인 과활성화는 스트레스 호르몬인 코르티솔과 아드레날린 분비를 촉진하고, 심박수 증가와 말초 혈관 수축을 야기하여 신체를 항시적인 긴장 상태로 유지시킵니다. 이러한 상태가 장기화되면 야간 숙면을 방해하는 수면 장애, 소화 흡수 장애, 만성 무기력증이 동반됩니다.
+              과중한 업무 스트레스와 불규칙한 생활 리듬은 인체의 교감신경계를 만성 흥분 상태로 몰아넣습니다. 교감신경의 지속적인 과활성화는 스트레스 호르몬인 코르티솔과 아드레날린 분비를 촉진하고, 심박수 증가와 말초 혈관 수축을 야기하여 신체를 항시적인 긴장 상태로 유지시킵니다.
             </p>
             <p>
               숙련된 테라피스트에 의한 균일하고 차분한 압력 자극은 피부 감각 수용기를 자극하여 뇌로 전달되는 감각 신호를 안정화시킵니다. 이는 부교감신경계를 활성화하여 심장 박동을 안정시키고 혈관을 확장시키며, 체내 행복 호르몬인 옥시토신과 세로토닌의 분비를 촉진합니다.
@@ -476,18 +596,6 @@ export default function MainClientUI() {
                   식물성 베이스 오일을 도포하여 마찰 저항을 최소화한 상태에서 심장 방향으로 부드럽게 밀어 올리는 테크닉입니다. 미세 순환을 촉진하고 통증 없이 림프절을 자극하여 부종 완화와 깊은 안도감을 선사합니다.
                 </p>
               </div>
-              <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
-                <h4 className="font-bold text-amber-400 text-xs sm:text-sm">에센셜 아로마 림프 테라피</h4>
-                <p className="text-gray-400 text-[11px] sm:text-xs">
-                  라벤더, 유칼립투스 등 순수 에센셜 오일의 후각적 아로마 효과를 접목한 기법입니다. 피부 보습 장벽을 보호하는 동시에 피하 지방층 주변 림프액의 배농을 유도하여 붓기를 개선합니다.
-                </p>
-              </div>
-              <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-1.5">
-                <h4 className="font-bold text-amber-400 text-xs sm:text-sm">심부 근막 집중 딥티슈 케어</h4>
-                <p className="text-gray-400 text-[11px] sm:text-xs">
-                  표층 근육을 넘어 뼈와 관절에 맞닿아 있는 심부 근막의 단단한 매듭을 체중을 이용해 서서히 압박하는 기법입니다. 만성 유착 부위를 분리하여 깊은 속근육의 피로를 근본적으로 해소합니다.
-                </p>
-              </div>
             </div>
           </div>
 
@@ -496,19 +604,8 @@ export default function MainClientUI() {
               <span className="text-amber-400 font-black">4.</span> 프라이빗 1인 케어 환경이 선사하는 심리·시간적 효율성
             </h3>
             <p>
-              개인 자택이나 호텔 객실 등 독립된 사적 공간에서 진행되는 프라이빗 케어는 외부 소음과 이동 스트레스를 차단하여 부교감신경이 방해 없이 활성화될 수 있는 최적의 환경을 제공합니다. 관리가 끝난 후 환복이나 복잡한 귀가 이동 없이 온전히 자신의 공간에서 깊은 숙면으로 전환할 수 있습니다.
+              개인 자택이나 호텔 객실 등 독립된 사적 공간에서 진행되는 프라이빗 케어는 외부 소음과 이동 스트레스를 차단하여 완전한 휴식을 보장합니다. 관리가 끝난 후 환복이나 복잡한 귀가 이동 없이 온전히 자신의 공간에서 깊은 숙면으로 전환할 수 있습니다.
             </p>
-          </div>
-
-          <div className="space-y-3.5">
-            <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-              <span className="text-amber-400 font-black">5.</span> 안전하고 신뢰할 수 있는 웰니스 플랫폼 이용 수칙
-            </h3>
-            <ul className="list-disc list-inside space-y-1.5 text-gray-400 pl-2">
-              <li><strong className="text-gray-200">100% 현장 후불 원칙:</strong> 신뢰할 수 있는 공인 파트너는 불법적인 예약 선입금이나 불투명한 현장 추가금을 절대 요구하지 않습니다.</li>
-              <li><strong className="text-gray-200">기저 질환 사전 고지:</strong> 최근 관절 시술을 받았거나 골절 병력, 임신 중인 경우 세션 전 테라피스트에게 신체 상태를 고지하여 적절한 강도를 조율해야 합니다.</li>
-              <li><strong className="text-gray-200">사후 수분 섭취와 체온 유지:</strong> 관리를 마친 후에는 림프 순환을 통해 체내로 배출된 대사 부산물이 원활히 배설될 수 있도록 미온수를 충분히 섭취하시기 바랍니다.</li>
-            </ul>
           </div>
 
           <div className="pt-5 border-t border-white/5 text-[11px] text-gray-500">
@@ -553,38 +650,6 @@ export default function MainClientUI() {
               <h4 className="font-bold text-white mt-1">맞춤 케어</h4>
               <p className="text-xs text-gray-400 mt-1">
                 전문 테라피스트의 프라이빗 힐링을 누립니다.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 이용 후기 */}
-        <section className="space-y-4">
-          <div className="text-center">
-            <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">
-              USER REVIEWS
-            </span>
-            <h3 className="text-xl font-black text-white mt-1">
-              실제 이용 고객 솔직 후기
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-[#101014] p-5 rounded-2xl border border-white/5 space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-amber-400 font-black text-sm">★★★★★ 5.0</span>
-                <span className="text-[11px] text-gray-500">서울 강남 이용자</span>
-              </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                &quot;시간에 맞춰 꼼꼼하게 진행해주셨고 관리사분이 매우 정성스럽게 관리해 주셨습니다. 뭉친 피로가 싹 풀렸네요.&quot;
-              </p>
-            </div>
-            <div className="bg-[#101014] p-5 rounded-2xl border border-white/5 space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-amber-400 font-black text-sm">★★★★★ 5.0</span>
-                <span className="text-[11px] text-gray-500">인천 송도 이용자</span>
-              </div>
-              <p className="text-xs text-gray-300 leading-relaxed">
-                &quot;플랫폼에 등록된 정보가 투명해서 좋았고 상담도 친절했습니다. 번거롭게 찾아다닐 필요 없이 편리하게 이용했습니다.&quot;
               </p>
             </div>
           </div>

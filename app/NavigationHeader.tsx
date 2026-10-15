@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function NavigationHeader() {
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-[#070709]/95 backdrop-blur-xl border-b border-amber-500/20 px-4 py-3 shadow-[0_4px_20px_rgba(245,158,11,0.08)]">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
+        
         {/* 로고 영역 */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black text-lg shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
@@ -25,84 +25,37 @@ export default function NavigationHeader() {
           </div>
         </Link>
 
-        {/* 데스크톱 카테고리 메뉴 목록 */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-gray-300">
-          {/* 1. 프로그램 안내 */}
+        {/* 데스크톱 카테고리: 서울·경기·인천 단독 권역 직결 링크 및 안내 */}
+        <nav className="hidden md:flex items-center gap-7 text-xs font-bold text-gray-300">
           <Link
-            href="/services"
-            className="hover:text-amber-400 transition-colors flex items-center gap-1"
+            href="/seoul"
+            className="hover:text-amber-400 transition-colors"
           >
-            프로그램
+            서울
           </Link>
-
-          {/* 2. 코스비용 */}
           <Link
-            href="/prices"
-            className="hover:text-amber-400 transition-colors flex items-center gap-1"
+            href="/gyeonggi"
+            className="hover:text-amber-400 transition-colors"
           >
-            코스비용
+            경기
           </Link>
-
-          {/* 3. 지역여행 */}
           <Link
-            href="/travel"
-            className="hover:text-amber-400 transition-colors flex items-center gap-1"
+            href="/incheon"
+            className="hover:text-amber-400 transition-colors"
           >
-            지역여행
+            인천
           </Link>
-
-          {/* 4. 맛집·숙소 */}
           <Link
-            href="/places"
-            className="hover:text-amber-400 transition-colors flex items-center gap-1"
+            href="/#courses"
+            className="hover:text-amber-400 transition-colors"
           >
-            맛집·숙소
+            코스안내
           </Link>
-
-          {/* 5. 지역안내 (드롭다운) */}
-          <div
-            className="relative cursor-pointer py-2"
-            onMouseEnter={() => setIsRegionOpen(true)}
-            onMouseLeave={() => setIsRegionOpen(false)}
-          >
-            <button
-              type="button"
-              className="hover:text-amber-400 transition-colors flex items-center gap-1 text-xs font-bold text-gray-300 outline-none"
-            >
-              지역안내
-              <span className="text-[10px] text-amber-400">▼</span>
-            </button>
-
-            {isRegionOpen && (
-              <div className="absolute top-full left-0 w-36 bg-[#121215] border border-amber-500/30 rounded-2xl shadow-2xl py-2 space-y-1 text-xs z-50">
-                <Link
-                  href="/"
-                  className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
-                >
-                  📍 서울 권역
-                </Link>
-                <Link
-                  href="/gyeonggi/"
-                  className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
-                >
-                  📍 경기 권역
-                </Link>
-                <Link
-                  href="/incheon/"
-                  className="block px-4 py-2 hover:bg-amber-500/10 hover:text-amber-400 transition-colors"
-                >
-                  📍 인천 권역
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* 6. 이용후기 */}
           <Link
-            href="/reviews"
-            className="text-amber-400 font-extrabold hover:text-yellow-300 transition-colors flex items-center gap-1 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30"
+            href="/#guide"
+            className="hover:text-amber-400 transition-colors"
           >
-            <span>💬</span> 이용후기
+            이용가이드
           </Link>
         </nav>
 
@@ -110,7 +63,7 @@ export default function NavigationHeader() {
         <div className="flex items-center gap-2">
           <a
             href="tel:0507-1280-3303"
-            className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 hover:brightness-105"
+            className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 hover:brightness-105 flex items-center gap-1"
           >
             📞 빠른 문의
           </a>
@@ -148,71 +101,51 @@ export default function NavigationHeader() {
         </div>
       </div>
 
-      {/* 모바일 슬라이드/드롭 메뉴 (네이버/구글 크롤러 링크 추적 호환) */}
+      {/* 모바일 드롭다운 메뉴 (단독 권역 및 코스 직결) */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-white/10 mt-3 pt-3 space-y-2 text-xs font-bold text-gray-300">
-          <Link
-            href="/services"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg hover:bg-neutral-900 hover:text-amber-400"
-          >
-            프로그램
-          </Link>
-          <Link
-            href="/prices"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg hover:bg-neutral-900 hover:text-amber-400"
-          >
-            코스비용
-          </Link>
-          <Link
-            href="/travel"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg hover:bg-neutral-900 hover:text-amber-400"
-          >
-            지역여행
-          </Link>
-          <Link
-            href="/places"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg hover:bg-neutral-900 hover:text-amber-400"
-          >
-            맛집·숙소
-          </Link>
-          <div className="px-3 py-2 bg-neutral-900/60 rounded-xl space-y-1">
+          <div className="px-3 py-2 bg-neutral-900/70 rounded-xl space-y-1.5">
             <span className="text-[11px] text-amber-400 block font-bold">
               지역별 마사지
             </span>
-            <div className="flex gap-2 pt-1">
+            <div className="grid grid-cols-3 gap-2 pt-1">
               <Link
-                href="/"
+                href="/seoul"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
+                className="text-center text-xs bg-black/60 py-2 rounded-lg text-gray-200 hover:text-amber-400 hover:border-amber-400 border border-white/5 transition-colors"
               >
-                서울
+                📍 서울
               </Link>
               <Link
-                href="/gyeonggi/"
+                href="/gyeonggi"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
+                className="text-center text-xs bg-black/60 py-2 rounded-lg text-gray-200 hover:text-amber-400 hover:border-amber-400 border border-white/5 transition-colors"
               >
-                경기
+                📍 경기
               </Link>
               <Link
-                href="/incheon/"
+                href="/incheon"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[11px] bg-black/50 px-2.5 py-1 rounded-md text-gray-300 hover:text-amber-400"
+                className="text-center text-xs bg-black/60 py-2 rounded-lg text-gray-200 hover:text-amber-400 hover:border-amber-400 border border-white/5 transition-colors"
               >
-                인천
+                📍 인천
               </Link>
             </div>
           </div>
+
           <Link
-            href="/reviews"
+            href="/#courses"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-amber-400 hover:bg-amber-500/10"
+            className="block px-3 py-2.5 rounded-lg hover:bg-neutral-900 hover:text-amber-400 transition-colors"
           >
-            💬 이용후기
+            💎 코스안내
+          </Link>
+          <Link
+            href="/#guide"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2.5 rounded-lg hover:bg-neutral-900 hover:text-amber-400 transition-colors"
+          >
+            📋 이용가이드
           </Link>
         </div>
       )}

@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import ClientTextMixer from "./ClientTextMixer";
 
+const SITE_URL = "https://barun-therapy.netlify.app";
+
 interface PageProps {
   params: Promise<{
     region: string;
@@ -38,135 +40,142 @@ function getRegionFullName(region: string): string {
 
 // 🗺️ 영문 슬러그 -> 한글 표준 행정구역명 맵핑 사전
 const SLUG_TO_KOREAN: Record<string, string> = {
-  // 광역 시·도 파라미터 자체 방어
   seoul: "서울",
   gyeonggi: "경기",
   incheon: "인천",
-
-  // 서울 25개 자치구 영문 및 -gu 대응
-  jongno: "종로구",
+  "jongno": "종로구",
   "jongno-gu": "종로구",
-  jung: "중구",
+  "jung": "중구",
   "jung-gu": "중구",
-  yongsan: "용산구",
+  "yongsan": "용산구",
   "yongsan-gu": "용산구",
-  seongdong: "성동구",
+  "seongdong": "성동구",
   "seongdong-gu": "성동구",
-  gwangjin: "광진구",
+  "gwangjin": "광진구",
   "gwangjin-gu": "광진구",
-  dongdaemun: "동대문구",
+  "dongdaemun": "동대문구",
   "dongdaemun-gu": "동대문구",
-  jungnang: "중랑구",
+  "jungnang": "중랑구",
   "jungnang-gu": "중랑구",
-  seongbuk: "성북구",
+  "seongbuk": "성북구",
   "seongbuk-gu": "성북구",
-  gangbuk: "강북구",
+  "gangbuk": "강북구",
   "gangbuk-gu": "강북구",
-  dobong: "도봉구",
+  "dobong": "도봉구",
   "dobong-gu": "도봉구",
-  nowon: "노원구",
+  "nowon": "노원구",
   "nowon-gu": "노원구",
-  eunpyeong: "은평구",
+  "eunpyeong": "은평구",
   "eunpyeong-gu": "은평구",
-  seodaemun: "서대문구",
+  "seodaemun": "서대문구",
   "seodaemun-gu": "서대문구",
-  mapo: "마포구",
+  "mapo": "마포구",
   "mapo-gu": "마포구",
-  yangcheon: "양천구",
+  "yangcheon": "양천구",
   "yangcheon-gu": "양천구",
-  gangseo: "강서구",
+  "gangseo": "강서구",
   "gangseo-gu": "강서구",
-  guro: "구로구",
+  "guro": "구로구",
   "guro-gu": "구로구",
-  geumcheon: "금천구",
+  "geumcheon": "금천구",
   "geumcheon-gu": "금천구",
-  yeongdeungpo: "영등포구",
+  "yeongdeungpo": "영등포구",
   "yeongdeungpo-gu": "영등포구",
-  dongjak: "동작구",
+  "dongjak": "동작구",
   "dongjak-gu": "동작구",
-  gwanak: "관악구",
+  "gwanak": "관악구",
   "gwanak-gu": "관악구",
-  seocho: "서초구",
+  "seocho": "서초구",
   "seocho-gu": "서초구",
-  gangnam: "강남구",
+  "gangnam": "강남구",
   "gangnam-gu": "강남구",
-  songpa: "송파구",
+  "songpa": "송파구",
   "songpa-gu": "송파구",
-  gangdong: "강동구",
+  "gangdong": "강동구",
   "gangdong-gu": "강동구",
 
-  // 경기 주요 시·구
-  suwon: "수원시",
+  "suwon": "수원시",
   "suwon-si": "수원시",
-  suwon_jangan: "수원시 장안구",
-  suwon_gwonseon: "수원시 권선구",
-  suwon_paldal: "수원시 팔달구",
-  suwon_yeongtong: "수원시 영통구",
-  seongnam: "성남시",
+  "seongnam": "성남시",
   "seongnam-si": "성남시",
-  seongnam_bundang: "성남시 분당구",
-  seongnam_sujeong: "성남시 수정구",
-  seongnam_jungwon: "성남시 중원구",
-  goyang: "고양시",
+  "goyang": "고양시",
   "goyang-si": "고양시",
-  goyang_deogyang: "고양시 덕양구",
-  goyang_ilsandong: "고양시 일산동구",
-  goyang_ilsanseo: "고양시 일산서구",
-  yongin: "용인시",
+  "yongin": "용인시",
   "yongin-si": "용인시",
-  yongin_suji: "용인시 수지구",
-  yongin_giheung: "용인시 기흥구",
-  yongin_cheoin: "용인시 처인구",
-  bucheon: "부천시",
+  "bucheon": "부천시",
   "bucheon-si": "부천시",
-  bucheon_wonmi: "부천시 원미구",
-  bucheon_sosa: "부천시 소사구",
-  bucheon_ojeong: "부천시 오정구",
-  anyang: "안양시",
-  "anyang-si": "안양시",
-  anyang_manan: "안양시 만안구",
-  anyang_dongan: "안양시 동안구",
-  ansan: "안산시",
+  "ansan": "안산시",
   "ansan-si": "안산시",
-  ansan_sangnok: "안산시 상록구",
-  ansan_danwon: "안산시 단원구",
-  gwangmyeong: "광명시",
-  pyeongtaek: "평택시",
-  gwacheon: "과천시",
-  guri: "구리시",
-  namyangju: "남양주시",
-  osan: "오산시",
-  siheung: "시흥시",
-  gunpo: "군포시",
-  uiwang: "의왕시",
-  hanam: "하남시",
-  paju: "파주시",
-  icheon: "이천시",
-  anseong: "안성시",
-  gimpo: "김포시",
-  hwaseong: "화성시",
-  gwangju: "광주시",
-  yangju: "양주시",
-  pochon: "포천시",
-  yeoju: "여주시",
-  uijeongbu: "의정부시",
+  "anyang": "안양시",
+  "anyang-si": "안양시",
+  "namyangju": "남양주시",
+  "namyangju-si": "남양주시",
+  "hwaseong": "화성시",
+  "hwaseong-si": "화성시",
+  "pyeongtaek": "평택시",
+  "pyeongtaek-si": "평택시",
+  "uijeongbu": "의정부시",
+  "uijeongbu-si": "의정부시",
+  "paju": "파주시",
+  "paju-si": "파주시",
+  "siheung": "시흥시",
+  "siheung-si": "시흥시",
+  "gimpo": "김포시",
+  "gimpo-si": "김포시",
+  "gwangmyeong": "광명시",
+  "gwangmyeong-si": "광명시",
+  "gwangju": "광주시",
+  "gwangju-si": "광주시",
+  "gunpo": "군포시",
+  "gunpo-si": "군포시",
+  "icheon": "이천시",
+  "icheon-si": "이천시",
+  "osan": "오산시",
+  "osan-si": "오산시",
+  "hanam": "하남시",
+  "hanam-si": "하남시",
+  "yangju": "양주시",
+  "yangju-si": "양주시",
+  "guri": "구리시",
+  "guri-si": "구리시",
+  "anseong": "안성시",
+  "anseong-si": "안성시",
+  "pocheon": "포천시",
+  "pocheon-si": "포천시",
+  "uiwang": "의왕시",
+  "uiwang-si": "의왕시",
+  "yeoju": "여주시",
+  "yeoju-si": "여주시",
+  "yangpyeong": "양평군",
+  "yangpyeong-gun": "양평군",
+  "dongducheon": "동두천시",
+  "dongducheon-si": "동두천시",
+  "gwacheon": "과천시",
+  "gwacheon-si": "과천시",
+  "gapyeong": "가평군",
+  "gapyeong-gun": "가평군",
+  "yeoncheon": "연천군",
+  "yeoncheon-gun": "연천군",
 
-  // 인천 주요 자치구
-  jemulpo: "제물포구",
-  yeongjong: "영종구",
-  michuhol: "미추홀구",
-  yeonsu: "연수구",
+  "yeonsu": "연수구",
   "yeonsu-gu": "연수구",
-  namdong: "남동구",
+  "namdong": "남동구",
   "namdong-gu": "남동구",
-  bupyeong: "부평구",
+  "bupyeong": "부평구",
   "bupyeong-gu": "부평구",
-  gyeyang: "계양구",
+  "seo": "서구",
+  "seo-gu": "서구",
+  "michuhol": "미추홀구",
+  "michuhol-gu": "미추홀구",
+  "junggu": "서울중구",
+  "yeyang": "계양구",
   "gyeyang-gu": "계양구",
-  seohae: "서구",
-  geomdan: "검단구",
-  ganghwa: "강화군",
-  ongjin: "옹진군",
+  "dong": "동구",
+  "dong-gu": "동구",
+  "ganghwa": "강화군",
+  "ganghwa-gun": "강화군",
+  "ongjin": "옹진군",
+  "ongjin-gun": "옹진군",
 };
 
 function formatDistrictName(rawDistrict: string): string {
@@ -188,21 +197,11 @@ const DISTRICT_DONGS_MAP: Record<string, string[]> = {
 };
 
 const SEO_PATTERNS = [
-  { title: "출장 신뢰케어 마사지 & 프리미엄 케어", desc: (r: string) => `${r} 출장마사지 안심 가이드. 나만의 편안한 공간에서 경험하는 1:1 맞춤 바디 테라피 코스와 100% 현장후불 정찰제 요금을 바른테라피에서 확인하세요.` },
-  { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (r: string) => `${r} 출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램으로 지친 피로를 풀어드립니다.` },
-  { title: "출장 아로마 마사지 오일 테라피 안내", desc: (r: string) => `${r} 출장마사지 힐링 케어. 천연 에센셜 오일로 누적된 일상 스트레스를 부드럽게 비워내는 솔루션입니다.` },
-  { title: "출장 타이 마사지 정통 바디 스트레칭", desc: (r: string) => `${r} 출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절로 굳은 몸을 개운하게 풀어드립니다.` },
-  { title: "출장 릴렉스 마사지 집중 피로 회복", desc: (r: string) => `${r} 출장마사지 큐레이션. 집이나 편안한 숙소에서 언제든 프라이빗하게 누리는 맞춤형 힐링 플랫폼입니다.` },
-  { title: "출장 딥티슈 마사지 속근육 집중 케어", desc: (r: string) => `${r} 출장마사지 프로그램. 만성적인 목 어깨 결림과 등, 허리의 뭉친 피로를 집중적으로 완화해 드립니다.` },
-  { title: "출장 림프 순환 마사지 바디 솔루션", desc: (r: string) => `${r} 출장마사지 정찰제 안내. 정체된 신체 림프 순환을 돕고 붓기 관리에 집중한 편안한 웰니스 케어입니다.` },
-  { title: "출장 감성 테라피 마사지 제휴 안내", desc: (r: string) => `${r} 출장마사지 실시간 연결. 편안한 휴식을 제공하는 검증된 파트너 샵 정보를 한눈에 비교해 보세요.` },
-  { title: "출장 밸런스 힐링 마사지 가이드", desc: (r: string) => `${r} 출장마사지 추천. 균형 잡힌 바디 컨디션과 활력 회복을 돕는 1:1 방문 맞춤 테라피를 만나보세요.` },
-  { title: "출장 프리미엄 바디 마사지 힐링 안내", desc: (r: string) => `${r} 출장마사지 VIP 안내. 고급 천연 오일과 세심한 케어가 어우러진 최고급 릴렉싱 프로그램을 안내합니다.` },
-  { title: "출장 건식 스트레칭 마사지 포인트 케어", desc: (r: string) => `${r} 출장마사지 코스 비교. 끈적임 없이 산뜻하게 굳은 근육의 긴장을 해소하는 수기 스트레칭 케어입니다.` },
-  { title: "출장 에스테틱 힐링 마사지 바디 웰빙", desc: (r: string) => `${r} 출장마사지 안내. 피부 보습과 뭉친 피로 회복을 함께 챙기는 복합 바디 웰니스 트리트먼트를 경험하세요.` },
-  { title: "출장 로열 바디케어 마사지 1:1 안내", desc: (r: string) => `${r} 출장마사지 매칭 플랫폼. 독립된 프라이빗 공간에서 온전한 휴식을 누리는 스마트 힐링 가이드라인을 제공합니다.` },
-  { title: "출장 소프트 아로마 마사지 포근한 이완", desc: (r: string) => `${r} 출장마사지 가이드. 자극 없는 편안한 손길로 일상의 피로와 스트레스를 부드럽게 녹여드립니다.` },
-  { title: "출장 호텔식 럭셔리 마사지 프라이빗 케어", desc: (r: string) => `${r} 출장마사지 웰니스 솔루션. 정갈한 서비스와 수준 높은 테라피 프로그램을 투명한 100% 현장후불제로 이용하세요.` }
+  { title: "출장 신뢰케어 마사지 & 프리미엄 케어", desc: (r: string) => `${r} 출장마사지 안심 가이드. 100% 현장후불 정찰제 요금을 바른테라피에서 확인하세요.` },
+  { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (r: string) => `${r} 출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램을 제공합니다.` },
+  { title: "출장 아로마 마사지 오일 테라피 안내", desc: (r: string) => `${r} 출장마사지 힐링 케어. 천연 에센셜 오일로 누적된 일상 스트레스를 부드럽게 비워냅니다.` },
+  { title: "출장 타이 마사지 정통 바디 스트레칭", desc: (r: string) => `${r} 출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절을 만나보세요.` },
+  { title: "출장 릴렉스 마사지 집중 피로 회복", desc: (r: string) => `${r} 출장마사지 큐레이션. 집이나 편안한 숙소에서 언제든 프라이빗하게 누리는 힐링 플랫폼.` },
 ];
 
 function getDynamicDistrictInsight(districtName: string, seed: number) {
@@ -211,73 +210,26 @@ function getDynamicDistrictInsight(districtName: string, seed: number) {
       subtitle: `${districtName} 직장인 및 현대인을 위한 바디 밸런스 회복 가이드`,
       sec1Title: "1. 좌식 생활과 경추·승모근의 만성 긴장 메커니즘",
       sec1Text: [
-        `${districtName} 일대에서 사무 업무나 이동이 잦은 직장인들은 장시간 고정된 자세로 인해 상체 근골격계에 피로가 쉽게 누적됩니다. 특히 모니터를 향해 목을 앞으로 빼는 거북목 형태의 자세는 경추 굴곡근을 약화시키고 상부 승모근과 견갑거근에 지속적인 장력을 가하게 됩니다. 이로 인해 어깨 윗선이 묵직해지고 혈류 순환이 제한되면서 뻐근한 두통이나 피로감이 동반됩니다.`,
-        `이러한 국소 부위의 근막 유착을 풀어내기 위해서는 경직된 근섬유의 온도를 서서히 올리고, 수기 테크닉을 통해 근육 결을 따라 부드럽게 이완시키는 과정이 요구됩니다. 굳어있던 혈관이 확장되면서 산소와 영양소가 원활히 공급되고, 축적된 피로 물질이 배출되어 신체 본래의 유연성과 가동 범위를 회복할 수 있습니다.`
+        `${districtName} 일대에서 사무 업무나 이동이 잦은 직장인들은 장시간 고정된 자세로 인해 상체 근골격계에 피로가 쉽게 누적됩니다. 어깨 윗선이 묵직해지고 혈류 순환이 제한되면서 뻐근한 피로감이 동반됩니다.`,
+        `이러한 국소 부위의 근막 유착을 풀어내기 위해서는 경직된 근섬유의 온도를 서서히 올리고, 수기 테크닉을 통해 근육 결을 따라 부드럽게 이완시키는 과정이 요구됩니다.`
       ],
       sec2Title: "2. 신체 상태에 따른 건식 스트레칭과 오일 테라피의 차이",
       sec2Text: [
         `바디 케어는 압의 깊이와 전달 방식에 따라 기대 효과가 달라집니다. 본인의 당일 신체 상태와 관절 상태에 맞춰 적절한 기법을 고르는 것이 안전한 힐링의 핵심입니다.`,
-        `오일을 사용하지 않는 건식 타이 케어는 관절의 가동성을 넓히고 뭉친 근육을 길게 늘려주는 수동적 스트레칭에 중점을 둡니다. 평소 활동량이 적어 몸이 굳어있거나 하체 부종이 심한 경우 큰 개운함을 줍니다. 반면 스웨디시 및 아로마 테라피는 식물성 오일을 매개로 마찰을 줄이며 림프절을 자극하는 기법으로, 속근육의 통증 없이 심신의 깊은 이완과 감정적 스트레스 해소를 원하는 분들에게 알맞습니다.`
+        `오일을 사용하지 않는 건식 타이 케어는 관절의 가동성을 넓히고 뭉친 근육을 길게 늘려줍니다. 반면 스웨디시 및 아로마 테라피는 심신의 깊은 이완과 감정적 스트레스 해소를 원하는 분들에게 알맞습니다.`
       ],
       sec3Title: "3. 독립된 1인 공간에서 누리는 심리적 안정 효과",
       sec3Text: [
-        `테라피의 생리학적 효과를 극대화하는 중요한 요소는 바로 심리적 안정감입니다. 외부 매장을 방문할 때 겪는 번거로운 이동, 대중교통 이용, 타인과의 접촉은 무의식중에 스트레스 호르몬 분비를 촉진할 수 있습니다.`,
-        `반면 자택이나 숙소 등 독립된 공간에서 진행되는 프라이빗 케어는 외부의 시선과 소음이 완전히 차단되어 부교감 신경계를 빠르게 활성화합니다. 관리가 끝난 직후에도 환복이나 귀가 이동 없이 곧바로 편안한 수면으로 이어질 수 있어 힐링의 지속 시간이 훨씬 길어집니다.`
+        `테라피의 생리학적 효과를 극대화하는 중요한 요소는 바로 심리적 안정감입니다. 외부 매장을 방문할 때 겪는 번거로운 이동을 줄여줍니다.`,
+        `자택이나 숙소 등 독립된 공간에서 진행되는 프라이빗 케어는 외부의 시선과 소음이 완전히 차단되어 부교감 신경계를 빠르게 활성화합니다.`
       ],
       sec4Title: "4. 안전하고 투명한 웰니스 이용 수칙",
       sec4Text: [
-        `건전하고 투명한 이용 환경을 위해 ${districtName} 고객님께서는 다음 사항을 사전에 확인하시는 것이 좋습니다. 신뢰할 수 있는 공식 등록 파트너는 예약 명목의 불법 선입금을 일절 요구하지 않으며 100% 현장 후불제 기준을 엄격히 준수합니다.`,
-        `또한 최근 디스크 시술을 받았거나 임신, 급성 염증 질환이 있는 경우에는 관리 시작 전 담당 힐러에게 컨디션을 명확히 전달하여 안전한 맞춤 압 조절을 진행하시길 권장합니다.`
-      ]
-    },
-    {
-      subtitle: `${districtName} 거주자 및 방문객을 위한 일상 스트레스 리셋 솔루션`,
-      sec1Title: "1. 만성 스트레스와 자율신경계 불균형이 신체에 미치는 영향",
-      sec1Text: [
-        `${districtName} 도심 속에서 바쁜 스케줄을 소화하다 보면 교감 신경이 장기간 흥분 상태를 유지하게 됩니다. 자율신경계의 균형이 깨지면 혈관이 수축하고 전신의 모세혈관 순환이 정체되며, 이는 불면증과 만성 피로, 소화 불량 등 다양한 신체화 증상으로 발현됩니다.`,
-        `신체 표면을 섬세하고 일정한 리듬으로 터치하는 이완 요법은 감각 수용기를 자극하여 옥시토신과 엔도르핀 분비를 유도합니다. 이를 통해 긴장되어 있던 중추 신경계가 안정 국면으로 전환되며, 뇌파가 안정 상태(알파파)로 접어들어 깊은 숙면을 유도하는 토대가 형성됩니다.`
-      ],
-      sec2Title: "2. 부종 완화와 디톡스를 위한 림프 순환 케어의 원리",
-      sec2Text: [
-        `림프계는 혈액순환과 달리 자체적인 펌프 기능이 없어 근육의 수축과 이완, 또는 외부의 부드러운 수기 압력에 의존해 흐름을 유지합니다. 림프절이 집중된 쇄골 하부, 겨드랑이 액와부, 서혜부 주변이 경직되면 체내 잉여 수분과 노폐물이 정체되어 부종과 피부 톤 저하를 일으킵니다.`,
-        `림프 테라피는 강한 지압 대신 피부 층을 미세하게 당기고 밀어내는 유러피언 림프 드레니쥐 기법을 활용합니다. 무겁고 둔탁했던 팔다리가 한결 가벼워지고, 신진대사가 활발해져 전신 순환 컨디션이 눈에 띄게 개선되는 경험을 누리실 수 있습니다.`
-      ],
-      sec3Title: "3. 따뜻한 온도 환경과 아로마 블렌딩의 시너지",
-      sec3Text: [
-        `테라피를 받으실 때 실내 온도는 23~25도 내외로 아늑하게 유지되는 것이 중요합니다. 체온이 따뜻하게 유지될 때 모공이 열리고 모세혈관 확장이 촉진되어 유효 성분의 흡수율이 높아지기 때문입니다.`,
-        `라벤더, 유칼립투스, 베르가못 등 천연 식물에서 추출한 순수 에센셜 오일의 향기는 후각 신경을 통해 대뇌 변연계에 즉각 도달하여 감정적 불안과 긴장을 차분히 가라앉혀 줍니다. 피부 결 케어와 정신적 안정감을 동시에 완성하는 이유입니다.`
-      ],
-      sec4Title: "4. 올바른 테라피 이용 및 사후 관리 팁",
-      sec4Text: [
-        `관리를 마친 후에는 체내 노폐물 배출이 활발해지므로 미온수를 충분히 섭취해 주는 것이 바람직합니다. 관리 당일에는 무리한 고강도 운동이나 과도한 음주를 삼가고 따뜻한 휴식을 취해야 근육의 미세 이완 효과가 오래 보존됩니다.`,
-        `${districtName} 바른테라피는 고객 여러분께서 믿고 선택하실 수 있도록 위생 수칙과 100% 현장후불 원칙을 준수하는 검증된 매장 정보만을 엄선하여 실시간 제공합니다.`
-      ]
-    },
-    {
-      subtitle: `${districtName} 바디 컨디셔닝을 위한 체계적 근막 릴렉싱 분석`,
-      sec1Title: "1. 보행 패턴과 골반 주변 근육의 긴장 패턴 해소",
-      sec1Text: [
-        `장시간 서 있거나 잦은 도보 이동을 하는 ${districtName} 고객님들의 경우, 골반 주변의 중둔근과 이상근, 요방형근에 비대칭적인 하중이 실리기 쉽습니다. 골반 지지근이 뻣뻣해지면 허리 하부와 허벅지 뒤쪽 햄스트링까지 연쇄적인 긴장이 발생합니다.`,
-        `체계적인 바디 컨디셔닝은 단순한 피부 마찰을 넘어 근육의 기시부와 정지부를 정밀하게 짚어주는 수기 요법을 적용합니다. 흐트러진 좌우 골반 밸런스를 바로잡아 보행 시 피로도를 현저히 낮추고 하체 부근의 답답함을 시원하게 덜어냅니다.`
-      ],
-      sec2Title: "2. 표층근과 심부근을 동시에 다루는 딥티슈 테라피의 이해",
-      sec2Text: [
-        `일반적인 릴렉싱 관리로 해소되지 않는 만성 통증은 대개 피부 깊숙한 속근육(심부근막)에 트리거 포인트(통증 유발점)가 형성되어 있기 때문입니다.`,
-        `딥티슈 프로그램은 팔꿈치와 손꿈치를 활용하여 일정한 지속 압력을 심부 조직까지 서서히 전달합니다. 굳어있던 매듭 부위가 점진적으로 풀리면서 만성적으로 무겁던 등과 어깨, 허리의 운동 반경이 부드럽게 복원되는 효과를 체감하실 수 있습니다.`
-      ],
-      sec3Title: "3. 시간 절약과 에너지 보존을 위한 방문형 케어의 가치",
-      sec3Text: [
-        `바쁜 현대 사회에서 이동 시간을 줄이는 것은 가장 스마트한 자기 관리 방식 중 하나입니다. 번화가 매장을 직접 찾아가는 과정에서 소모되는 주차 스트레스와 대기 시간을 덜어낼 수 있습니다.`,
-        `내가 가장 편안함을 느끼는 개인 공간에서 조용하게 진행되는 1:1 맞춤 세션은 물리적 에너지 소모 없이 온전히 관리 자체에만 집중할 수 있는 최적의 환경을 선사합니다.`
-      ],
-      sec4Title: "4. 투명한 가격 정책과 매너 있는 웰니스 문화",
-      sec4Text: [
-        `바른테라피는 선입금 없는 100% 현장 후불제 원칙을 엄격하게 적용하여 부당한 추가 요금 요구나 예약 사기를 사전에 방지합니다. 누구나 투명하고 명확한 기준 아래에서 안심하고 코스를 선택하실 수 있습니다.`,
-        `철저한 소독과 위생 어메니티를 갖춘 전문 관리사와의 신뢰 관계를 통해 ${districtName} 전역 어디서든 수준 높은 휴식의 가치를 누려보시기 바랍니다.`
+        `건전하고 투명한 이용 환경을 위해 ${districtName} 고객님께서는 다음 사항을 사전에 확인하시는 것이 좋습니다. 신뢰할 수 있는 공식 등록 파트너는 불법 선입금을 일절 요구하지 않습니다.`,
+        `또한 최근 디스크 시술을 받았거나 임신, 급성 염증 질환이 있는 경우에는 관리 시작 전 담당 힐러에게 컨디션을 명확히 전달하시길 권장합니다.`
       ]
     }
   ];
-
   return sectionsGroup[seed % sectionsGroup.length];
 }
 
@@ -290,7 +242,6 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const rawDistrictName = formatDistrictName(district);
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
 
-  // districtName이 regionFullName과 같거나 비어있으면 중복 표기 방지
   const districtName = (rawDistrictName === regionFullName || !rawDistrictName)
     ? regionFullName
     : rawDistrictName;
@@ -305,7 +256,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const finalTitle = `${displayLocation} ${pattern.title} | 바른테라피`;
   const finalDescription = pattern.desc(districtName);
 
-  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}${
+  const canonicalUrl = `${SITE_URL}/${region}/${encodeURIComponent(district)}${
     dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
   }`;
 
@@ -313,16 +264,20 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     title: { absolute: finalTitle },
     description: finalDescription,
     alternates: { canonical: canonicalUrl },
-    keywords: [
-      `${districtName}출장 신뢰 마사지`,
-      `${districtName} 마사지`,
-      `${districtName} 스웨디시`,
-      `${displayLocation} 출장 웰니스 마사지`,
-      `${displayLocation} 출장 타이 마사지`,
-      "서울 출장 신뢰케어 마사지",
-      "바른테라피"
-    ],
-    robots: { index: true, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    other: {
+      Yeti: "index,follow,max-image-preview:large",
+    },
     openGraph: {
       title: finalTitle,
       description: finalDescription,
@@ -332,10 +287,10 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       type: "website",
       images: [
         {
-          url: "https://barun-therapy.netlify.app/shop1.jpg",
+          url: `${SITE_URL}/shop1.jpg`,
           width: 1200,
           height: 630,
-          alt: `${districtName}출장마사지 바른테라피`,
+          alt: `${districtName} 출장마사지 바른테라피`,
         },
       ],
     },
@@ -351,7 +306,6 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
   const rawDistrictName = formatDistrictName(district);
   const dongName = resolvedSearchParams?.dong ? safeDecode(resolvedSearchParams.dong) : "";
 
-  // districtName이 regionFullName과 같거나 비어있으면 중복 표기 방지
   const districtName = (rawDistrictName === regionFullName || !rawDistrictName)
     ? regionFullName
     : rawDistrictName;
@@ -371,133 +325,50 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
     `${districtName} 중앙동`,
   ];
 
-  const currentUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}${
+  const currentUrl = `${SITE_URL}/${region}/${encodeURIComponent(district)}${
     dongName ? `?dong=${encodeURIComponent(dongName)}` : ""
   }`;
 
-  // 🌟 케어맵 상위 호환 통합 @graph JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      // 1. 빵가루 탐색 경로 스키마 (검색창 상단 계층 노출: 홈 > 서울 > 종로구)
       {
         "@type": "BreadcrumbList",
         "@id": `${currentUrl}#breadcrumb`,
         "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "홈",
-            "item": "https://barun-therapy.netlify.app"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": regionFullName,
-            "item": `https://barun-therapy.netlify.app/${region}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": `${districtName} 마사지`,
-            "item": currentUrl
-          }
+          { "@type": "ListItem", "position": 1, "name": "홈", "item": SITE_URL },
+          { "@type": "ListItem", "position": 2, "name": regionFullName, "item": `${SITE_URL}/${region}` },
+          { "@type": "ListItem", "position": 3, "name": `${districtName} 마사지`, "item": currentUrl }
         ]
       },
-      // 2. 지역 비즈니스 정밀 스키마
       {
-        "@type": "HealthAndBeautyBusiness",
+        "@type": ["HealthAndBeautyBusiness", "LocalBusiness"],
         "@id": `${currentUrl}#business`,
         "name": `${displayLocation} 출장 신뢰케어 마사지 - 바른테라피`,
         "description": pattern.desc(districtName),
         "url": currentUrl,
         "telephone": "0507-1280-3303",
-        "image": "https://barun-therapy.netlify.app/shop1.jpg",
-        "priceRange": "60,000원~",
+        "image": `${SITE_URL}/shop1.jpg`,
+        "priceRange": "60,000원~160,000원",
         "currenciesAccepted": "KRW",
         "paymentAccepted": "Cash, Credit Card (100% 현장 후불제)",
         "openingHours": "Mo-Su 00:00-24:00",
-        "areaServed": {
-          "@type": "AdministrativeArea",
-          "name": displayLocation
-        },
         "address": {
           "@type": "PostalAddress",
           "addressLocality": districtName,
           "addressRegion": regionFullName,
           "addressCountry": "KR"
         }
-      },
-      // 3. 이용 방법 스키마 (HowTo)
-      {
-        "@type": "HowTo",
-        "@id": `${currentUrl}#howto`,
-        "name": `${displayLocation} 출장 안심 케어 이용 절차`,
-        "step": [
-          {
-            "@type": "HowToStep",
-            "position": 1,
-            "name": "지역 코스 확인",
-            "text": `${districtName} 추천 제휴 샵 목록과 코스별 정찰제 요금을 확인합니다.`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 2,
-            "name": "직통 안심 전화 상담",
-            "text": "0507 안심번호로 샵과 직접 통화하여 방문 희망 시간과 위치를 조율합니다."
-          },
-          {
-            "@type": "HowToStep",
-            "position": 3,
-            "name": "신속 방문 케어",
-            "text": "약속된 시간 내 전문 테라피스트가 방문하여 프라이빗 1:1 맞춤 관리를 진행합니다."
-          },
-          {
-            "@type": "HowToStep",
-            "position": 4,
-            "name": "100% 현장 후불 결제",
-            "text": "선입금 없는 안심 원칙에 따라 관리사 도착 후 계신 자리에서 직접 결제합니다."
-          }
-        ]
-      },
-      // 4. 자주 묻는 질문 스키마 (FAQPage)
-      {
-        "@type": "FAQPage",
-        "@id": `${currentUrl}#faq`,
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": `${districtName} 출장마사지 예약은 어떻게 하나요?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "리스트에서 원하시는 샵 카드의 전화연결 버튼을 누르시면 해당 업체 매니저와 직접 프로그램 및 시간을 조율하실 수 있습니다."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "바른테라피 플랫폼 이용 시 별도 수수료나 예약금이 있나요?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "바른테라피는 선입금 없는 100% 현장후불 안내 플랫폼으로 이용자에게 어떠한 중개 수수료나 예약금도 요구하지 않습니다."
-            }
-          }
-        ]
       }
     ]
   };
 
   return (
     <div className="bg-[#070709] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
-      {/* 최적화된 통합 구조화 데이터 주입 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <div className="sr-only" aria-hidden="true">
-        <h1>{displayLocation} {pattern.title}</h1>
-        <p>{pattern.desc(districtName)}</p>
-      </div>
 
       <header className="sticky top-0 z-40 bg-[#070709]/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-4xl mx-auto h-16 px-4 flex items-center justify-between">
@@ -550,7 +421,7 @@ export default async function RegionalDetailPage({ params, searchParams }: PageP
             {dongsList.map((dong) => (
               <Link
                 key={dong}
-                href={`/${region}/${encodeURIComponent(district)}?dong=${encodeURIComponent(dong)}`}
+                href={`/${region}/${encodeURIComponent(district)}/${encodeURIComponent(dong)}`}
                 className="p-3 rounded-xl bg-[#141418] border border-white/5 hover:border-amber-400/50 hover:bg-amber-400/5 transition-all text-center group"
               >
                 <span className="block font-bold text-xs sm:text-sm text-gray-200 group-hover:text-amber-400 transition-colors">

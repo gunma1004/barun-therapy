@@ -1,18 +1,18 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+
+const SITE_URL = "https://barun-therapy.netlify.app";
 
 interface PageProps {
   params: Promise<{
     region?: string;
     district?: string;
     dong?: string;
-    id?: string;
     shopId?: string;
+    id?: string;
   }>;
 }
 
-// 🌐 영문 시/도 코드를 한글명으로 변환
 function getRegionFullName(region?: string): string {
   switch (region?.toLowerCase()) {
     case "seoul": return "서울";
@@ -22,7 +22,6 @@ function getRegionFullName(region?: string): string {
   }
 }
 
-// 🛠️ 이중 디코딩 방어 함수
 function safeDecode(str?: string): string {
   if (!str) return "";
   let decoded = str;
@@ -38,7 +37,6 @@ function safeDecode(str?: string): string {
   return decoded.trim();
 }
 
-// 🌟 구 + 동 이름을 합쳐서 완벽한 동 단위 키워드 생성
 function parseLocationText(region?: string, district?: string, dong?: string): string {
   const regionName = getRegionFullName(region);
   const decodedDistrict = safeDecode(district);
@@ -46,7 +44,6 @@ function parseLocationText(region?: string, district?: string, dong?: string): s
   return `${regionName} ${decodedDistrict} ${decodedDong}`.replace(/\s+/g, " ").trim();
 }
 
-// 바른테라피 공식 제휴 샵 5선 데이터
 const shopData: Record<string, {
   name: string;
   cleanName: string;
@@ -63,14 +60,12 @@ const shopData: Record<string, {
     phone: "0507-1280-3303",
     badge: "실시간 만족도 1위",
     image: "/shop1.jpg",
-    desc: "서울·수도권 전지역 25분 신속 방문! 출장 타이 마사지, 아로마 마사지, 프리미엄 릴렉스 케어 전문 제휴처입니다. 숙련된 테라피스트가 계신 곳으로 찾아가 굳은 근육과 묵은 피로를 정성껏 풀어드립니다.",
+    desc: "수도권 전지역 25분 신속 방문! 출장 타이 마사지, 아로마 마사지, 릴렉스 케어 전문 제휴처입니다.",
     courses: [
-      { name: "출장 릴렉스 마사지 (기본)", time: "60분", price: "100,000원", priceNumber: 100000, desc: "뭉친 어깨와 등 근육을 부드럽게 이완시키는 맞춤형 출장 릴렉스 마사지 코스" },
-      { name: "출장 아로마 마사지 (순환)", time: "90분", price: "130,000원", priceNumber: 130000, desc: "천연 에센셜 오일을 사용하여 전신 순환과 피로 해소를 돕는 프리미엄 아로마 코스" },
-      { name: "출장 스웨디시 릴렉스 마사지", time: "60분", price: "140,000원", priceNumber: 140000, desc: "감성적인 터치로 심신을 포근하게 녹여주는 최고급 스웨디시 릴렉스 마사지" },
-      { name: "VIP 출장 타이 & 아로마 풀코스", time: "90분", price: "170,000원", priceNumber: 170000, desc: "시원한 스트레칭과 부드러운 오일 케어를 결합한 전신 올인원 힐링 코스" }
+      { name: "출장 릴렉스 마사지 (기본)", time: "60분", price: "100,000원", priceNumber: 100000, desc: "뭉친 어깨와 등 근육을 부드럽게 이완시키는 맞춤형 코스" },
+      { name: "출장 아로마 마사지 (순환)", time: "90분", price: "130,000원", priceNumber: 130000, desc: "천연 에센셜 오일을 사용하여 전신 순환과 피로 해소를 돕는 코스" }
     ],
-    features: ["100% 현장후불제 안심결제", "24시간 연중무휴", "수도권 전지역 신속 도착", "철저한 위생 관리"]
+    features: ["100% 현장후불제", "24시간 연중무휴", "신속 방문", "위생 관리"]
   },
   "2": {
     name: "오늘밤테라피",
@@ -78,28 +73,23 @@ const shopData: Record<string, {
     phone: "0507-1280-3223",
     badge: "재방문율 최우수",
     image: "/shop2.jpg",
-    desc: "지친 하루의 피로를 말끔히 풀어드리는 1:1 방문 홈케어! 타이 마사지부터 최고급 아로마 오일 케어까지 원하는 장소에서 프라이빗하게 정통 힐링을 누려보세요.",
+    desc: "지친 하루의 피로를 말끔히 풀어드리는 1:1 방문 홈케어 서비스입니다.",
     courses: [
-      { name: "출장 타이 마사지 (베이직)", time: "60분", price: "60,000원", priceNumber: 60000, desc: "전신 근육을 시원하게 스트레칭하여 개운한 컨디션을 완성하는 출장 타이 코스" },
-      { name: "출장 아로마 마사지 (소프트)", time: "60분", price: "70,000원", priceNumber: 70000, desc: "향기로운 천연 오일과 부드러운 압으로 긴장을 완화하는 출장 아로마 케어" },
-      { name: "출장 릴렉스 마사지 (감성힐링)", time: "60분", price: "90,000원", priceNumber: 90000, desc: "지친 심신에 온전한 안식과 숙면을 유도하는 감성 스웨디시 마사지" },
-      { name: "VVIP 스페셜 풀케어", time: "90분", price: "120,000원", priceNumber: 120000, desc: "타이와 아로마의 장점을 결합하여 전신 피로를 완벽하게 해소하는 코스" }
+      { name: "출장 타이 마사지 (베이직)", time: "60분", price: "60,000원", priceNumber: 60000, desc: "전신 근육을 시원하게 스트레칭하는 출장 타이 코스" }
     ],
-    features: ["선입금 0원 100% 후불제", "친절 마인드 전문 힐러", "간편 결제 지원"]
+    features: ["선입금 0원", "전문 힐러", "간편 결제"]
   },
   "3": {
     name: "주주테라피",
     cleanName: "주주테라피",
     phone: "0507-1280-3193",
-    badge: "칼도착 25분 보장",
+    badge: "칼도착 25분",
     image: "/shop3.jpg",
-    desc: "재방문율 1위 만족도! 정통 타이 마사지와 전신 순환을 돕는 아로마 마사지로 굳어있던 몸을 유연하고 활력 넘치게 회복시켜 드립니다.",
+    desc: "정통 타이 마사지와 림프 순환을 돕는 아로마 마사지 전문 제휴 샵입니다.",
     courses: [
-      { name: "스탠다드 정통 타이 마사지", time: "60분", price: "60,000원", priceNumber: 60000, desc: "머리부터 발끝까지 뭉친 근육을 시원하게 풀어주는 정통 출장 타이 케어" },
-      { name: "프리미엄 딥티슈 아로마 마사지", time: "90분", price: "90,000원", priceNumber: 90000, desc: "근육 결을 따라 부드럽게 속근육 깊은 곳까지 풀어주는 출장 아로마 케어" },
-      { name: "VIP 시그니처 롱타임 마사지", time: "120분", price: "120,000원", priceNumber: 120000, desc: "2시간 동안 타이와 아로마를 여유롭게 누리는 프리미엄 풀코스" }
+      { name: "스탠다드 정통 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "머리부터 발끝까지 뭉친 근육을 풀어주는 코스" }
     ],
-    features: ["선입금 없는 100% 후불제", "평균 25분 신속 방문", "개인정보 철저 보호"]
+    features: ["100% 후불제", "평균 25분 방문", "개인정보 보호"]
   },
   "4": {
     name: "퀸즈홈테라피",
@@ -107,14 +97,11 @@ const shopData: Record<string, {
     phone: "0507-1280-3334",
     badge: "인기도 TOP",
     image: "/shop4.jpg",
-    desc: "전문 테라피스트들의 1:1 방문 맞춤 케어! 프라이빗 릴렉스 마사지와 전신 아로마 케어로 수도권 전역 어디서나 품격 있는 휴식을 선사합니다.",
+    desc: "베테랑 테라피스트들의 1:1 방문 맞춤 케어를 제공합니다.",
     courses: [
-      { name: "컨디션 케어 타이 마사지", time: "60분", price: "60,000원", priceNumber: 60000, desc: "지친 몸의 피로를 시원한 스트레칭으로 해소하는 정통 타이 프로그램" },
-      { name: "스페셜 릴렉스 아로마 마사지", time: "60분", price: "70,000원", priceNumber: 70000, desc: "천연 에센셜 오일과 부드러운 손길로 진행되는 전신 아로마 케어" },
-      { name: "콤비네이션 릴렉스 마사지", time: "90분", price: "120,000원", priceNumber: 120000, desc: "타이와 아로마를 한 번에 경험하는 밸런스 힐링 코스" },
-      { name: "한국인 전문 힐러 VIP 코스", time: "60분", price: "100,000원", priceNumber: 100000, desc: "숙련된 전문 관리사의 섬세한 1:1 맞춤 피로 회복 케어" }
+      { name: "컨디션 케어 타이", time: "60분", price: "60,000원", priceNumber: 60000, desc: "지친 몸의 피로를 스트레칭으로 해소" }
     ],
-    features: ["젊고 세련된 감성 테라피", "100% 현장 결제", "24시간 상시 대기"]
+    features: ["감성 테라피", "후불 결제", "상시 대기"]
   },
   "5": {
     name: "골든테라피",
@@ -122,64 +109,126 @@ const shopData: Record<string, {
     phone: "0507-1280-3360",
     badge: "정찰제 안심센터",
     image: "/shop5.jpg",
-    desc: "평균 25분 도착 보장! 출장 타이 마사지, 아로마 마사지, 감성 스웨디시를 투명한 정찰제 요금으로 계신 곳에서 편안하게 받아보세요.",
+    desc: "투명한 정찰제 가격으로 계신 곳에서 편안하게 받아보세요.",
     courses: [
-      { name: "출장 타이 릴렉스 마사지", time: "60분", price: "60,000원", priceNumber: 60000, desc: "전신 굳은 근육을 부드럽게 이완하는 기본 스트레칭 프로그램" },
-      { name: "천연 순환 아로마 마사지", time: "60분", price: "70,000원", priceNumber: 70000, desc: "천연 오일로 피부 보습과 림프 순환을 돕는 부드러운 케어" },
-      { name: "VIP 감성 릴렉스 마사지", time: "60분", price: "100,000원", priceNumber: 100000, desc: "부드러운 림프 순환으로 몸을 가볍게 만들어주는 스웨디시 케어" },
-      { name: "골든 시그니처 VIP 풀코스", time: "90분", price: "130,000원", priceNumber: 130000, desc: "최상의 휴식과 활력 충전을 선사하는 고품격 시그니처 마사지" }
+      { name: "출장 타이 릴렉스", time: "60분", price: "60,000원", priceNumber: 60000, desc: "기본 스트레칭 프로그램" }
     ],
-    features: ["100% 현장후불제", "신속 도착 보장", "고객 만족도 최상"]
+    features: ["100% 현장후불제", "빠른 도착", "만족도 최상"]
   }
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const targetId = resolvedParams.id || resolvedParams.shopId || "1";
+  const targetId = resolvedParams.shopId || resolvedParams.id || "1";
   const shop = shopData[targetId] || shopData["1"];
 
   const currentRegion = parseLocationText(resolvedParams.region, resolvedParams.district, resolvedParams.dong);
 
-  const charSumTitle = (currentRegion + shop.cleanName + targetId + "title_salt").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const charSumDesc = (currentRegion + shop.cleanName + targetId + "desc_salt").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const charSum = (currentRegion + shop.cleanName + targetId + "shop_seo").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const variantIndex = charSum % 30;
 
   const titleVariants = [
-    `${currentRegion} 출장 신뢰케어 마사지 예약 안내 - ${shop.cleanName} | 바른테라피`,
-    `${currentRegion} 출장 홈케어 서비스 전신 릴렉스 마사지 · ${shop.cleanName} | 바른테라피`,
-    `${currentRegion} 출장 안심 방문 아로마 마사지 예약 | ${shop.cleanName} - 바른테라피`,
-    `${currentRegion} 출장 힐링 테라피 스웨디시 마사지 제휴 안내 - ${shop.cleanName} | 바른테라피`,
-    `${currentRegion} 출장 24시 신속 방문 타이 마사지 · ${shop.cleanName} | 바른테라피`,
-    `${currentRegion} 출장 피로회복 전문 딥티슈 마사지 예약 | ${shop.cleanName} - 바른테라피`
+    `${currentRegion} 출장 타이 마사지 24시 안내 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 아로마 마사지 전문 제휴점 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 릴렉스 마사지 추천 코스 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 스웨디시 마사지 1:1 방문 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 전신 힐링 마사지 24시 예약 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 딥티슈 마사지 피로회복 케어 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 웰니스 마사지 바디 정찰제 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 맞춤 릴렉스 마사지 안내 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 건식 타이 마사지 제휴샵 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 프리미엄 감성 마사지 24시간 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 순환 케어 아로마 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 스트레스 완화 힐링 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 1인 프라이빗 웰니스 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 바디 밸런스 릴렉스 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 안심 후불제 전신 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 림프 순환 오일 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 딥릴렉스 프리미엄 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 소프트 힐링 바디 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 쾌적한 방문 웰니스 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 명품 스웨디시 힐링 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 체형 맞춤형 타이 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 심야 24시 안심 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 전문 테라피스트 방문 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 정통 스트레칭 타이 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 하이엔드 감성 스웨디시 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 VVIP 스페셜 릴렉스 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 전신 피로회복 힐링 마사지 · ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 안심 방문 릴렉싱 마사지 | ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 천연 에센셜 아로마 마사지 - ${shop.cleanName} | 바른테라피`,
+    `${currentRegion} 출장 시그니처 웰니스 마사지 · ${shop.cleanName} | 바른테라피`
   ];
 
   const descriptionVariants = [
-    `일상에 여유를 더하는 지역 맞춤 힐링, ${currentRegion} 공식 제휴점 ${shop.cleanName}에서 24시간 신속 방문하는 출장 서비스를 통해 피로를 풀어보세요. 선입금 없는 100% 현장 후불제입니다.`,
-    `뭉친 근육과 누적된 피로를 말끔히 해소해 드리는 ${currentRegion} 전문 홈케어. ${shop.cleanName}만의 차별화된 1:1 방문 프로그램으로 아늑한 휴식을 경험하세요.`,
-    `${currentRegion} 전지역 평균 25분 내 신속 방문! ${shop.cleanName}의 검증된 테라피스트가 직접 찾아가는 맞춤형 출장 마사지 프로그램으로 상쾌한 컨디션을 되찾으세요.`
+    `${currentRegion} 출장마사지 안내. 24시 신속 방문 타이 테라피 전문 ${shop.cleanName}에서 100% 후불제로 안심하고 이용하세요.`,
+    `${currentRegion} 출장마사지 제휴 안내. 최고급 천연 에센셜 오일로 전신 피로를 부드럽게 풀어드리는 ${shop.cleanName}입니다.`,
+    `${currentRegion} 출장마사지 맞춤 솔루션. 숙련된 테라피스트의 손길로 지친 일상의 활력을 되찾아보세요.`,
+    `${currentRegion} 출장마사지 예약 가이드. 프라이빗한 내 공간에서 온전한 쉼과 휴식을 선사하는 ${shop.cleanName}.`,
+    `${currentRegion} 출장마사지 프로그램 안내. 정직한 정찰제 요금과 신속한 25분 도착 시스템을 제공합니다.`,
+    `${currentRegion} 출장마사지 딥티슈 코스. 굳은 근육을 시원하고 부드럽게 이완시키는 전문 바디케어.`,
+    `${currentRegion} 출장마사지 힐링 안내. 편안하게 내 방에서 누리는 프리미엄 케어를 ${shop.cleanName}에서 지금 확인하세요.`,
+    `${currentRegion} 출장마사지 1:1 커스텀 제휴처. 청결하고 쾌적한 힐링 테라피를 약속드립니다.`,
+    `${currentRegion} 출장마사지 건식 & 아로마 코스 안내. 투명한 요금과 친절한 상담이 상시 대기 중입니다.`,
+    `${currentRegion} 출장마사지 감성 힐링 24시간 안내. ${shop.cleanName}의 정성스러운 바디 밸런스 케어.`,
+    `${currentRegion} 출장마사지 순환 케어 프로그램. 림프 흐름을 원활하게 돕는 체계적인 바디 관리 솔루션.`,
+    `${currentRegion} 출장마사지 스트레스 완화 코스. 지친 심신에 활력을 불어넣는 전문 힐러 방문 테라피.`,
+    `${currentRegion} 출장마사지 1인 맞춤 가이드. 이동의 번거로움 없이 편안한 휴식 시간을 누려보세요.`,
+    `${currentRegion} 출장마사지 바디 밸런스 제휴샵 ${shop.cleanName}. 철저한 위생 관리와 품격 있는 서비스.`,
+    `${currentRegion} 출장마사지 안심 후불 결제 시스템. 예약금이나 선입금을 절대 요구하지 않아 신뢰할 수 있습니다.`,
+    `${currentRegion} 출장 마사지 아로마 릴렉싱. 숙련된 관리사의 디테일한 손길로 전신 피로를 회복하세요.`,
+    `${currentRegion} 출장 마사지 딥릴렉스 테라피. 신속하고 안전한 방문으로 지친 하루의 피로를 날려드립니다.`,
+    `${currentRegion} 출장 마사지 소프트 감성 터치. 나만의 아늑한 쉼터에서 완벽한 릴렉싱을 경험하세요.`,
+    `${currentRegion} 출장 마사지 쾌적 안심 방문 케어. ${shop.cleanName}이 정성을 다해 일대일 케어를 선사합니다.`,
+    `${currentRegion} 출장 마사지 최고급 스웨디시 안내. 감미로운 터칭과 포근한 휴식의 만남.`,
+    `${currentRegion} 출장마사지 체형 맞춤 솔루션. 뭉친 부위를 정확히 파악하여 개운하게 풀어드립니다.`,
+    `${currentRegion} 출장마사지 심야 24시 신속 배차. 수도권 전지역 평균 25분 빠른 도착을 보장합니다.`,
+    `${currentRegion} 출장마사지 베테랑 힐러 방문 안내. 믿을 수 있는 1:1 방문 맞춤형 바디케어.`,
+    `${currentRegion} 출장마사지 정통 스트레칭 타이 코스. 뻐근한 몸을 시원하게 늘려주어 활력을 충전해 드립니다.`,
+    `${currentRegion} 출장마사지 하이엔드 감성 힐링 안내. 섬세한 테크닉으로 전신 긴장을 완벽히 해소합니다.`,
+    `${currentRegion} 출장마사지 VVIP 올인원 코스. 타이와 아로마를 동시에 누리는 프리미엄 복합 패키지.`,
+    `${currentRegion} 출장마사지 피로회복 힐링 안내. 내 집에서 편안하게 즐기는 고품격 스파 프로그램.`,
+    `${currentRegion} 출장 마사지 안심 릴렉싱 제휴처 ${shop.cleanName}. 친절하고 정직한 정찰제 서비스를 제공합니다.`,
+    `${currentRegion} 출장 마사지 천연 아로마 에센셜 오일 프로그램. 피부 보습과 림프 순환을 동시에 돕습니다.`,
+    `${currentRegion} 출장 마사지 시그니처 웰니스 안내. 언제 어디서나 편안하게 예약하고 휴식을 누리세요.`
   ];
 
-  const tIndex = (charSumTitle + targetId.charCodeAt(0) * 19) % titleVariants.length;
-  const dIndex = (charSumDesc + targetId.charCodeAt(0) * 29) % descriptionVariants.length;
+  const pageTitle = titleVariants[variantIndex];
+  const pageDescription = descriptionVariants[variantIndex];
 
-  const pageTitle = titleVariants[tIndex];
-  const pageDescription = descriptionVariants[dIndex];
-
-  const canonicalUrl = `https://barun-therapy.netlify.app/areas/${resolvedParams.region}/${encodeURIComponent(safeDecode(resolvedParams.district))}/${encodeURIComponent(safeDecode(resolvedParams.dong))}/shop/${targetId}`;
+  const canonicalPath = resolvedParams.dong
+    ? `/shop/${resolvedParams.region}/${encodeURIComponent(safeDecode(resolvedParams.district))}/${encodeURIComponent(safeDecode(resolvedParams.dong))}/${targetId}`
+    : `/shop/${resolvedParams.region}/${encodeURIComponent(safeDecode(resolvedParams.district))}/${targetId}`;
 
   return {
     title: { absolute: pageTitle },
     description: pageDescription,
-    alternates: { canonical: canonicalUrl },
+    alternates: { canonical: `${SITE_URL}${canonicalPath}` },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    // 🌟 robots 객체 외부 최상위 other에 Yeti 배치 (TS2353 에러 해결)
+    other: {
+      Yeti: "index,follow,max-image-preview:large",
+    },
     openGraph: {
       title: pageTitle,
       description: pageDescription,
-      url: canonicalUrl,
+      url: `${SITE_URL}${canonicalPath}`,
       siteName: "바른테라피",
       locale: "ko_KR",
       type: "article",
       images: [
         {
-          url: `https://barun-therapy.netlify.app${shop.image}`,
+          url: `${SITE_URL}${shop.image}`,
           width: 1200,
           height: 630,
           alt: `${shop.cleanName} ${currentRegion} 출장마사지 바른테라피`,
@@ -189,9 +238,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function DongShopDetailPage({ params }: PageProps) {
+export default async function ShopDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const targetId = resolvedParams.id || resolvedParams.shopId || "1";
+  const targetId = resolvedParams.shopId || resolvedParams.id || "1";
   const shop = shopData[targetId] || shopData["1"];
 
   const regionFullName = getRegionFullName(resolvedParams.region);
@@ -199,65 +248,44 @@ export default async function DongShopDetailPage({ params }: PageProps) {
   const dongName = safeDecode(resolvedParams.dong);
   const currentRegion = parseLocationText(resolvedParams.region, resolvedParams.district, resolvedParams.dong);
 
-  const currentUrl = `https://barun-therapy.netlify.app/areas/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/shop/${targetId}`;
+  const canonicalPath = resolvedParams.dong
+    ? `/shop/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/${targetId}`
+    : `/shop/${resolvedParams.region}/${encodeURIComponent(districtName)}/${targetId}`;
+  const currentUrl = `${SITE_URL}${canonicalPath}`;
 
-  // 🌟 상점 상세 전용 고도화 JSON-LD (HealthAndBeautyBusiness + OfferCatalog + BreadcrumbList)
+  const backUrl = resolvedParams.dong
+    ? `/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`
+    : `/${resolvedParams.region}/${encodeURIComponent(districtName)}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      // 1. 빵가루 내비게이션
       {
         "@type": "BreadcrumbList",
         "@id": `${currentUrl}#breadcrumb`,
         "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "홈",
-            "item": "https://barun-therapy.netlify.app"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": regionFullName,
-            "item": `https://barun-therapy.netlify.app/${resolvedParams.region}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": `${districtName} 마사지`,
-            "item": `https://barun-therapy.netlify.app/${resolvedParams.region}/${encodeURIComponent(districtName)}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "name": `${dongName} 마사지`,
-            "item": `https://barun-therapy.netlify.app/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 5,
-            "name": shop.cleanName,
-            "item": currentUrl
-          }
+          { "@type": "ListItem", "position": 1, "name": "홈", "item": SITE_URL },
+          { "@type": "ListItem", "position": 2, "name": regionFullName, "item": `${SITE_URL}/${resolvedParams.region}` },
+          { "@type": "ListItem", "position": 3, "name": `${districtName} 마사지`, "item": `${SITE_URL}/${resolvedParams.region}/${encodeURIComponent(districtName)}` },
+          ...(dongName ? [{ "@type": "ListItem", "position": 4, "name": `${dongName} 마사지`, "item": `${SITE_URL}/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}` }] : []),
+          { "@type": "ListItem", "position": dongName ? 5 : 4, "name": shop.cleanName, "item": currentUrl }
         ]
       },
-      // 2. 상점 상세 엔티티 및 가격표 카탈로그 연동
       {
-        "@type": "HealthAndBeautyBusiness",
+        "@type": ["HealthAndBeautyBusiness", "LocalBusiness"],
         "@id": `${currentUrl}#business`,
-        "name": `${shop.cleanName} - ${currentRegion} 출장마사지`,
+        "name": `${shop.cleanName} (${currentRegion} 출장마사지)`,
         "description": shop.desc,
-        "image": `https://barun-therapy.netlify.app${shop.image}`,
+        "image": `${SITE_URL}${shop.image}`,
         "telephone": shop.phone,
         "url": currentUrl,
-        "priceRange": shop.courses[0]?.price || "60,000원~",
+        "priceRange": "60,000원~160,000원",
         "currenciesAccepted": "KRW",
         "paymentAccepted": "Cash, Credit Card (100% 현장 후불제)",
         "openingHours": "Mo-Su 00:00-24:00",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": `${districtName} ${dongName}`,
+          "addressLocality": dongName ? `${districtName} ${dongName}` : districtName,
           "addressRegion": regionFullName,
           "addressCountry": "KR"
         },
@@ -280,17 +308,15 @@ export default async function DongShopDetailPage({ params }: PageProps) {
 
   return (
     <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black pb-28">
-      {/* 검색엔진 구조화 데이터 스크립트 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 상단 헤더 */}
       <header className="sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-xl border-b border-amber-500/20 px-4 py-3.5 shadow-[0_4px_20px_rgba(245,158,11,0.1)]">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black text-lg shadow-[0_0_12px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-black text-black text-lg shadow-[0_0_12px_rgba(245,158,11,0.4)]">
               B
             </div>
             <div className="flex flex-col">
@@ -302,17 +328,15 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </Link>
           
           <Link 
-            href={`/${resolvedParams.region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`}
+            href={backUrl}
             className="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 hover:bg-amber-500 hover:text-black transition-all"
           >
-            ← {dongName} 목록
+            ← {dongName || districtName} 목록
           </Link>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-8">
-        
-        {/* 대표 비주얼 카드 */}
         <section className="bg-[#121214] border border-amber-500/30 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
           <div className="relative h-64 md:h-80 w-full overflow-hidden bg-neutral-900">
             <img 
@@ -349,7 +373,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 코스 및 요금 안내 */}
         <section className="bg-[#0d0d0f] border border-amber-500/20 p-6 md:p-8 rounded-3xl space-y-6">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">PROGRAM & PRICE</span>
@@ -380,7 +403,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 안심 이용 안내 */}
         <section className="bg-black/80 p-5 rounded-2xl border border-white/10">
           <h3 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-1.5">
             <span>📌</span> {currentRegion} 마사지 안심 이용 안내
@@ -390,10 +412,8 @@ export default async function DongShopDetailPage({ params }: PageProps) {
             <li>원하시는 시간 20~30분 전에 문의해 주시면 출장 타이 마사지, 아로마 마사지, 감성 스웨디시 전문 테라피스트가 신속하게 방문합니다.</li>
           </ul>
         </section>
-
       </main>
 
-      {/* 하단 고정 전화 / 문자 바 */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#08080a]/95 backdrop-blur-xl border-t border-amber-500/30 p-3 md:p-4 shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
         <div className="max-w-4xl mx-auto grid grid-cols-2 gap-3">
           <a 
@@ -410,7 +430,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </a>
         </div>
       </div>
-
     </div>
   );
 }

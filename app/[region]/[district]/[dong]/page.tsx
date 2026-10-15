@@ -1,7 +1,8 @@
-// app/[region]/[district]/[dong]/page.tsx
 import { Metadata } from "next";
 import Link from "next/link";
 import DongDetailClient from "./DongDetailClient";
+
+const SITE_URL = "https://barun-therapy.netlify.app";
 
 interface PageProps {
   params: Promise<{
@@ -106,23 +107,13 @@ function getRegionFullName(region: string): string {
   }
 }
 
-// 🎯 15가지 순환형 SEO 패턴
+// 🎯 네이버 규격(제목 40자, 설명 80자) 엄수형 SEO 패턴
 const SEO_PATTERNS = [
-  { title: "출장 웰니스 마사지 & 프리미엄 힐링 케어", desc: (d: string) => `${d} 출장마사지 안심 가이드. 나만의 편안한 공간에서 경험하는 1:1 맞춤 바디 테라피 코스와 100% 현장후불 정찰제 요금을 바른테라피에서 확인하세요.` },
-  { title: "출장 스웨디시 마사지 감성 바디 릴렉스", desc: (d: string) => `${d} 출장마사지 추천 코스 안내. 섬세한 터치와 부드러운 오일 이완 프로그램으로 지친 피로를 풀어드립니다.` },
-  { title: "출장 아로마 마사지 오일 테라피 안내", desc: (d: string) => `${d} 출장마사지 힐링 케어. 천연 에센셜 오일로 누적된 일상 스트레스를 부드럽게 비워내는 솔루션입니다.` },
-  { title: "출장 타이 마사지 정통 바디 스트레칭", desc: (d: string) => `${d} 출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절로 굳은 몸을 개운하게 풀어드립니다.` },
-  { title: "출장 릴렉스 마사지 집중 피로 회복", desc: (d: string) => `${d} 출장마사지 큐레이션. 집이나 편안한 숙소에서 언제든 프라이빗하게 누리는 맞춤형 힐링 플랫폼입니다.` },
-  { title: "출장 딥티슈 마사지 속근육 집중 케어", desc: (d: string) => `${d} 출장마사지 프로그램. 만성적인 목 어깨 결림과 등, 허리의 뭉친 피로를 집중적으로 완화해 드립니다.` },
-  { title: "출장 림프 순환 마사지 바디 솔루션", desc: (d: string) => `${d} 출장마사지 정찰제 안내. 정체된 신체 림프 순환을 돕고 붓기 관리에 집중한 편안한 웰니스 케어입니다.` },
-  { title: "출장 감성 테라피 마사지 제휴 안내", desc: (d: string) => `${d} 출장마사지 실시간 연결. 편안한 휴식을 제공하는 검증된 파트너 샵 정보를 한눈에 비교해 보세요.` },
-  { title: "출장 밸런스 힐링 마사지 가이드", desc: (d: string) => `${d} 출장마사지 추천. 균형 잡힌 바디 컨디션과 활력 회복을 돕는 1:1 방문 맞춤 테라피를 만나보세요.` },
-  { title: "출장 프리미엄 바디 마사지 힐링 안내", desc: (d: string) => `${d} 출장마사지 VIP 안내. 고급 천연 오일과 세심한 케어가 어우러진 최고급 릴렉싱 프로그램을 안내합니다.` },
-  { title: "출장 건식 스트레칭 마사지 포인트 케어", desc: (d: string) => `${d} 출장마사지 코스 비교. 끈적임 없이 산뜻하게 굳은 근육의 긴장을 해소하는 수기 스트레칭 케어입니다.` },
-  { title: "출장 에스테틱 힐링 마사지 바디 웰빙", desc: (d: string) => `${d} 출장마사지 안내. 피부 보습과 뭉친 피로 회복을 함께 챙기는 복합 바디 웰니스 트리트먼트를 경험하세요.` },
-  { title: "출장 로열 바디케어 마사지 1:1 안내", desc: (d: string) => `${d} 출장마사지 매칭 플랫폼. 독립된 프라이빗 공간에서 온전한 휴식을 누리는 스마트 힐링 가이드라인을 제공합니다.` },
-  { title: "출장 소프트 아로마 마사지 포근한 이완", desc: (d: string) => `${d} 출장마사지 가이드. 자극 없는 편안한 손길로 일상의 피로와 스트레스를 부드럽게 녹여드립니다.` },
-  { title: "출장 호텔식 럭셔리 마사지 프라이빗 케어", desc: (d: string) => `${d} 출장마사지 웰니스 솔루션. 정갈한 서비스와 수준 높은 테라피 프로그램을 투명한 100% 현장후불제로 이용하세요.` }
+  { title: "출장 타이아로마 마사지·홈타이", desc: (d: string) => `${d} 출장마사지·홈타이·스웨디시. 선입금 없는 100% 현장 후불제. 코스별 정찰제 요금을 바른테라피에서 확인하세요.` },
+  { title: "출장 스웨디시 감성 힐링 마사지", desc: (d: string) => `${d} 출장마사지 추천 코스 안내. 부드러운 오일 이완 프로그램으로 누적된 피로를 말끔히 풀어드립니다.` },
+  { title: "출장 아로마테라피 힐링 마사지", desc: (d: string) => `${d} 출장마사지 방문 케어. 천연 에센셜 오일로 스트레스를 해소하는 1:1 맞춤 테라피를 경험하세요.` },
+  { title: "출장 정통타이 스트레칭 마사지", desc: (d: string) => `${d} 출장마사지 전문 안내. 숙련된 테라피스트의 전신 스트레칭과 시원한 압 조절로 굳은 몸을 풀어드립니다.` },
+  { title: "출장 릴렉스 바디 웰니스 마사지", desc: (d: string) => `${d} 출장마사지 큐레이션. 집이나 숙소에서 언제든 프라이빗하게 누리는 맞춤형 방문 힐링 플랫폼입니다.` },
 ];
 
 function getDynamicDongInsight(districtName: string, dongName: string, seed: number) {
@@ -147,32 +138,8 @@ function getDynamicDongInsight(districtName: string, dongName: string, seed: num
       sec4Text: [
         `${dongName} 출장마사지 서비스를 이용하실 때는 건전성과 투명성을 갖춘 공식 플랫폼을 확인하시는 것이 안전합니다. 정상적인 제휴 파트너는 예약 명목의 불법 선입금을 요구하지 않으며, 사전 공시된 100% 현장후불 정찰제 요금 기준을 엄격히 준수합니다.`
       ]
-    },
-    {
-      subtitle: `${dongName} 바디 컨디셔닝을 위한 체계적 근골격계 릴렉싱 가이드`,
-      sec1Title: `1. 보행 패턴과 골반 주변 근육의 긴장 메커니즘`,
-      sec1Text: [
-        `${districtName} ${dongName} 일대를 중심으로 대중교통 이용과 잦은 도보 이동을 반복하는 경우, 척추를 받쳐주는 골반 지지근에 불균형한 하중이 가해집니다. 특히 짝다리를 짚거나 다리를 꼬는 습관은 골반의 미세한 뒤틀림을 유발하여 허리 하부와 허벅지 뒤쪽 햄스트링에 연쇄적인 뻐근함을 초래합니다.`,
-        `체계적인 바디 컨디셔닝 요법은 단순히 겉 근육만을 문지르는 것이 아니라 골반과 척추 주변의 심부 지지근을 정교하게 짚어냅니다. 틀어진 좌우 밸런스를 정돈함으로써 보행 시 하체 피로도를 낮추고 안정적인 신체 정렬을 완성합니다.`
-      ],
-      sec2Title: "2. 뭉친 속근육을 풀어내는 딥티슈 테크닉의 이해",
-      sec2Text: [
-        `오랜 기간 묵혀둔 만성 피로는 표층 근육 아래 위치한 심부 근막에 단단한 매듭 형태의 트리거 포인트가 형성되어 발생합니다. 가벼운 터치만으로는 도달하기 힘든 이 부위는 전문적인 딥티슈 기법을 통해 다루어야 합니다.`,
-        `체중을 실은 일정한 지속 압력을 심부 조직에 전달함으로써 굳어있던 근막을 분리하고 정상적인 탄력을 회복시킵니다. 세션 직후 뻐근했던 허리와 등줄기가 개운하게 열리는 상쾌함을 경험하실 수 있습니다.`
-      ],
-      sec3Title: "3. 방문형 케어가 제공하는 프라이빗 시간의 효율성",
-      sec3Text: [
-        `바쁜 현대인에게 이동 시간을 절약하는 것은 가장 현명한 컨디션 관리 전략입니다. 주차 공간을 찾거나 대기 시간을 기다리는 피로를 덜어내고, 내가 지정한 시간에 프라이빗한 관리를 누릴 수 있습니다.`,
-        `누구의 방해도 받지 않는 아늑한 공간에서 진행되는 세션은 정신적 휴식과 신체적 재생을 동시에 도모할 수 있는 최적의 환경을 선사합니다.`
-      ],
-      sec4Title: "4. 매너 있는 이용과 정찰제 서비스 신뢰",
-      sec4Text: [
-        `${dongName} 공식 제휴 샵들은 사전에 명시된 투명한 100% 현장후불 정찰제 요금을 적용하여 이용자에게 혼선을 주지 않습니다.`,
-        `위생 어메니티와 소독을 철저히 마친 전문 관리사와의 신뢰 관계를 통해 ${dongName} 일대 어디서나 격조 높은 프라이빗 테라피를 편안하게 누려보시기 바랍니다.`
-      ]
     }
   ];
-
   return dongInsightGroups[seed % dongInsightGroups.length];
 }
 
@@ -182,22 +149,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const districtName = formatLocationName(district);
   const rawDong = formatLocationName(dong);
 
-  // dong과 district가 같거나(구 단위 페이지 링크가 잘못 들어왔을 때) 방어
   const dongName = (rawDong === districtName || rawDong === regionFullName) ? "" : rawDong;
   const displayLocation = dongName ? `${districtName} ${dongName}` : districtName;
 
   const charSum = (displayLocation + region).split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
+  // 타이틀: 40자 이내 준수
   const finalTitle = `${displayLocation} ${pattern.title} | 바른테라피`;
-  const finalDescription = pattern.desc(dongName || districtName);
-  const canonicalUrl = `https://barun-therapy.netlify.app/${region}/${encodeURIComponent(district)}/${encodeURIComponent(dong)}`;
+  // 설명문: 80자 이내 완결형 준수
+  const finalDescription = pattern.desc(displayLocation);
+  const canonicalUrl = `${SITE_URL}/${region}/${encodeURIComponent(district)}/${encodeURIComponent(dong)}`;
 
   return {
     title: { absolute: finalTitle },
     description: finalDescription,
     alternates: { canonical: canonicalUrl },
-    robots: { index: true, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    other: {
+      // 🌟 네이버 로봇(Yeti) 전용 메타 태그 추가
+      Yeti: "index,follow,max-image-preview:large",
+    },
     openGraph: {
       title: finalTitle,
       description: finalDescription,
@@ -207,7 +189,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: "website",
       images: [
         {
-          url: "https://barun-therapy.netlify.app/shop1.jpg",
+          url: `${SITE_URL}/shop1.jpg`,
           width: 1200,
           height: 630,
           alt: `${displayLocation} 출장마사지 바른테라피`,
@@ -230,8 +212,9 @@ export default async function Page({ params }: PageProps) {
   const pattern = SEO_PATTERNS[Math.abs(charSum) % SEO_PATTERNS.length];
 
   const article = getDynamicDongInsight(districtName, dongName || districtName, Math.abs(charSum));
-  const canonicalUrl = `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(resolved.district)}/${encodeURIComponent(resolved.dong)}`;
+  const canonicalUrl = `${SITE_URL}/${resolved.region}/${encodeURIComponent(resolved.district)}/${encodeURIComponent(resolved.dong)}`;
 
+  // 🌟 네이버 & 구글 공용 @graph 구조화 데이터
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -239,21 +222,21 @@ export default async function Page({ params }: PageProps) {
         "@type": "BreadcrumbList",
         "@id": `${canonicalUrl}#breadcrumb`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "홈", item: "https://barun-therapy.netlify.app" },
-          { "@type": "ListItem", position: 2, name: regionFullName, item: `https://barun-therapy.netlify.app/${resolved.region}` },
-          { "@type": "ListItem", position: 3, name: `${districtName} 마사지`, item: `https://barun-therapy.netlify.app/${resolved.region}/${encodeURIComponent(resolved.district)}` },
+          { "@type": "ListItem", position: 1, name: "홈", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: regionFullName, item: `${SITE_URL}/${resolved.region}` },
+          { "@type": "ListItem", position: 3, name: `${districtName} 마사지`, item: `${SITE_URL}/${resolved.region}/${encodeURIComponent(resolved.district)}` },
           { "@type": "ListItem", position: 4, name: `${displayLocation} 마사지`, item: canonicalUrl }
         ]
       },
       {
-        "@type": "HealthAndBeautyBusiness",
+        "@type": ["HealthAndBeautyBusiness", "LocalBusiness"],
         "@id": `${canonicalUrl}#business`,
         name: `${displayLocation} 출장 신뢰케어 마사지 - 바른테라피`,
-        description: pattern.desc(dongName || districtName),
+        description: pattern.desc(displayLocation),
         url: canonicalUrl,
         telephone: "0507-1280-3303",
-        image: "https://barun-therapy.netlify.app/shop1.jpg",
-        priceRange: "60,000원~",
+        image: `${SITE_URL}/shop1.jpg`,
+        priceRange: "60,000원~160,000원",
         currenciesAccepted: "KRW",
         paymentAccepted: "Cash, Credit Card (100% 현장 후불제)",
         openingHours: "Mo-Su 00:00-24:00",
@@ -303,11 +286,11 @@ export default async function Page({ params }: PageProps) {
             <span className="text-amber-400 text-xs font-black tracking-widest uppercase mb-1 block">
               {regionFullName} · {districtName} {dongName ? `· ${dongName}` : ""}
             </span>
-            <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-md">
+            <h1 className="text-xl md:text-3xl font-black text-white drop-shadow-md">
               {displayLocation} {pattern.title}
             </h1>
             <p className="text-xs md:text-sm text-gray-300 mt-2 max-w-xl leading-relaxed">
-              {pattern.desc(dongName || districtName)}
+              {pattern.desc(displayLocation)}
             </p>
           </div>
         </section>

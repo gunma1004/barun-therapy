@@ -1,8 +1,18 @@
-// app/[region]/[district]/[dong]/DongDetailClient.tsx
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+
+const SITE_URL = "https://barun-therapy.netlify.app";
+
+interface ShopItem {
+  id: number | string;
+  name: string;
+  desc: string;
+  phone: string;
+  price: string;
+  image: string;
+}
 
 interface DongDetailClientProps {
   region: string;
@@ -11,7 +21,7 @@ interface DongDetailClientProps {
   regionFullName: string;
 }
 
-const initialShops = [
+const initialShops: ShopItem[] = [
   {
     id: 1,
     name: "한국미인홈케어",
@@ -78,34 +88,46 @@ export default function DongDetailClient({
     ? shortLocation 
     : `${regionFullName} ${shortLocation}`;
 
+  // 🌟 실제 정규 샵 상세 URL 생성 헬퍼
+  const getShopDetailUrl = (shopId: number | string) => {
+    return isDongValid
+      ? `/shop/${region}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/${shopId}`
+      : `/shop/${region}/${encodeURIComponent(districtName)}/${shopId}`;
+  };
+
   const shopListJsonLd = useMemo(() => {
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
       name: `${shortLocation} 추천 제휴 샵 목록`,
       numberOfItems: shops.length,
-      itemListElement: shops.map((shop, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "HealthAndBeautyBusiness",
-          name: `${shop.name} (${shortLocation})`,
-          description: shop.desc,
-          image: `https://barun-therapy.netlify.app${shop.image}`,
-          telephone: shop.phone,
-          priceRange: shop.price,
-          paymentAccepted: "Cash, Credit Card (100% 현장 후불제)",
-          currenciesAccepted: "KRW",
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: shortLocation,
-            addressRegion: regionFullName,
-            addressCountry: "KR",
+      itemListElement: shops.map((shop, index) => {
+        const detailUrl = `${SITE_URL}${getShopDetailUrl(shop.id)}`;
+
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "HealthAndBeautyBusiness",
+            name: `${shop.name} (${shortLocation})`,
+            description: shop.desc,
+            image: `${SITE_URL}${shop.image}`,
+            telephone: shop.phone,
+            url: detailUrl,
+            priceRange: shop.price,
+            paymentAccepted: "Cash, Credit Card (100% 현장 후불제)",
+            currenciesAccepted: "KRW",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: shortLocation,
+              addressRegion: regionFullName,
+              addressCountry: "KR",
+            },
           },
-        },
-      })),
+        };
+      }),
     };
-  }, [shops, shortLocation, regionFullName]);
+  }, [shops, shortLocation, regionFullName, region, districtName, dongName, isDongValid]);
 
   return (
     <div className="space-y-8">
@@ -135,38 +157,49 @@ export default function DongDetailClient({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {shops.map((shop) => (
-            <div
-              key={shop.id}
-              className="bg-[#111114] border border-amber-500/20 hover:border-amber-500/60 rounded-2xl p-4 flex gap-4 items-center shadow-lg transition-all group relative"
-            >
-              <img
-                src={shop.image}
-                alt={`${shop.name} ${shortLocation}`}
-                className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-white/10 flex-shrink-0"
-              />
+          {shops.map((shop) => {
+            const detailUrl = getShopDetailUrl(shop.id);
 
-              <div className="flex-1 min-w-0">
-                <h4 className="font-extrabold text-sm md:text-base text-white truncate group-hover:text-amber-400 transition-colors">
-                  {shop.name} <span className="text-xs font-normal text-gray-400">({shortLocation})</span>
-                </h4>
-                <p className="text-[11px] text-gray-400 mt-1 line-clamp-2 leading-snug">
-                  {shop.desc}
-                </p>
-                <div className="mt-2.5 flex items-center justify-between">
-                  <span className="text-xs font-black text-amber-400">
-                    {shop.price}
-                  </span>
-                  <a
-                    href={`tel:${shop.phone.replace(/-/g, "")}`}
-                    className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black text-xs px-3.5 py-1.5 rounded-xl shadow relative z-20 hover:brightness-105 active:scale-95 transition-all"
-                  >
-                    전화연결
-                  </a>
+            return (
+              <div
+                key={shop.id}
+                className="bg-[#111114] border border-amber-500/20 hover:border-amber-500/60 rounded-2xl p-4 flex gap-4 items-center shadow-lg transition-all group relative"
+              >
+                {/* 🌟 카드 전체 클릭으로 상세 페이지 이동 보장 */}
+                <Link
+                  href={detailUrl}
+                  className="absolute inset-0 z-10"
+                  aria-label={`${shop.name} (${shortLocation}) 상세 코스 및 요금 보기`}
+                />
+
+                <img
+                  src={shop.image}
+                  alt={`${shop.name} ${shortLocation}`}
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-white/10 flex-shrink-0 group-hover:scale-105 transition-transform"
+                />
+
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-extrabold text-sm md:text-base text-white truncate group-hover:text-amber-400 transition-colors">
+                    {shop.name} <span className="text-xs font-normal text-gray-400">({shortLocation})</span>
+                  </h4>
+                  <p className="text-[11px] text-gray-400 mt-1 line-clamp-2 leading-snug">
+                    {shop.desc}
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between">
+                    <span className="text-xs font-black text-amber-400">
+                      {shop.price}
+                    </span>
+                    <a
+                      href={`tel:${shop.phone.replace(/-/g, "")}`}
+                      className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black text-xs px-3.5 py-1.5 rounded-xl shadow relative z-20 hover:brightness-105 active:scale-95 transition-all"
+                    >
+                      전화연결
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
