@@ -96,7 +96,7 @@ const regionData: Record<
       bupyeong: { name: "부평구", dongs: ["부평동", "산곡동", "청천동", "갈산동", "삼산동", "부개동", "일신동", "십정동"] },
       gyeyang: { name: "계양구", dongs: ["효성동", "계산동", "작전동", "작전서운동", "계양동"] },
       seohae: { name: "서해구 (서구)", dongs: ["검암경서동", "연희동", "청라1동", "청라2동", "청라3동", "가정동", "신현원창동", "석남동", "가좌동"] },
-      geomdan: { name: "검단구", dongs: ["검단동", "불로대곡동", "원당동", "당하동", "오류왕길동", "마전동", "아라동", "금곡동"] },
+      geomdan: { name: "검단동", dongs: ["검단동", "불로대곡동", "원당동", "당하동", "오류왕길동", "마전동", "아라동", "금곡동"] },
       ganghwa: { name: "강화군", dongs: ["강화읍", "선원면", "불은면", "길상면", "화도면", "양도면", "내가면", "하점면", "양사면", "송해면", "교동면", "삼산면", "서도면"] },
       ongjin: { name: "옹진군", dongs: ["북도면", "연평면", "백령면", "대청면", "덕적면", "자월면", "영흥면"] }
     }
@@ -116,24 +116,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // 2. 상단 카테고리 메인 페이지 5종
-  const categoryRoutes: MetadataRoute.Sitemap = [
-    'services',
-    'prices',
-    'travel',
-    'places',
-    'reviews',
-  ].map((route) => ({
-    url: `${BASE_URL}/${route}`,
+  // 2. 상단 광역 허브 페이지 3종 (/seoul, /gyeonggi, /incheon)
+  const hubRoutes: MetadataRoute.Sitemap = Object.keys(regionData).map((regionKey) => ({
+    url: `${BASE_URL}/${regionKey}`,
     lastModified: currentDate,
-    changeFrequency: 'weekly',
-    priority: 0.8,
+    changeFrequency: 'daily',
+    priority: 0.95,
   }));
 
   // 3. 지역(구/시/군) 및 하위 행정동 단위 검색 페이지 라우트
   const regionRoutes: MetadataRoute.Sitemap = [];
 
-  // 4. 개별 제휴 샵 상세 페이지 라우트 (/areas/.../shop/[id])
+  // 4. 개별 제휴 샵 상세 페이지 라우트 (실제 폴더 구조인 /shop/... 과 일치시킴)
   const shopRoutes: MetadataRoute.Sitemap = [];
   const shopIds = [1, 2, 3, 4, 5];
 
@@ -141,15 +135,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const districtVal of Object.values(regionVal.districts)) {
       const districtName = districtVal.name;
 
-      // ① 구/시/군 단위 페이지 (예: /gyeonggi/수원시 장안구)
+      // ① 구/시/군 단위 페이지 (예: /seoul/강남구)
+      const districtUrl = `${BASE_URL}/${regionKey}/${encodeURIComponent(districtName)}`;
       regionRoutes.push({
-        url: `${BASE_URL}/${regionKey}/${encodeURIComponent(districtName)}`,
+        url: districtUrl,
         lastModified: currentDate,
         changeFrequency: 'daily',
         priority: 0.9,
       });
 
-      // ② 하위 동 단위 페이지 및 해당 동 제휴 샵 상세 라우트
+      // ② 구 단위 샵 상세 페이지 색인 등록 (/shop/[region]/[district]/[shopId])
+      for (const id of shopIds) {
+        shopRoutes.push({
+          url: `${BASE_URL}/shop/${regionKey}/${encodeURIComponent(districtName)}/${id}`,
+          lastModified: currentDate,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+        });
+      }
+
+      // ③ 하위 동 단위 페이지 및 해당 동 제휴 샵 상세 라우트
       for (const dongName of districtVal.dongs) {
         regionRoutes.push({
           url: `${BASE_URL}/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}`,
@@ -158,10 +163,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           priority: 0.7,
         });
 
-        // ③ 제휴 샵 상세 페이지 색인 등록
+        // ④ 동 단위 샵 상세 페이지 색인 등록 (/shop/[region]/[district]/[dong]/[shopId])
         for (const id of shopIds) {
           shopRoutes.push({
-            url: `${BASE_URL}/areas/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/shop/${id}`,
+            url: `${BASE_URL}/shop/${regionKey}/${encodeURIComponent(districtName)}/${encodeURIComponent(dongName)}/${id}`,
             lastModified: currentDate,
             changeFrequency: 'weekly',
             priority: 0.6,
@@ -173,7 +178,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...mainRoute,
-    ...categoryRoutes,
+    ...hubRoutes,
     ...regionRoutes,
     ...shopRoutes,
   ];
